@@ -3,11 +3,11 @@ import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
 import LoadingSpinner from "~/components/Spinner"
 
-const Product: NextPage = () => {
+const Supplier: NextPage = () => {
   const { data, isLoading } = api.products.getAll.useQuery()
 
-  if (!data) return <div>Something went wrong</div>
   if (isLoading) return <LoadingSpinner />
+  if (!data) return <div>Something went wrong</div>
 
   return (
     <PageLayout>
@@ -60,4 +60,4 @@ const Product: NextPage = () => {
   )
 }
 
-export default Product
+export default Supplier

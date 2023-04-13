@@ -79,3 +79,26 @@ model ProductNeed {
     targetPublicPrice Float
     state    VALIDATION_STATE
 }
+
+enum YESNO {
+    YES
+    NO
+}
+
+enum STATUSES {
+    OPEN
+    CLOSED
+    PREFERRED
+}
+
+model Supplier {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    email     String
+    phone     String
+    country   COUNTRY
+    Validation YESNO
+    status    STATUSES
+}

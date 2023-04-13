@@ -1,6 +1,6 @@
 import { Fragment, type PropsWithChildren } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon, UserIcon, PlusIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
@@ -10,11 +10,12 @@ const user = {
   imageUrl: "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
 }
 const navigation = [
-  { name: 'Products', href: '/product', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
+  { name: 'Library', href: '/library', },
+  { name: 'Product Needs', href: '/product', },
+  { name: 'Suppliers', href: '/supplier', },
+  { name: 'Projects', href: '#', },
+  { name: 'Calendar', href: '#', },
+  { name: 'Reports', href: '#', },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -49,21 +50,25 @@ export default function PageLayout(props: PropsWithChildren) {
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'rounded-md px-3 py-2 text-sm font-medium'
-                            )}
-                            aria-current={item.current ? 'page' : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
+                        {navigation.map((item) => {
+                          const active = item.href === router.pathname
+                          return (
+                            <a
+                              key={item.name}
+                              href={item.href}
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-900 text-white'
+                                  : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                'rounded-md px-3 py-2 text-sm font-medium'
+                              )}
+                              aria-current={active ? 'page' : undefined}
+                            >
+                              {item.name}
+                            </a>
+                          )
+                        }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -131,20 +136,23 @@ export default function PageLayout(props: PropsWithChildren) {
 
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium'
-                      )}
-                      aria-current={item.current ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
+                  {navigation.map((item) => {
+                    const active = item.href === router.pathname
+                    return (
+                      <Disclosure.Button
+                        key={item.name}
+                        as="a"
+                        href={item.href}
+                        className={classNames(
+                          active ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'block rounded-md px-3 py-2 text-base font-medium'
+                        )}
+                        aria-current={active ? 'page' : undefined}
+                      >
+                        {item.name}
+                      </Disclosure.Button>
+                    )
+                  })}
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
@@ -181,9 +189,12 @@ export default function PageLayout(props: PropsWithChildren) {
           )}
         </Disclosure>
 
-        <header className="bg-white shadow">
+        <header className="bg-white shadow flex justify-between items-center">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
+          </div>
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <button className="rounded-full border-2 px-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1"><PlusIcon className="w-4 h-4" /> {`New ${title}`}</button>
           </div>
         </header>
         <main>
