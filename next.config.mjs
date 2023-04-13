@@ -18,5 +18,8 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ['images.clerk.dev', 'tailwindui.com'],
+  },
 };
 export default config;

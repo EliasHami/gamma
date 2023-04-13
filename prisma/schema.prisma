@@ -1,17 +1,81 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-    provider = "prisma-client-js"
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+generator client {
+  provider = "prisma-client-js"
 }
 
 model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model ProductCapacity {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
+    subFamilyId String
+    productNeeds ProductNeed[]
+}
+
+model ProductSubFamily {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    capacities ProductCapacity[]
+    family   ProductFamily @relation(fields: [familyId], references: [id])
+    familyId String
+    productNeeds ProductNeed[]
+}
+
+model ProductFamily {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    subFamilies ProductSubFamily[]
+    productNeeds ProductNeed[]
+}
+
+enum DEPARTMENT {
+    EQUIPEMENT
+    DOMICILE
+}
+
+enum COUNTRY {
+  CHINA
+  ITALY
+}
+
+enum VALIDATION_STATE {
+  VALIDATED
+  NOT_VALIDATED
+}
+
+model ProductNeed {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    department DEPARTMENT
+    family   ProductFamily @relation(fields: [familyId], references: [id])
+    familyId String
+    subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
+    subFamilyId String
+    capacity   ProductCapacity @relation(fields: [capacityId], references: [id])
+    capacityId String
+    color     String
+    Country  COUNTRY
+    targetPublicPrice Float
+    state    VALIDATION_STATE
 }
