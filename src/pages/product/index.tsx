@@ -41,7 +41,7 @@ const Product: NextPage = () => {
                         <td className="whitespace-nowrap px-6 py-4">{product.subFamily.name}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.capacity.name}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.color}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.Country}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.country}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.targetPublicPrice}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.state}</td>
                       </tr>

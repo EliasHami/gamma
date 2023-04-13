@@ -1,7 +1,8 @@
 import { Fragment, type PropsWithChildren } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const user = {
   name: 'Tom Cook',
@@ -9,7 +10,7 @@ const user = {
   imageUrl: "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
 }
 const navigation = [
-  { name: 'Products', href: '#/product', current: true },
+  { name: 'Products', href: '/product', current: true },
   { name: 'Team', href: '#', current: false },
   { name: 'Projects', href: '#', current: false },
   { name: 'Calendar', href: '#', current: false },
@@ -25,11 +26,13 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example(props: PropsWithChildren) {
+export default function PageLayout(props: PropsWithChildren) {
+  const router = useRouter()
+  const title = navigation.find(nav => nav.href === router.pathname)?.name || 'Unknown page'
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-purple-900">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -38,7 +41,7 @@ export default function Example(props: PropsWithChildren) {
                     <div className="flex-shrink-0">
                       <Image
                         className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        src="/gamma-ray.png"
                         alt="Your Company"
                         width="8"
                         height="8"
@@ -77,9 +80,9 @@ export default function Example(props: PropsWithChildren) {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex max-w-xs text-gray-400 items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={8} height={8} />
+                            <UserIcon className="h-8 w-8" aria-hidden="true" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -177,6 +180,12 @@ export default function Example(props: PropsWithChildren) {
             </>
           )}
         </Disclosure>
+
+        <header className="bg-white shadow">
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
+          </div>
+        </header>
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{props.children}</div>
         </main>
