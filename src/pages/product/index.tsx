@@ -1,9 +1,13 @@
 import { type NextPage } from "next"
 import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
+import LoadingSpinner from "~/components/Spinner"
 
 const Product: NextPage = () => {
-  const products = api.products.getAll.useQuery()
+  const { data, isLoading } = api.products.getAll.useQuery()
+
+  if (!data) return <div>Something went wrong</div>
+  if (isLoading) return <LoadingSpinner />
 
   return (
     <PageLayout>
@@ -15,30 +19,35 @@ const Product: NextPage = () => {
                 <thead className="border-b font-medium dark:border-neutral-500">
                   <tr>
                     <th scope="col" className="px-6 py-4">#</th>
-                    <th scope="col" className="px-6 py-4">First</th>
-                    <th scope="col" className="px-6 py-4">Last</th>
-                    <th scope="col" className="px-6 py-4">Handle</th>
+                    <th scope="col" className="px-6 py-4">Name</th>
+                    <th scope="col" className="px-6 py-4">Department</th>
+                    <th scope="col" className="px-6 py-4">Family</th>
+                    <th scope="col" className="px-6 py-4">Sub-Family</th>
+                    <th scope="col" className="px-6 py-4">Capacity</th>
+                    <th scope="col" className="px-6 py-4">Color</th>
+                    <th scope="col" className="px-6 py-4">Country</th>
+                    <th scope="col" className="px-6 py-4">Target Public price</th>
+                    <th scope="col" className="px-6 py-4">State</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b dark:border-neutral-500">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                    <td className="whitespace-nowrap px-6 py-4">Mark</td>
-                    <td className="whitespace-nowrap px-6 py-4">Otto</td>
-                    <td className="whitespace-nowrap px-6 py-4">@mdo</td>
-                  </tr>
-                  <tr className="border-b dark:border-neutral-500">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium">2</td>
-                    <td className="whitespace-nowrap px-6 py-4">Jacob</td>
-                    <td className="whitespace-nowrap px-6 py-4">Thornton</td>
-                    <td className="whitespace-nowrap px-6 py-4">@fat</td>
-                  </tr>
-                  <tr className="border-b dark:border-neutral-500">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium">3</td>
-                    <td className="whitespace-nowrap px-6 py-4">Larry</td>
-                    <td className="whitespace-nowrap px-6 py-4">Wild</td>
-                    <td className="whitespace-nowrap px-6 py-4">@twitter</td>
-                  </tr>
+                  {data.map((product) => {
+                    return (
+                      <tr key={product.id} className="border-b dark:border-neutral-500">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{product.id}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.department}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.family.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.subFamily.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.capacity.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.color}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.Country}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.targetPublicPrice}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{product.state}</td>
+                      </tr>
+                    )
+                  }
+                  )}
                 </tbody>
               </table>
             </div>
