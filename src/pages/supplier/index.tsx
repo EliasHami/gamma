@@ -2,9 +2,11 @@ import { type NextPage } from "next"
 import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
 import LoadingSpinner from "~/components/Spinner"
+import dayjs from "dayjs"
+import Actions from "~/components/Actions"
 
 const Supplier: NextPage = () => {
-  const { data, isLoading } = api.products.getAll.useQuery()
+  const { data, isLoading } = api.suppliers.getAll.useQuery()
 
   if (isLoading) return <LoadingSpinner />
   if (!data) return <div>Something went wrong</div>
@@ -18,34 +20,25 @@ const Supplier: NextPage = () => {
               <table className="min-w-full text-left text-sm font-light">
                 <thead className="border-b font-medium dark:border-neutral-500">
                   <tr>
-                    <th scope="col" className="px-6 py-4">#</th>
                     <th scope="col" className="px-6 py-4">Name</th>
-                    <th scope="col" className="px-6 py-4">Department</th>
-                    <th scope="col" className="px-6 py-4">Family</th>
-                    <th scope="col" className="px-6 py-4">Sub-Family</th>
-                    <th scope="col" className="px-6 py-4">Capacity</th>
-                    <th scope="col" className="px-6 py-4">Color</th>
                     <th scope="col" className="px-6 py-4">Country</th>
-                    <th scope="col" className="px-6 py-4">Target Public price</th>
-                    <th scope="col" className="px-6 py-4">State</th>
-                    <th scope="col" className="px-6 py-4">Actions</th>
+                    <th scope="col" className="px-6 py-4">Created at</th>
+                    <th scope="col" className="px-6 py-4">Updated at</th>
+                    <th scope="col" className="px-6 py-4">Validation Status</th>
+                    <th scope="col" className="px-6 py-4">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((product) => {
+                  {data.map((supplier) => {
                     return (
-                      <tr key={product.id} className="border-b dark:border-neutral-500">
-                        <td className="whitespace-nowrap px-6 py-4 font-medium">{product.id}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.name}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.department}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.family.name}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.subFamily.name}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.capacity.name}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.color}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.country}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.targetPublicPrice}</td>
-                        <td className="whitespace-nowrap px-6 py-4">{product.state}</td>
-                        <td className="whitespace-nowrap px-6 py-4">Delete, generate report, validate</td>
+                      <tr key={supplier.id} className="border-b dark:border-neutral-500">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{supplier.name}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{supplier.country}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{dayjs(supplier.createdAt).toString()}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{dayjs(supplier.updatedAt).toString()}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{supplier.validation}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{supplier.status}</td>
+                        <td className="whitespace-nowrap px-6 py-4"><Actions /></td>
                       </tr>
                     )
                   }

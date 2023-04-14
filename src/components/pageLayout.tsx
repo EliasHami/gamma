@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
-  imageUrl: "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
 }
 const navigation = [
   { name: 'Library', href: '/library', },
@@ -157,7 +156,7 @@ export default function PageLayout(props: PropsWithChildren) {
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <Image className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" width={10} height={10} />
+                      <UserIcon className="h-8 w-8" aria-hidden="true" />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">{user.name}</div>

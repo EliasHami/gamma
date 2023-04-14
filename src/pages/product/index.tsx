@@ -2,6 +2,7 @@ import { type NextPage } from "next"
 import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
 import LoadingSpinner from "~/components/Spinner"
+import Actions from "~/components/Actions"
 
 const Product: NextPage = () => {
   const { data, isLoading } = api.products.getAll.useQuery()
@@ -45,7 +46,7 @@ const Product: NextPage = () => {
                         <td className="whitespace-nowrap px-6 py-4">{product.country}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.targetPublicPrice}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.state}</td>
-                        <td className="whitespace-nowrap px-6 py-4">Delete, generate report, validate</td>
+                        <td className="whitespace-nowrap px-6 py-4"><Actions /></td>
                       </tr>
                     )
                   }

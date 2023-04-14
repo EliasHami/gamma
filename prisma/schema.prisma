@@ -99,6 +99,6 @@ model Supplier {
     email     String
     phone     String
     country   COUNTRY
-    Validation YESNO
+    validation YESNO
     status    STATUSES
 }
