@@ -29,7 +29,7 @@ const Product: NextPage = () => {
                     <th scope="col" className="px-6 py-4">Country</th>
                     <th scope="col" className="px-6 py-4">Target Public price</th>
                     <th scope="col" className="px-6 py-4">State</th>
-                    <th scope="col" className="px-6 py-4">Actions</th>
+                    <th scope="col" className="px-6 py-4"></th>
                   </tr>
                 </thead>
                 <tbody>

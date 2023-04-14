@@ -26,6 +26,7 @@ const Supplier: NextPage = () => {
                     <th scope="col" className="px-6 py-4">Updated at</th>
                     <th scope="col" className="px-6 py-4">Validation Status</th>
                     <th scope="col" className="px-6 py-4">Status</th>
+                    <th scope="col" className="px-6 py-4"></th>
                   </tr>
                 </thead>
                 <tbody>
