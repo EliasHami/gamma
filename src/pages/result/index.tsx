@@ -42,7 +42,7 @@ const Product: NextPage = () => {
                           </Link>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
-                          <Link href={`/product/${result.supplierId}`} className="flex gap-1 items-center" >
+                          <Link href={`/supplier/${result.supplierId}`} className="flex gap-1 items-center" >
                             <ArrowTopRightOnSquareIcon className="h-3 w-3" />
                             <span>{result.supplier.name}</span>
                           </Link>

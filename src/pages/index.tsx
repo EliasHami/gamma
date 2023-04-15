@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
-    <PageLayout>
+    <PageLayout noHeader>
       Gamma
     </PageLayout>
   );
