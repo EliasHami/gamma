@@ -11,7 +11,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <Head>
       <title>Gamma</title>
       <meta name="description" content="😀" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/gamma-ray.png" />
     </Head>
     <Component {...pageProps} />
   </ClerkProvider>)

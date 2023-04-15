@@ -78,6 +78,7 @@ model ProductNeed {
     country  COUNTRY
     targetPublicPrice Float
     state    VALIDATION_STATE
+    results   ProductResult[]
 }
 
 enum YESNO {
@@ -85,10 +86,11 @@ enum YESNO {
     NO
 }
 
-enum STATUSES {
+enum SUPPLIER_STATUSES {
     OPEN
     CLOSED
     PREFERRED
+	@@map("STATUSES")
 }
 
 model Supplier {
@@ -100,5 +102,31 @@ model Supplier {
     phone     String
     country   COUNTRY
     validation YESNO
-    status    STATUSES
+    status    SUPPLIER_STATUSES
+    results   ProductResult[]
+}
+
+enum CURRENCIES {
+  USD
+  EURO
+}
+
+enum RESULT_STATUSES {
+    OPEN
+    CLOSED
+    ACTIVE
+    COMPETITOR
+}
+
+model ProductResult {
+  id        String   @id @default(cuid())
+  need  ProductNeed @relation(fields: [needId], references: [id])
+  needId  String
+  supplier Supplier  @relation(fields: [supplierId], references: [id])
+  supplierId String
+  fobPrice  Float
+  currency  CURRENCIES
+  validation YESNO
+  status  RESULT_STATUSES 
+  image String // base64 images
 }
