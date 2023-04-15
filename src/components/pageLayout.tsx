@@ -3,13 +3,13 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, UserIcon, PlusIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const user = {
   name: 'Tom Cook',
   email: 'tom@example.com',
 }
 const navigation = [
-  { name: 'Home', href: '/', },
   { name: 'Libraries', href: '/libraries', },
   { name: 'Product Needs', href: '/product', },
   { name: 'Product Results', href: '/result', },
@@ -39,13 +39,15 @@ export default function PageLayout({ noHeader = false, noNew = false, children }
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <Image
-                        className="h-8 w-8"
-                        src="/gamma-ray.png"
-                        alt="Your Company"
-                        width="8"
-                        height="8"
-                      />
+                      <Link href="/">
+                        <Image
+                          className="h-8 w-8"
+                          src="/gamma-ray.png"
+                          alt="Your Company"
+                          width="8"
+                          height="8"
+                        />
+                      </Link>
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -194,7 +196,10 @@ export default function PageLayout({ noHeader = false, noNew = false, children }
               <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
             </div>
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              {!noNew && <button className="rounded-full border-2 px-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1"><PlusIcon className="w-4 h-4" /> {`New ${title}`}</button>}
+              {!noNew && <button className="rounded-full border-2 p-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1">
+                <PlusIcon className="w-4 h-4" />
+                <span className='max-md:hidden'>{`New ${title}`}</span>
+              </button>}
             </div>
           </header>
         )}

@@ -7,8 +7,8 @@ import Actions from "~/components/Actions"
 const Product: NextPage = () => {
   const { data, isLoading } = api.products.getAll.useQuery()
 
-  if (!data) return <div>Something went wrong</div>
   if (isLoading) return <LoadingSpinner />
+  if (!data && !isLoading) return <div>Something went wrong</div>
 
   return (
     <PageLayout>

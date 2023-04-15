@@ -9,7 +9,7 @@ const Supplier: NextPage = () => {
   const { data, isLoading } = api.suppliers.getAll.useQuery()
 
   if (isLoading) return <LoadingSpinner />
-  if (!data) return <div>Something went wrong</div>
+  if (!data && !isLoading) return <div>Something went wrong</div>
 
   return (
     <PageLayout>

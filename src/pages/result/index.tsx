@@ -9,8 +9,8 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 const Product: NextPage = () => {
   const { data, isLoading } = api.results.getAll.useQuery()
 
-  if (!data) return <div>Something went wrong</div>
   if (isLoading) return <LoadingSpinner />
+  if (!data && !isLoading) return <div>Something went wrong</div>
 
   return (
     <PageLayout>
