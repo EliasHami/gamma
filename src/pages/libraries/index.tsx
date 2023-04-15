@@ -11,10 +11,10 @@ const libraries = [
   { Icon: ArchiveBoxIcon, name: "Products", href: "/" },
 ]
 
-const Product: NextPage = () => {
+const Libraries: NextPage = () => {
   return (
     <PageLayout noNew>
-      <div className="flex flex-wrap" >
+      <div className="flex flex-wrap">
         {libraries.map(({ Icon, name, href }) => (
           <div key={name} className="my-5 px-8 w-full md:w-1/2 lg:my-10 lg:px-16 lg:w-1/3">
             <div className="overflow-hidden rounded-lg shadow-lg border">
@@ -29,4 +29,4 @@ const Product: NextPage = () => {
   )
 }
 
-export default Product
+export default Libraries
