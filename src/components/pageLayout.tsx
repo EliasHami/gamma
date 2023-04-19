@@ -28,7 +28,7 @@ function classNames(...classes: string[]) {
 export default function PageLayout({ noHeader = false, noNew = false, children }:
   PropsWithChildren<{ noHeader?: boolean, noNew?: boolean }>) {
   const router = useRouter()
-  const title = navigation.find(nav => nav.href === router.pathname)?.name || 'Unknown page'
+  const { name: title = 'Unknown page', href } = navigation?.find(nav => router.pathname.includes(nav.href)) || { name: "", href: "" }
   return (
     <>
       <div className="min-h-full">
@@ -196,10 +196,11 @@ export default function PageLayout({ noHeader = false, noNew = false, children }
               <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
             </div>
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              {!noNew && <button className="rounded-full border-2 p-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1">
+              {!noNew && <Link href={`${href}`}
+                className="rounded-full border-2 p-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1">
                 <PlusIcon className="w-4 h-4" />
                 <span className='max-md:hidden'>{`New ${title}`}</span>
-              </button>}
+              </Link>}
             </div>
           </header>
         )}
