@@ -25,10 +25,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function PageLayout({ noHeader = false, noNew = false, children }:
-  PropsWithChildren<{ noHeader?: boolean, noNew?: boolean }>) {
+export default function PageLayout({ title, noHeader = false, noNew = false, children }:
+  PropsWithChildren<{ title?: string, noHeader?: boolean, noNew?: boolean }>) {
   const router = useRouter()
-  const { name: title = 'Unknown page', href } = navigation?.find(nav => router.pathname.includes(nav.href)) || { name: "", href: "" }
+  const { name: pageName = 'Unknown page', href } = navigation?.find(nav => router.pathname.includes(nav.href)) || { name: "", href: "" }
   return (
     <>
       <div className="min-h-full">
@@ -193,13 +193,13 @@ export default function PageLayout({ noHeader = false, noNew = false, children }
         {!noHeader && (
           <header className="bg-white shadow flex justify-between items-center">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title || pageName}</h1>
             </div>
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
               {!noNew && <Link href={`${href}/new`}
                 className="rounded-full border-2 p-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1">
                 <PlusIcon className="w-4 h-4" />
-                <span className='max-md:hidden'>{`New ${title}`}</span>
+                <span className='max-md:hidden'>{`New ${pageName}`}</span>
               </Link>}
             </div>
           </header>

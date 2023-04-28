@@ -7,17 +7,19 @@ import PageLayout from "~/components/pageLayout"
 
 const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   let data = null;
+  let title = "New Product Need";
   if (typeof id == 'string') {
     data = api.products.getById.useQuery({
       id
     }).data;
+    title = "Edit Product Need";
   }
 
   const { data: productsFamilies } = api.productsFamilies.getAll.useQuery();
   const { data: productsSubFamilies } = api.productsSubFamilies.getAll.useQuery();
   const { data: productsCapacities } = api.productsCapacities.getAll.useQuery();
   return (
-    <PageLayout noNew>
+    <PageLayout noNew title={title}>
       <form className="flex justify-center">
         <div className="w-1/2">
           <Input label="Name" type="text" placeholder="Your product need" />
