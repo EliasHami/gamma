@@ -8,7 +8,7 @@ type InputProps = {
   }
 }
 
-const Input = ({ label, error, required, children }: PropsWithChildren<InputProps>) => {
+const Select = ({ label, error, required, children }: PropsWithChildren<InputProps>) => {
   return (
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
@@ -28,4 +28,4 @@ const Input = ({ label, error, required, children }: PropsWithChildren<InputProp
     </div>
   )
 }
-export default Input
+export default Select
