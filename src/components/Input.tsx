@@ -1,4 +1,7 @@
+import { useFormContext } from "react-hook-form"
+
 type InputProps = {
+  name : string
   label: string
   type: string
   required?: boolean
@@ -8,7 +11,11 @@ type InputProps = {
   }
 }
 
-const Input: React.FC<InputProps> = ({ label, type, placeholder, error, required, ...rest }) => {
+const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, required }) => {
+  const { register } = useFormContext()
+
+  if (!name) return null
+
   return (
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
@@ -19,7 +26,7 @@ const Input: React.FC<InputProps> = ({ label, type, placeholder, error, required
         type={type}
         placeholder={placeholder}
         required={required}
-        {...rest}
+        {...register(name)}
       />
       {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}
     </div>
