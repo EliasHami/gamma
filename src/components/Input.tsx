@@ -8,7 +8,7 @@ type InputProps = {
   }
 }
 
-const Input: React.FC<InputProps> = ({ label, type, placeholder, error, required }) => {
+const Input: React.FC<InputProps> = ({ label, type, placeholder, error, required, ...rest }) => {
   return (
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
@@ -19,6 +19,7 @@ const Input: React.FC<InputProps> = ({ label, type, placeholder, error, required
         type={type}
         placeholder={placeholder}
         required={required}
+        {...rest}
       />
       {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}
     </div>
