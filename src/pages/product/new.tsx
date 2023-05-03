@@ -1,5 +1,5 @@
 import { type GetStaticProps, type NextPage } from "next"
-import { ProductForm } from "~/pages/product/[id]"
+import ProductForm from "~/components/ProductForm"
 
 const NewProduct: NextPage = () => <ProductForm />
 
@@ -19,11 +19,5 @@ export const getStaticProps: GetStaticProps = async () => {
       trpcState: ssg.dehydrate(),
     }
 
-  }
-}
-
-export const getStaticPaths = () => {
-  return {
-    paths: [], fallback: "blocking"
   }
 }
