@@ -7,11 +7,10 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 // const ProductSchema : z.ZodType<ProductNeed>= z.object({
 //   id : z.string(),
-//   createdAt z.string(),
-//   updatedAt z.string()
-//   name      z.string()
-//   department DEPARTMENT
-//   family   ProductFamily @relation(fields: [familyId], references: [id])
+//   createdAt : z.string(),
+//   updatedAt :z.string()
+//   name      :z.string()
+//   department : DEPARTMENT
 //   familyId String
 //   subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
 //   subFamilyId String
@@ -45,6 +44,17 @@ export const productRouter = createTRPCRouter({
 
       return productNeed;
     }),
+  create: publicProcedure.mutation(async ({ ctx, input }) => {
+    // const productNeed = await ctx.prisma.productNeed.create({
+    //   data: {
+    //     authorId,
+    //     content: input.content,
+    //   },
+    // });
+
+    // return productNeed;
+    return null;
+  }),
 });
 
 export const productFamilyRouter = createTRPCRouter({
