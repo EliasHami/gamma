@@ -1,13 +1,13 @@
 import { type NextPage } from "next"
 import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
-import LoadingSpinner from "~/components/Spinner"
+import {LoadingSpinnerPage} from "~/components/Spinner"
 import Actions from "~/components/Actions"
 
 const Product: NextPage = () => {
   const { data, isLoading } = api.products.getAll.useQuery()
 
-  if (isLoading) return <LoadingSpinner />
+  if (isLoading) return <LoadingSpinnerPage />
   if (!data && !isLoading) return <div>Something went wrong</div>
 
   return (

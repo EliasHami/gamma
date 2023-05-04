@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form"
 
 type InputProps = {
-  name : string
+  name: string
   label: string
   type: string
   required?: boolean
@@ -27,6 +27,12 @@ const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, re
         placeholder={placeholder}
         required={required}
         {...register(name)}
+      // onChange={(event => {
+      //   let value: number | string = event.target.value
+      //   if (type === "number") value = parseFloat(event.target.value)
+      //   console.log({ name, value })
+      //   setValue(name, value)
+      // })}
       />
       {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}
     </div>

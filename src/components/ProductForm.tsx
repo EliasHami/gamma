@@ -1,13 +1,17 @@
 import { COUNTRY, DEPARTMENT, type ProductNeed, VALIDATION_STATE } from "@prisma/client"
 import React from "react"
-import { type UseFormProps, useForm, SubmitHandler, FormProvider } from "react-hook-form"
+import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
 import Select from "~/components/Select"
 import LoadingSpinner from "~/components/Spinner"
 import PageLayout from "~/components/pageLayout"
 import { api } from "~/utils/api"
+import { DevTool } from "@hookform/devtools"
+import { useRouter } from "next/router"
+import { toast } from 'react-hot-toast'
 
 const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
+  const router = useRouter()
   let data = null;
   let title = "New Product Need";
   const formOptions: UseFormProps<ProductNeed> = {}
@@ -17,7 +21,6 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
     }).data;
     title = "Edit Product Need";
     formOptions.defaultValues = data;
-    console.log(data, formOptions)
   }
 
   const methods = useForm<ProductNeed>(formOptions)
@@ -28,13 +31,41 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   const { data: productsSubFamilies } = api.productsSubFamilies.getAll.useQuery();
   const { data: productsCapacities } = api.productsCapacities.getAll.useQuery();
 
-  const { mutate, isLoading } = api.products.create.useMutation()
-
+  const ctx = api.useContext();
+  const { mutate: create, isLoading } = api.products.create.useMutation({
+    onSuccess: async () => {
+      await router.push("/product")
+      void ctx.products.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.log({ errorMessage }) // TODO handle error in rhf
+      if (errorMessage && errorMessage[0]) toast.error(errorMessage[0])
+      else {
+        toast.error("Failed to post! Please try again later.")
+      }
+    }
+  })
+  const { mutate: update } = api.products.update.useMutation({
+    onSuccess: async () => {
+      await router.push("/product")
+      void ctx.products.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      console.log({ errorMessage }) // TODO handle error in rhf
+      if (errorMessage && errorMessage[0]) toast.error(errorMessage[0])
+      else {
+        toast.error("Failed to post! Please try again later.")
+      }
+    }
+  })
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
-    // return id
-    //   ? handleCreateProduct(data)
-    //   : handleUpdateProduct(construction.id, data)
+    console.log({ data, errors })
+    return typeof id == 'string'
+      ? update({ ...data, id, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) }) // TODO: fix this
+      : create({ ...data, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) })
   }
 
   return (
@@ -74,13 +105,14 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
                 <option key={key} value={key}>{value}</option>
               ))}
             </Select>
-            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button type="submit" className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               {(formState.isSubmitting || isLoading) && <LoadingSpinner />}
               Submit
             </button>
           </div>
         </form>
       </FormProvider>
+      <DevTool control={methods.control} /> {/* set up the dev tool */}
     </PageLayout >
   )
 }

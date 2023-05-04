@@ -2,26 +2,49 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-// import { ProductNeed } from '@prisma/client'
-// import z from 'zod'
+import {
+  COUNTRY,
+  DEPARTMENT,
+  type ProductNeed,
+  VALIDATION_STATE,
+} from "@prisma/client";
 
-// const ProductSchema : z.ZodType<ProductNeed>= z.object({
-//   id : z.string(),
-//   createdAt : z.string(),
-//   updatedAt :z.string()
-//   name      :z.string()
-//   department : DEPARTMENT
-//   familyId String
-//   subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
-//   subFamilyId String
-//   capacity   ProductCapacity @relation(fields: [capacityId], references: [id])
-//   capacityId String
-//   color     String
-//   country  COUNTRY
-//   targetPublicPrice Float
-//   state    VALIDATION_STATE
-//   results   ProductResult[]
-// })
+// const productResultSchema: z.ZodType<ProductResult> = z.object({
+//   id: z.string(),
+//   needId: z.string().uuid(),
+//   supplierId: z.string().uuid(),
+//   fobPrice: z.number(),
+//   currency: z.nativeEnum(CURRENCIES),
+//   validation: z.nativeEnum(YESNO),
+//   status: z.nativeEnum(RESULT_STATUSES),
+//   image: z.string(),
+// });
+
+const productSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  department: z.nativeEnum(DEPARTMENT),
+  familyId: z.string().cuid(),
+  subFamilyId: z.string().cuid(),
+  capacityId: z.string().cuid(),
+  color: z.string(),
+  country: z.nativeEnum(COUNTRY),
+  targetPublicPrice: z.number(),
+  state: z.nativeEnum(VALIDATION_STATE),
+});
+
+export type ProductUpdateForm = Omit<
+  Exclude<ProductNeed, null>,
+  "createdAt" | "updatedAt" | "results"
+>;
+
+export type ProductCreateForm = Omit<Exclude<ProductUpdateForm, null>, "id">;
+
+const productCreateSchema: z.ZodType<ProductCreateForm> = productSchema.omit({
+  id: true,
+});
+
+const productUpdateSchema: z.ZodType<ProductUpdateForm> = productSchema;
 
 export const productRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -44,17 +67,25 @@ export const productRouter = createTRPCRouter({
 
       return productNeed;
     }),
-  create: publicProcedure.mutation(async ({ ctx, input }) => {
-    // const productNeed = await ctx.prisma.productNeed.create({
-    //   data: {
-    //     authorId,
-    //     content: input.content,
-    //   },
-    // });
+  update: publicProcedure
+    .input(productUpdateSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!input.id) throw new TRPCError({ code: "NOT_FOUND" });
+      const productNeed = await ctx.prisma.productNeed.update({
+        where: { id: input.id },
+        data: input,
+      });
+      return productNeed;
+    }),
+  create: publicProcedure
+    .input(productCreateSchema)
+    .mutation(async ({ ctx, input }) => {
+      const productNeed = await ctx.prisma.productNeed.create({
+        data: input,
+      });
 
-    // return productNeed;
-    return null;
-  }),
+      return productNeed;
+    }),
 });
 
 export const productFamilyRouter = createTRPCRouter({
