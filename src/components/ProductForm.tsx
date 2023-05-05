@@ -32,21 +32,7 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   const { data: productsCapacities } = api.productsCapacities.getAll.useQuery();
 
   const ctx = api.useContext();
-  const { mutate: create, isLoading } = api.products.create.useMutation({
-    onSuccess: async () => {
-      await router.push("/product")
-      void ctx.products.getAll.invalidate();
-    },
-    onError: (e) => {
-      const errorMessage = e.data?.zodError?.fieldErrors.content;
-      console.log({ errorMessage }) // TODO handle error in rhf
-      if (errorMessage && errorMessage[0]) toast.error(errorMessage[0])
-      else {
-        toast.error("Failed to post! Please try again later.")
-      }
-    }
-  })
-  const { mutate: update } = api.products.update.useMutation({
+  const { mutate, isLoading } = api.products.createOrUpdate.useMutation({
     onSuccess: async () => {
       await router.push("/product")
       void ctx.products.getAll.invalidate();
@@ -64,8 +50,8 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
     console.log({ data, errors })
     return typeof id == 'string'
-      ? update({ ...data, id, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) }) // TODO: fix this
-      : create({ ...data, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) })
+      ? mutate({ ...data, id, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) }) // TODO: fix this
+      : mutate({ ...data, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) })
   }
 
   return (

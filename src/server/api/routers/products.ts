@@ -2,12 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-import {
-  COUNTRY,
-  DEPARTMENT,
-  type ProductNeed,
-  VALIDATION_STATE,
-} from "@prisma/client";
+import { COUNTRY, DEPARTMENT, VALIDATION_STATE } from "@prisma/client";
 
 // const productResultSchema: z.ZodType<ProductResult> = z.object({
 //   id: z.string(),
@@ -21,7 +16,7 @@ import {
 // });
 
 const productSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
   department: z.nativeEnum(DEPARTMENT),
   familyId: z.string().cuid(),
@@ -32,19 +27,6 @@ const productSchema = z.object({
   targetPublicPrice: z.number(),
   state: z.nativeEnum(VALIDATION_STATE),
 });
-
-export type ProductUpdateForm = Omit<
-  Exclude<ProductNeed, null>,
-  "createdAt" | "updatedAt" | "results"
->;
-
-export type ProductCreateForm = Omit<Exclude<ProductUpdateForm, null>, "id">;
-
-const productCreateSchema: z.ZodType<ProductCreateForm> = productSchema.omit({
-  id: true,
-});
-
-const productUpdateSchema: z.ZodType<ProductUpdateForm> = productSchema;
 
 export const productRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -67,23 +49,20 @@ export const productRouter = createTRPCRouter({
 
       return productNeed;
     }),
-  update: publicProcedure
-    .input(productUpdateSchema)
+  createOrUpdate: publicProcedure
+    .input(productSchema)
     .mutation(async ({ ctx, input }) => {
-      if (!input.id) throw new TRPCError({ code: "NOT_FOUND" });
-      const productNeed = await ctx.prisma.productNeed.update({
-        where: { id: input.id },
-        data: input,
-      });
-      return productNeed;
-    }),
-  create: publicProcedure
-    .input(productCreateSchema)
-    .mutation(async ({ ctx, input }) => {
-      const productNeed = await ctx.prisma.productNeed.create({
-        data: input,
-      });
-
+      let productNeed;
+      if (input.id) {
+        productNeed = await ctx.prisma.productNeed.update({
+          where: { id: input.id },
+          data: input,
+        });
+      } else {
+        productNeed = await ctx.prisma.productNeed.create({
+          data: input,
+        });
+      }
       return productNeed;
     }),
 });
