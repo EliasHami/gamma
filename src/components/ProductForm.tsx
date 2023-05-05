@@ -14,15 +14,14 @@ import productFormSchema from "~/schemas/product"
 
 const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   const router = useRouter()
-  let data = null;
   let title = "New Product Need";
   const formOptions: UseFormProps<ProductNeed> = { resolver: zodResolver(productFormSchema), }
   if (typeof id == 'string') {
-    data = api.products.getById.useQuery({
+    const data = api.products.getById.useQuery({
       id
     }).data;
-    title = "Edit Product Need";
-    formOptions.defaultValues = data;
+    formOptions.defaultValues = data
+    title = `Edit ${data?.name ? data.name : "Product Need"}`;
   }
 
   const methods = useForm<ProductNeed>(formOptions)
