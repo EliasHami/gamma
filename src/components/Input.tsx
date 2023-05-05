@@ -1,17 +1,14 @@
-import { useFormContext } from "react-hook-form"
+import { type FieldError, useFormContext } from "react-hook-form"
 
 type InputProps = {
   name: string
   label: string
   type: string
-  required?: boolean
   placeholder?: string
-  error?: {
-    message: string
-  }
+  error?: FieldError
 }
 
-const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, required }) => {
+const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error }) => {
   const { register } = useFormContext()
 
   if (!name) return null
@@ -25,7 +22,6 @@ const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, re
         id="input"
         type={type}
         placeholder={placeholder}
-        required={required}
         {...register(name)}
       // onChange={(event => {
       //   let value: number | string = event.target.value

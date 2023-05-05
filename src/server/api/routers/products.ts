@@ -1,32 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import productFormSchema from "~/schemas/product";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-
-import { COUNTRY, DEPARTMENT, VALIDATION_STATE } from "@prisma/client";
-
-// const productResultSchema: z.ZodType<ProductResult> = z.object({
-//   id: z.string(),
-//   needId: z.string().uuid(),
-//   supplierId: z.string().uuid(),
-//   fobPrice: z.number(),
-//   currency: z.nativeEnum(CURRENCIES),
-//   validation: z.nativeEnum(YESNO),
-//   status: z.nativeEnum(RESULT_STATUSES),
-//   image: z.string(),
-// });
-
-const productSchema = z.object({
-  id: z.string().optional(),
-  name: z.string(),
-  department: z.nativeEnum(DEPARTMENT),
-  familyId: z.string().cuid(),
-  subFamilyId: z.string().cuid(),
-  capacityId: z.string().cuid(),
-  color: z.string(),
-  country: z.nativeEnum(COUNTRY),
-  targetPublicPrice: z.number(),
-  state: z.nativeEnum(VALIDATION_STATE),
-});
 
 export const productRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -50,7 +25,7 @@ export const productRouter = createTRPCRouter({
       return productNeed;
     }),
   createOrUpdate: publicProcedure
-    .input(productSchema)
+    .input(productFormSchema)
     .mutation(async ({ ctx, input }) => {
       let productNeed;
       if (input.id) {

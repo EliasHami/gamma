@@ -9,12 +9,14 @@ import { api } from "~/utils/api"
 import { DevTool } from "@hookform/devtools"
 import { useRouter } from "next/router"
 import { toast } from 'react-hot-toast'
+import { zodResolver } from "@hookform/resolvers/zod"
+import productFormSchema from "~/schemas/product"
 
 const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   const router = useRouter()
   let data = null;
   let title = "New Product Need";
-  const formOptions: UseFormProps<ProductNeed> = {}
+  const formOptions: UseFormProps<ProductNeed> = { resolver: zodResolver(productFormSchema), }
   if (typeof id == 'string') {
     data = api.products.getById.useQuery({
       id
@@ -37,12 +39,8 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
       await router.push("/product")
       void ctx.products.getAll.invalidate();
     },
-    onError: (e) => {
-      const errorMessage = e.data?.zodError?.fieldErrors.content;
-      if (errorMessage && errorMessage[0]) toast.error(errorMessage[0])
-      else {
-        toast.error("Failed to post! Please try again later.")
-      }
+    onError: () => {
+      toast.error("Failed to submit! Please check the form and try again.")
     }
   })
 
@@ -57,34 +55,34 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
       <FormProvider {...methods}>
         <form id="hook-form" className="flex justify-center" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
           <div className="w-1/2">
-            <Input name="name" label="Name" type="text" placeholder="Your product need" />
-            <Select name="department" label="Department" required >
+            <Input name="name" label="Name" type="text" placeholder="Your product need" error={errors.name} />
+            <Select name="department" label="Department" error={errors.department}>
               {Object.entries(DEPARTMENT).map(([key, value]) => (
                 <option key={key} value={key}>{value}</option>
               ))}
             </Select>
-            <Select name="familyId" label="Product Family" required >
+            <Select name="familyId" label="Product Family" error={errors.familyId}>
               {productsFamilies?.map(({ id, name }) => (
                 <option key={id} value={id}>{name}</option>
               ))}
             </Select>
-            <Select name="subFamilyId" label="Product Sub Family" required >
+            <Select name="subFamilyId" label="Product Sub Family" error={errors.subFamilyId}>
               {productsSubFamilies?.map(({ id, name }) => (
                 <option key={id} value={id}>{name}</option>
               ))}
             </Select>
-            <Select name="capacityId" label="Product Capacity" required >
+            <Select name="capacityId" label="Product Capacity" error={errors.capacityId}>
               {productsCapacities?.map(({ id, name }) => (
                 <option key={id} value={id}>{name}</option>
               ))}
             </Select>
-            <Select name="country" label="Country" required >
+            <Select name="country" label="Country" error={errors.country}>
               {Object.entries(COUNTRY).map(([key, value]) => (
                 <option key={key} value={key}>{value}</option>
               ))}
             </Select>
-            <Input name="targetPublicPrice" label="Target Public Price" type="number" placeholder="999.999" />
-            <Select name="state" label="State" required >
+            <Input name="targetPublicPrice" label="Target Public Price" type="number" placeholder="999.999" error={errors.targetPublicPrice} />
+            <Select name="state" label="State" error={errors.state}>
               {Object.entries(VALIDATION_STATE).map(([key, value]) => (
                 <option key={key} value={key}>{value}</option>
               ))}

@@ -1,20 +1,17 @@
 import { type PropsWithChildren } from "react"
-import { useFormContext } from "react-hook-form"
+import { type FieldError, useFormContext } from "react-hook-form"
 
 type InputProps = {
   name: string
   label: string
-  required?: boolean
-  error?: {
-    message: string
-  }
+  error?: FieldError
 }
 
-const Select = ({ name, label, error, required, children }: PropsWithChildren<InputProps>) => {
+const Select = ({ name, label, error, children }: PropsWithChildren<InputProps>) => {
   const { register } = useFormContext()
 
   if (!name) return null
-  
+
   return (
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
@@ -23,7 +20,6 @@ const Select = ({ name, label, error, required, children }: PropsWithChildren<In
       <div className={`${error ? "border-red-500" : ""} inline-block relative w-full`}>
         <select
           className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          required={required}
           {...register(name)}>
           {children}
         </select>
