@@ -39,7 +39,6 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
-      console.log({ errorMessage }) // TODO handle error in rhf
       if (errorMessage && errorMessage[0]) toast.error(errorMessage[0])
       else {
         toast.error("Failed to post! Please try again later.")
@@ -48,7 +47,6 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   })
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
-    console.log({ data, errors })
     return typeof id == 'string'
       ? mutate({ ...data, id, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) }) // TODO: fix this
       : mutate({ ...data, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) })
@@ -57,7 +55,7 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   return (
     <PageLayout noNew title={title}>
       <FormProvider {...methods}>
-        <form id="hook-form" className="flex justify-center" onSubmit={handleSubmit(onSubmit)}>
+        <form id="hook-form" className="flex justify-center" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
           <div className="w-1/2">
             <Input name="name" label="Name" type="text" placeholder="Your product need" />
             <Select name="department" label="Department" required >
