@@ -45,8 +45,8 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
     return typeof id == 'string'
-      ? mutate({ ...data, id, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) }) // TODO: fix this
-      : mutate({ ...data, color: "#000000", targetPublicPrice: parseFloat(data.targetPublicPrice as unknown as string) })
+      ? mutate({ ...data, id, color: "#000000" })
+      : mutate({ ...data, color: "#000000" })
   }
 
   return (

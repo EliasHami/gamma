@@ -10,8 +10,9 @@ type InputProps = {
 
 const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error }) => {
   const { register } = useFormContext()
-
+  let options = {}
   if (!name) return null
+  if (type === "number") options = { valueAsNumber: true }
 
   return (
     <div className="mb-6">
@@ -22,13 +23,7 @@ const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error }) 
         id="input"
         type={type}
         placeholder={placeholder}
-        {...register(name)}
-      // onChange={(event => {
-      //   let value: number | string = event.target.value
-      //   if (type === "number") value = parseFloat(event.target.value)
-      //   console.log({ name, value })
-      //   setValue(name, value)
-      // })}
+        {...register(name, options)}
       />
       {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}
     </div>

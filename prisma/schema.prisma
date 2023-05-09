@@ -74,7 +74,7 @@ model ProductNeed {
     subFamilyId String
     capacity   ProductCapacity @relation(fields: [capacityId], references: [id])
     capacityId String
-    color     String
+    color     String?
     country  COUNTRY
     targetPublicPrice Float
     state    VALIDATION_STATE

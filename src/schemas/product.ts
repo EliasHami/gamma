@@ -8,7 +8,7 @@ const productFormSchema = z.object({
   familyId: z.string().cuid(),
   subFamilyId: z.string().cuid(),
   capacityId: z.string().cuid(),
-  color: z.string(),
+  color: z.string().optional(),
   country: z.nativeEnum(COUNTRY),
   targetPublicPrice: z.number(),
   state: z.nativeEnum(VALIDATION_STATE),
