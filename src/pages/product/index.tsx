@@ -23,14 +23,6 @@ const Product: NextPage = () => {
   if (isLoading) return <LoadingSpinnerPage />
   if (!data && !isLoading) return <div>Something went wrong</div>
 
-  const handleEdit = (id: string) => {
-    void router.push(`product/${id}`)
-  }
-
-  const handleDelete = (id: string) => {
-    void mutate({ id })
-  }
-
   return (
     <PageLayout>
       <div className="flex flex-col">
@@ -70,8 +62,8 @@ const Product: NextPage = () => {
                         <td className="whitespace-nowrap px-6 py-4">
                           <Actions
                             disabled={isDeleting}
-                            onEdit={() => handleEdit(product.id)}
-                            onDelete={() => handleDelete(product.id)}
+                            onEdit={() => void router.push(`product/${product.id}`)}
+                            onDelete={() => void mutate({ id: product.id })}
                           />
                         </td>
                       </tr>

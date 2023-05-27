@@ -1,12 +1,25 @@
 import { type NextPage } from "next"
 import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
-import {LoadingSpinnerPage} from "~/components/Spinner"
+import { LoadingSpinnerPage } from "~/components/Spinner"
 import dayjs from "dayjs"
 import Actions from "~/components/Actions"
+import { useRouter } from "next/router"
+import { toast } from "react-hot-toast"
 
 const Supplier: NextPage = () => {
   const { data, isLoading } = api.suppliers.getAll.useQuery()
+  const router = useRouter()
+  const ctx = api.useContext();
+  const { mutate, isLoading: isDeleting } = api.products.delete.useMutation({
+    onSuccess: async () => {
+      await router.push("/product")
+      void ctx.products.getAll.invalidate();
+    },
+    onError: () => {
+      toast.error("Failed to submit! Please check the form and try again.")
+    }
+  })
 
   if (isLoading) return <LoadingSpinnerPage />
   if (!data && !isLoading) return <div>Something went wrong</div>
@@ -39,7 +52,13 @@ const Supplier: NextPage = () => {
                         <td className="whitespace-nowrap px-6 py-4">{dayjs(supplier.updatedAt).toString()}</td>
                         <td className="whitespace-nowrap px-6 py-4">{supplier.validation}</td>
                         <td className="whitespace-nowrap px-6 py-4">{supplier.status}</td>
-                        <td className="whitespace-nowrap px-6 py-4"><Actions /></td>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          <Actions
+                            onEdit={() => void router.push(`supplier/${supplier.id}`)}
+                            onDelete={() => void mutate({ id: supplier.id })}
+                            disabled={isDeleting}
+                          />
+                        </td>
                       </tr>
                     )
                   }
