@@ -1,14 +1,35 @@
 import { type NextPage } from "next"
 import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
-import {LoadingSpinnerPage} from "~/components/Spinner"
+import { LoadingSpinnerPage } from "~/components/Spinner"
 import Actions from "~/components/Actions"
+import { useRouter } from "next/router"
+import { toast } from "react-hot-toast"
 
 const Product: NextPage = () => {
   const { data, isLoading } = api.products.getAll.useQuery()
+  const router = useRouter()
+  const ctx = api.useContext();
+  const { mutate, isLoading: isDeleting } = api.products.delete.useMutation({
+    onSuccess: async () => {
+      await router.push("/product")
+      void ctx.products.getAll.invalidate();
+    },
+    onError: () => {
+      toast.error("Failed to submit! Please check the form and try again.")
+    }
+  })
 
   if (isLoading) return <LoadingSpinnerPage />
   if (!data && !isLoading) return <div>Something went wrong</div>
+
+  const handleEdit = (id: string) => {
+    void router.push(`product/${id}`)
+  }
+
+  const handleDelete = (id: string) => {
+    void mutate({ id })
+  }
 
   return (
     <PageLayout>
@@ -46,7 +67,13 @@ const Product: NextPage = () => {
                         <td className="whitespace-nowrap px-6 py-4">{product.country}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.targetPublicPrice}</td>
                         <td className="whitespace-nowrap px-6 py-4">{product.state}</td>
-                        <td className="whitespace-nowrap px-6 py-4"><Actions /></td>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          <Actions
+                            disabled={isDeleting}
+                            onEdit={() => handleEdit(product.id)}
+                            onDelete={() => handleDelete(product.id)}
+                          />
+                        </td>
                       </tr>
                     )
                   }

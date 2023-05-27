@@ -40,6 +40,14 @@ export const productRouter = createTRPCRouter({
       }
       return productNeed;
     }),
+  delete: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const productNeed = await ctx.prisma.productNeed.delete({
+        where: { id: input.id },
+      });
+      return productNeed;
+    }),
 });
 
 export const productFamilyRouter = createTRPCRouter({

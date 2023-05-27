@@ -52,7 +52,7 @@ export default function PageLayout({ title, noHeader = false, noNew = false, chi
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => {
-                          const active = item.href === router.pathname
+                          const active = router.pathname.includes(item.href)
                           return (
                             <a
                               key={item.name}
