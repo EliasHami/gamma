@@ -11,10 +11,10 @@ const Supplier: NextPage = () => {
   const { data, isLoading } = api.suppliers.getAll.useQuery()
   const router = useRouter()
   const ctx = api.useContext();
-  const { mutate, isLoading: isDeleting } = api.products.delete.useMutation({
+  const { mutate, isLoading: isDeleting } = api.suppliers.delete.useMutation({
     onSuccess: async () => {
-      await router.push("/product")
-      void ctx.products.getAll.invalidate();
+      await router.push("/supplier")
+      void ctx.suppliers.getAll.invalidate();
     },
     onError: () => {
       toast.error("Failed to submit! Please check the form and try again.")
