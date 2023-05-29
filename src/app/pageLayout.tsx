@@ -3,7 +3,7 @@ import { Fragment, type PropsWithChildren } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
 const user = {
@@ -27,7 +27,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function PageLayout({ children }: PropsWithChildren) {
-  const router = useRouter()
+  const pathname = usePathname()
   return (
     <>
       <div className="min-h-full">
@@ -51,7 +51,7 @@ export default function PageLayout({ children }: PropsWithChildren) {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => {
-                          const active = router.pathname.includes(item.href)
+                          const active = pathname?.includes(item.href)
                           return (
                             <a
                               key={item.name}
@@ -137,7 +137,7 @@ export default function PageLayout({ children }: PropsWithChildren) {
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map((item) => {
-                    const active = item.href === router.pathname
+                    const active = pathname && item.href === pathname
                     return (
                       <Disclosure.Button
                         key={item.name}
