@@ -1,5 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { type Metadata } from 'next';
+import PageLayout from './pageLayout';
 
 export const metadata: Metadata = {
   title: 'Gamma',
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body>
+          <PageLayout>{children}</PageLayout>
+        </body>
       </html>
     </ClerkProvider>
   );
