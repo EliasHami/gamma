@@ -26,7 +26,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function PageLayout({ children }: PropsWithChildren) {
+export default function AppLayout({ children }: PropsWithChildren) {
   const pathname = usePathname()
   return (
     <>
@@ -189,7 +189,7 @@ export default function PageLayout({ children }: PropsWithChildren) {
           )}
         </Disclosure>
         <main>
-          <div className="container mx-auto max-w-7xl py-6 lg:px-8">{children}</div>
+          {children}
         </main>
       </div>
     </>

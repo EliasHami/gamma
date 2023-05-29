@@ -1,7 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { type Metadata } from 'next';
-import PageLayout from './pageLayout';
+import AppLayout from './appLayout';
 import "~/styles/globals.css";
+import { type PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
   title: 'Gamma',
@@ -11,14 +12,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: PropsWithChildren) {
   return (
     <ClerkProvider>
       <html lang="en">
         <body>
-          <PageLayout>{children}</PageLayout>
+          <AppLayout>{children}</AppLayout>
         </body>
       </html>
     </ClerkProvider>
