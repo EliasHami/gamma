@@ -1,6 +1,7 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { type Metadata } from 'next';
 import PageLayout from './pageLayout';
+import "~/styles/globals.css";
 
 export const metadata: Metadata = {
   title: 'Gamma',
