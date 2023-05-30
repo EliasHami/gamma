@@ -5,29 +5,25 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const navigation = [
-  { name: 'Libraries', href: '/libraries', },
-  { name: 'Product Needs', href: '/product', },
-  { name: 'Product Results', href: '/result', },
-  { name: 'Suppliers', href: '/supplier', },
+  { name: 'Library', href: '/libraries', },
+  { name: 'Product Need', href: '/product', },
+  { name: 'Product Result', href: '/result', },
+  { name: 'Supplier', href: '/supplier', },
 ]
 
-export default function PageLayout({ title, children }:
-  PropsWithChildren<{ title?: string }>) {
+export default function PageLayout({ children }: PropsWithChildren) {
   const pathname = usePathname()
-  let { name: pageName = 'Object', href } = navigation?.find(nav => pathname?.includes(nav.href)) || { name: "", href: "" }
+  const { name = 'Object', href } = navigation?.find(nav => pathname?.includes(nav.href)) || { name: "", href: "" }
   const isNewRoute = pathname?.includes('new')
-  if (isNewRoute) {
-    pageName = `New ${pageName}`
-    href = `${href}/new`
-  }
+  const pageName = isNewRoute ? `New ${name}` : `Edit ${name}`
   return (
     <>
       <div className="bg-white shadow flex justify-between items-center">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title || pageName}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">{pageName}</h1>
         </div>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          {!isNewRoute && <Link href={`${href}`}
+          {!isNewRoute && <Link href={`${href}/new`}
             className="rounded-full border-2 p-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1">
             <PlusIcon className="w-4 h-4" />
             <span className='max-md:hidden'>{`New ${pageName}`}</span>

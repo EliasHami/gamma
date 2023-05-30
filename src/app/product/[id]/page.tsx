@@ -1,7 +1,9 @@
-import ProductForm from "~/app/product/_components/Form";
-import { prisma } from "~/server/db";
+import ProductForm from "~/app/product/_components/Form"
+import { prisma } from "~/server/db"
 
-const NewProduct = async () => {
+const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
+  const product = await prisma.productNeed.findUnique({ where: { id } })
+  if (!product) return <div>Product not found</div>
   const productFamilies = await prisma.productFamily.findMany({
     select: {
       id: true,
@@ -20,13 +22,14 @@ const NewProduct = async () => {
       name: true,
     },
   });
-
   return (
     <ProductForm
+      product={product}
       productFamilies={productFamilies}
       productSubFamilies={productSubFamilies}
       productCapacities={productCapacities}
-    />)
+    />
+  )
 }
 
-export default NewProduct
+export default EditProduct
