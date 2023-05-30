@@ -1,41 +1,51 @@
+"use client"
 import { COUNTRY, DEPARTMENT, type ProductNeed, VALIDATION_STATE } from "@prisma/client"
 import React from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
 import Select from "~/components/Select"
 import LoadingSpinner from "~/components/Spinner"
-import PageLayout from "~/components/pageLayout"
 import { api } from "~/utils/api"
 import { DevTool } from "@hookform/devtools"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { toast } from 'react-hot-toast'
 import { zodResolver } from "@hookform/resolvers/zod"
 import productFormSchema from "~/schemas/product"
+import { useQueries } from "@tanstack/react-query"
 
-const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
+function fetchProductLibrary(url: string) {
+  return async () => {
+    const res = await fetch(url)
+    return res.json() as Promise<Array<{ id: string, name: string }>> // use trpc when compatible with app
+  }
+}
+
+const ProductForm: React.FC<{ product?: ProductNeed }> = ({ product }) => {
   const router = useRouter()
-  let title = "New Product Need";
+  // let title = "New Product Need";
   const formOptions: UseFormProps<ProductNeed> = { resolver: zodResolver(productFormSchema), }
-  if (typeof id == 'string') {
-    const data = api.products.getById.useQuery({
-      id
-    }).data;
-    formOptions.defaultValues = data
-    title = `Edit ${data?.name ? data.name : "Product Need"}`;
+  if (product) {
+    formOptions.defaultValues = product
+    // title = `Edit ${data?.name ? data.name : "Product Need"}`;
   }
 
   const methods = useForm<ProductNeed>(formOptions)
   const { handleSubmit, formState } = methods
   const { errors } = formState
 
-  const { data: productsFamilies } = api.productsFamilies.getAll.useQuery();
-  const { data: productsSubFamilies } = api.productsSubFamilies.getAll.useQuery();
-  const { data: productsCapacities } = api.productsCapacities.getAll.useQuery();
+  const results = useQueries({ // mauvaise solution car on attends que javascript fasse le rendu et on fetch à chaque render
+    queries: [
+      { queryKey: ["familyList"], queryFn: fetchProductLibrary("/library/family") },
+      { queryKey: ["subFamilyList"], queryFn: fetchProductLibrary("/library/subFamily") },
+      { queryKey: ["capacityList"], queryFn: fetchProductLibrary("/library/capacity") },
+    ]
+  });
+  const [{ data: productsFamilies }, { data: productsSubFamilies }, { data: productsCapacities }] = results;
 
   const ctx = api.useContext();
   const { mutate, isLoading } = api.products.createOrUpdate.useMutation({
-    onSuccess: async () => {
-      await router.push("/product")
+    onSuccess: () => {
+      router.push("/product")
       void ctx.products.getAll.invalidate();
     },
     onError: () => {
@@ -44,13 +54,13 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
   })
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
-    return typeof id == 'string'
-      ? mutate({ ...data, id, color: "#000000" })
+    return product
+      ? mutate({ ...data, id: product.id, color: "#000000" })
       : mutate({ ...data, color: "#000000" })
   }
 
   return (
-    <PageLayout noNew title={title}>
+    <>
       <FormProvider {...methods}>
         <form id="hook-form" className="flex justify-center" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
           <div className="w-1/2">
@@ -94,7 +104,7 @@ const ProductForm: React.FC<{ id?: string }> = ({ id }) => {
         </form>
       </FormProvider>
       <DevTool control={methods.control} /> {/* set up the dev tool */}
-    </PageLayout >
+    </>
   )
 }
 

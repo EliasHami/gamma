@@ -1,5 +1,5 @@
 import { type GetStaticProps, type NextPage } from "next"
-import ProductForm from "~/components/ProductForm"
+import ProductForm from "~/app/product/ProductForm"
 
 const EditProduct: NextPage<{ id: string }> = ({ id }) => <ProductForm id={id} />
 
