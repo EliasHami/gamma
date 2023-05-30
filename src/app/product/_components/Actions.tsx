@@ -19,7 +19,7 @@ const Actions: React.FC<ActionsProps> = ({ id }) => {
       <button onClick={handleEdit}>
         <PencilSquareIcon className="w-5 h-5 text-blue-500" />
       </button>
-      <button onClick={() => startTransition(() => deleteProduct(id))}>
+      <button onClick={() => startTransition(() => deleteProduct(id))}> {/* 👈 use formAction for progressive enhancement*/}
         {isPending ? <LoadingSpinner /> : <TrashIcon className="w-5 h-5 text-red-500" />}
       </button>
       <button>
