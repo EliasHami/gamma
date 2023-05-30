@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { prisma } from "./db";
+import { prisma } from "../../server/db";
 
 export async function deleteProduct(id: string) {
   try {

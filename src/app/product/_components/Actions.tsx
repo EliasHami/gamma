@@ -3,7 +3,7 @@ import { TrashIcon, CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outl
 import { useRouter } from 'next/navigation'
 import React, { useTransition } from 'react'
 import LoadingSpinner from '~/components/Spinner'
-import { deleteProduct } from '~/server/actions'
+import { deleteProduct } from '../actions'
 
 type ActionsProps = {
   id: string
