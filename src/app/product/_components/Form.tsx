@@ -40,8 +40,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
     product
       ? startTransition(() => updateProduct({ ...data, id: product.id, color: "#000000" }))
       : startTransition(() => createProduct({ ...data, color: "#000000" }))
-    router.push('/product')
     toast.success("Product submited successfully")
+    router.push('/product')
   }
 
   return (
