@@ -1,29 +1,10 @@
-import { type NextPage } from "next"
-import { api } from "~/utils/api"
 import PageLayout from "~/components/pageLayout"
-import { LoadingSpinnerPage } from "~/components/Spinner"
 import dayjs from "dayjs"
-import Actions from "~/components/Actions"
-import { useRouter } from "next/router"
-import { toast } from "react-hot-toast"
+import Actions from "~/app/supplier/_components/Actions"
+import { prisma } from "~/server/db"
 
-const Supplier: NextPage = () => {
-  const { data, isLoading } = api.suppliers.getAll.useQuery()
-  const router = useRouter()
-  const ctx = api.useContext();
-  const { mutate, isLoading: isDeleting } = api.suppliers.delete.useMutation({
-    onSuccess: async () => {
-      await router.push("/supplier")
-      void ctx.suppliers.getAll.invalidate();
-    },
-    onError: () => {
-      toast.error("Failed to submit! Please check the form and try again.")
-    }
-  })
-
-  if (isLoading) return <LoadingSpinnerPage />
-  if (!data && !isLoading) return <div>Something went wrong</div>
-
+const Supplier = async () => {
+  const suppliers = await prisma.supplier.findMany()
   return (
     <PageLayout>
       <div className="flex flex-col">
@@ -43,7 +24,7 @@ const Supplier: NextPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((supplier) => {
+                  {suppliers.map((supplier) => {
                     return (
                       <tr key={supplier.id} className="border-b dark:border-neutral-500">
                         <td className="whitespace-nowrap px-6 py-4 font-medium">{supplier.name}</td>
@@ -53,11 +34,7 @@ const Supplier: NextPage = () => {
                         <td className="whitespace-nowrap px-6 py-4">{supplier.validation}</td>
                         <td className="whitespace-nowrap px-6 py-4">{supplier.status}</td>
                         <td className="whitespace-nowrap px-6 py-4">
-                          <Actions
-                            onEdit={() => void router.push(`supplier/${supplier.id}`)}
-                            onDelete={() => void mutate({ id: supplier.id })}
-                            disabled={isDeleting}
-                          />
+                          <Actions id={supplier.id} />
                         </td>
                       </tr>
                     )

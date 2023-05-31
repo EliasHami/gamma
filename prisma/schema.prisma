@@ -120,9 +120,9 @@ enum RESULT_STATUSES {
 
 model ProductResult {
   id        String   @id @default(cuid())
-  need  ProductNeed @relation(fields: [needId], references: [id])
+  need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Cascade)
   needId  String
-  supplier Supplier  @relation(fields: [supplierId], references: [id])
+  supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
   supplierId String
   fobPrice  Float
   currency  CURRENCIES
