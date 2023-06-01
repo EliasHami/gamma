@@ -1,6 +1,5 @@
 import { type Metadata } from 'next';
 import { type PropsWithChildren } from 'react';
-import PageLayout from '~/components/pageLayout';
 
 export const metadata: Metadata = {
   title: 'Gamma - Product Needs',
@@ -10,7 +9,5 @@ export const metadata: Metadata = {
 export default function ProductLayout({
   children,
 }: PropsWithChildren) {
-  return (
-    <PageLayout>{children}</PageLayout>
-  );
+  return children
 }

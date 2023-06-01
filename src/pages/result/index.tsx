@@ -1,7 +1,6 @@
 import { type NextPage } from "next"
 import { api } from "~/utils/api"
-import PageLayout from "~/components/pageLayout"
-import {LoadingSpinnerPage} from "~/components/Spinner"
+import { LoadingSpinnerPage } from "~/components/Spinner"
 import Actions from "~/components/Actions"
 import Link from "next/link"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
@@ -13,7 +12,7 @@ const Product: NextPage = () => {
   if (!data && !isLoading) return <div>Something went wrong</div>
 
   return (
-    <PageLayout>
+    <>
       <div className="flex flex-col">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -63,7 +62,7 @@ const Product: NextPage = () => {
           </div>
         </div>
       </div>
-    </PageLayout>
+    </>
   )
 }
 

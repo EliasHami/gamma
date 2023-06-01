@@ -4,7 +4,6 @@ import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "re
 import Input from "~/components/Input"
 import Select from "~/components/Select"
 import LoadingSpinner from "~/components/Spinner"
-import PageLayout from "~/components/pageLayout"
 import { api } from "~/utils/api"
 import { DevTool } from "@hookform/devtools"
 import { useRouter } from "next/router"
@@ -46,7 +45,7 @@ const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
   }
 
   return (
-    <PageLayout noNew title={title}>
+    < >
       <FormProvider {...methods}>
         <form id="hook-form" className="flex justify-center" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
           <div className="w-1/2">
@@ -76,7 +75,7 @@ const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
         </form>
       </FormProvider>
       <DevTool control={methods.control} /> {/* set up the dev tool */}
-    </PageLayout >
+    </ >
   )
 }
 

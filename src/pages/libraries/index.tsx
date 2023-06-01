@@ -1,5 +1,4 @@
 import { type NextPage } from "next"
-import PageLayout from "~/components/pageLayout"
 import { ArchiveBoxIcon, BuildingOfficeIcon, LightBulbIcon, ReceiptPercentIcon, TruckIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 
@@ -13,7 +12,7 @@ const libraries = [
 
 const Libraries: NextPage = () => {
   return (
-    <PageLayout noNew>
+    <>
       <div className="flex flex-wrap">
         {libraries.map(({ Icon, name, href }) => (
           <div key={name} className="my-5 px-8 w-full md:w-1/2 lg:my-10 lg:px-16 lg:w-1/3">
@@ -25,7 +24,7 @@ const Libraries: NextPage = () => {
             </div>
           </div>))}
       </div>
-    </PageLayout>
+    </>
   )
 }
 

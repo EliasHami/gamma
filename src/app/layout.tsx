@@ -1,8 +1,9 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { type Metadata } from 'next';
-import AppLayout from './appLayout';
 import "~/styles/globals.css";
 import { type PropsWithChildren } from 'react';
+import Nav from './_components/Nav';
+import Header from './_components/Header';
 
 export const metadata: Metadata = {
   title: 'Gamma',
@@ -17,7 +18,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <AppLayout>{children}</AppLayout>
+          <Nav />
+          <Header />
+          <main className="container mx-auto max-w-7xl py-6 lg:px-8">{children}</main>
         </body>
       </html>
     </ClerkProvider>
