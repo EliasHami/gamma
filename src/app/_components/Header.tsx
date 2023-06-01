@@ -19,7 +19,7 @@ export default function Header() {
         {!isNewRoute && <Link href={`${href}/new`}
           className="rounded-full border-2 p-2 text-lg font-bold tracking-tight text-gray-900 flex items-center gap-1">
           <PlusIcon className="w-4 h-4" />
-          <span className='max-md:hidden'>{`New ${pageName}`}</span>
+          <span className='max-md:hidden'>{`${pageName}`}</span>
         </Link>}
       </div>
     </header>
