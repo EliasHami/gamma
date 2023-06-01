@@ -6,10 +6,9 @@ import {
 } from "@prisma/client";
 import { z } from "zod";
 
-type Product = Omit<ProductNeed, "updatedAt" | "createdAt">;
+type Product = Omit<ProductNeed, "id" | "updatedAt" | "createdAt">;
 
 const productFormSchema: z.ZodSchema<Product> = z.object({
-  id: z.string(),
   name: z.string(),
   department: z.nativeEnum(DEPARTMENT),
   familyId: z.string().cuid(),

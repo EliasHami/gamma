@@ -128,5 +128,5 @@ model ProductResult {
   currency  CURRENCIES
   validation YESNO
   status  RESULT_STATUSES 
-  image String // base64 images
+  image Json
 }

@@ -55,7 +55,7 @@ const Product = async () => {
                       <td className="whitespace-nowrap px-6 py-4">{result.currency}</td>
                       <td className="whitespace-nowrap px-6 py-4">{result.validation}</td>
                       <td className="whitespace-nowrap px-6 py-4">{result.status}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{result.image}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{JSON.stringify(result.image)}</td>
                       <td className="whitespace-nowrap px-6 py-4"><Actions id={result.id} /></td>
                     </tr>
                   )

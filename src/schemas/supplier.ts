@@ -1,8 +1,14 @@
-import { COUNTRY, SUPPLIER_STATUSES, YESNO } from "@prisma/client";
+import {
+  COUNTRY,
+  SUPPLIER_STATUSES,
+  type Supplier,
+  YESNO,
+} from "@prisma/client";
 import { z } from "zod";
 
-const supplierFormSchema = z.object({
-  id: z.string().optional(),
+type SupplierForm = Omit<Supplier, "id" | "updatedAt" | "createdAt">;
+
+const supplierFormSchema: z.ZodSchema<SupplierForm> = z.object({
   name: z.string(),
   email: z.string().email(),
   phone: z.string(),
