@@ -9,7 +9,6 @@ import { navigation, user, userNavigation } from '../utils'
 
 export default function Nav() {
   return (
-    // <div className=""> à quoi sert ce div ?
     <Disclosure as="nav" className="min-h-full bg-purple-900">
       {({ open }) => (
         <>
