@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error }) 
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
         {label}
       </label>
-      <input className={`${error ? "border-red-500" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+      <input className={`${error ? "border-red-500" : ""} min-h-[50px] shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
         id="input"
         type={type}
         placeholder={placeholder}
