@@ -21,7 +21,7 @@ const Item = ({ id, name, searchKey, resetKey }: { id: string, name: string, sea
   }
 
   return (
-    <div onClick={handleFilter} className="bg-slate-100 border border-gray-300 dark:border-neutral-700 rounded-lg p-5">
+    <div onClick={handleFilter} className="bg-slate-100 border border-gray-300 dark:border-neutral-700 rounded-lg p-5 cursor-pointer">
       <span>{name}</span>
     </div>
   )
