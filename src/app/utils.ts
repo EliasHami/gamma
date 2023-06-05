@@ -1,5 +1,5 @@
 const navigation = [
-  { name: "Libraries", href: "/libraries" },
+  { name: "Libraries", href: "/library", type: "menu" },
   { name: "Product Needs", href: "/product" },
   { name: "Product Results", href: "/result" },
   { name: "Suppliers", href: "/supplier" },
