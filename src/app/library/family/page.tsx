@@ -1,7 +1,7 @@
 import { prisma } from "~/server/db";
 import AddItem from "~/app/library/_components/AddItem";
 import Item from "../_components/Item";
-import { addFamily } from "../actions";
+import { addFamily, addSubFamily } from "../actions";
 
 const ProductFamily = async ({
   searchParams
@@ -27,10 +27,12 @@ const ProductFamily = async ({
             <div className="border font-medium dark:border-neutral-500 flex-1 flex flex-col gap-5">
               {productSubFamilies?.filter(({ familyId }) => familyId === family)
                 .map(({ id, name }) => <Item key={id} id={id} name={name} searchKey="subFamily" />)}
+              <AddItem action={addSubFamily} options={{ familyId: family }} />
             </div>
             <div className="border font-medium dark:border-neutral-500  flex-1 flex flex-col gap-5">
               {productCapacities?.filter(({ subFamily: sF }) => sF.id === subFamily && sF.familyId === family)
                 .map(({ id, name }) => <Item key={id} id={id} name={name} />)}
+              <AddItem action={addFamily} options={{ subFamilyId: subFamily }} />
             </div>
           </div>
         </div>

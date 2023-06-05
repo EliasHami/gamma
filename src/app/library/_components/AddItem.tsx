@@ -6,17 +6,32 @@ import { FormProvider, type SubmitHandler, type UseFormProps, useForm } from "re
 import { z } from "zod"
 import Input from "~/components/Input"
 import LoadingSpinner from "~/components/Spinner"
-import { type AddItemForm } from "../actions"
 
+type AddItemForm = { name: string }
 
-const AddItem: React.FC<{ action: (data: AddItemForm) => Promise<void> }> = ({ action }) => {
+type AddItemProps = {
+  action: (
+    name: string,
+    familyId?: string,
+    subFamily?: string
+  ) => Promise<void>
+  options?: {
+    familyId?: string
+    subFamilyId?: string
+  }
+}
+
+const AddItem: React.FC<AddItemProps> = ({ action, options }) => {
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<AddItemForm> = { resolver: zodResolver(z.object({ name: z.string() })), }
 
   const methods = useForm<AddItemForm>(formOptions)
   const { handleSubmit, formState, setValue } = methods
   const onSubmit: SubmitHandler<AddItemForm> = (data) => {
-    startTransition(() => action(data))
+    const name = data.name
+    const familyId = options?.familyId
+    const subFamilyId = options?.subFamilyId
+    startTransition(() => action(name, familyId, subFamilyId))
     setValue("name", "")
   }
 
