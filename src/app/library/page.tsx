@@ -7,7 +7,7 @@ const libraries = [
   { Icon: ReceiptPercentIcon, name: "Custom Tax", href: "/" },
   { Icon: LightBulbIcon, name: "Assumptions", href: "/" },
   { Icon: BuildingOfficeIcon, name: "Departments", href: "/" },
-  { Icon: ArchiveBoxIcon, name: "Products", href: "/" },
+  { Icon: ArchiveBoxIcon, name: "Products", href: "/library/family" },
 ]
 
 const Libraries: NextPage = () => {
