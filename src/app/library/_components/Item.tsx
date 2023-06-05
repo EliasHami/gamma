@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-const Item = ({ id, name, searchKey }: { id: string, name: string, searchKey?: string }) => {
+const Item = ({ id, name, searchKey, resetKey }: { id: string, name: string, searchKey?: string, resetKey?: string }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [, startTransition] = useTransition();
@@ -13,6 +13,7 @@ const Item = ({ id, name, searchKey }: { id: string, name: string, searchKey?: s
     const params = new URLSearchParams(window.location.search);
     params.set(searchKey, id);
 
+    if (resetKey) params.delete(resetKey)
 
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);

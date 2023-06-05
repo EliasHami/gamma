@@ -7,7 +7,8 @@ import { navigation } from '../utils'
 export default function Header() {
   const pathname = usePathname()
   if (!pathname || pathname === "/") return null
-  const { name = 'Object', href } = navigation.find(nav => pathname?.includes(nav.href)) || { name: "", href: "" }
+  const { name, href } = navigation.find(nav => pathname === nav.href) || {}
+  if (!name || !href) return null
   const isNewRoute = pathname?.includes('new')
   const newPageName = isNewRoute ? `Edit ${name}` : `New ${name}`
   return (

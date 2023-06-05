@@ -13,7 +13,10 @@ export async function addFamily(name: string) {
   }
 }
 
-export async function addSubFamily(name: string, familyId?: string) {
+export async function addSubFamily(
+  name: string,
+  { familyId }: { familyId?: string }
+) {
   if (!familyId) {
     throw new Error("Family is required");
   }
@@ -27,7 +30,10 @@ export async function addSubFamily(name: string, familyId?: string) {
   }
 }
 
-export async function addCapacity(name: string, subFamilyId?: string) {
+export async function addCapacity(
+  name: string,
+  { subFamilyId }: { subFamilyId?: string }
+) {
   if (!subFamilyId) {
     throw new Error("Sub Family is required");
   }

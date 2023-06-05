@@ -9,6 +9,7 @@ const user = {
   name: "Tom Cook",
   email: "tom@example.com",
 };
+
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -16,3 +17,9 @@ const userNavigation = [
 ];
 
 export { navigation, user, userNavigation };
+
+export const getErrorMessage = (error: unknown):string => {
+  if (error instanceof Error) return error.message
+  return String(error)
+}
+
