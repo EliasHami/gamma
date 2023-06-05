@@ -6,17 +6,17 @@ import { FormProvider, type SubmitHandler, type UseFormProps, useForm } from "re
 import { z } from "zod"
 import Input from "~/components/Input"
 import LoadingSpinner from "~/components/Spinner"
-import { type AddItemForm, addItem } from "../actions"
+import { type AddItemForm } from "../actions"
 
 
-const AddItem: React.FC = () => {
+const AddItem: React.FC<{ action: (data: AddItemForm) => Promise<void> }> = ({ action }) => {
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<AddItemForm> = { resolver: zodResolver(z.object({ name: z.string() })), }
 
   const methods = useForm<AddItemForm>(formOptions)
   const { handleSubmit, formState, setValue } = methods
   const onSubmit: SubmitHandler<AddItemForm> = (data) => {
-    startTransition(() => addItem(data))
+    startTransition(() => action(data))
     setValue("name", "")
   }
 

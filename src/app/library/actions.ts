@@ -6,12 +6,12 @@ export type AddItemForm = {
   name: string;
 };
 
-export async function addItem(item: AddItemForm) {
+export async function addFamily(item: AddItemForm) {
   try {
     await prisma.productFamily.create({
       data: item,
     });
-    revalidatePath("/library");
+    revalidatePath("/library/family");
   } catch (error) {
     console.error(error);
   }
