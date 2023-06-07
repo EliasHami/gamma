@@ -20,7 +20,7 @@ export default function RootLayout({
         <body>
           <Nav />
           <Header />
-          <main className="container mx-auto max-w-7xl py-6 lg:px-8">{children}</main>
+          <main className="container mx-auto max-w-7xl py-6 lg:px-8 h-screen">{children}</main>
         </body>
       </html>
     </ClerkProvider>

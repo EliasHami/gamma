@@ -5,21 +5,9 @@ const navigation = [
   { name: "Suppliers", href: "/supplier" },
 ];
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
+export { navigation };
+
+export const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  return String(error);
 };
-
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
-
-export { navigation, user, userNavigation };
-
-export const getErrorMessage = (error: unknown):string => {
-  if (error instanceof Error) return error.message
-  return String(error)
-}
-
