@@ -11,12 +11,14 @@ const fetchLibrarySelect = async () => {
     select: {
       id: true,
       name: true,
+      familyId: true,
     },
   });
   const productCapacitiesPromise = prisma.productCapacity.findMany({
     select: {
       id: true,
       name: true,
+      subFamilyId: true,
     },
   });
   return Promise.all([

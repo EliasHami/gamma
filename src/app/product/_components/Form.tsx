@@ -12,16 +12,23 @@ import productFormSchema from "~/schemas/product"
 import { createProduct, updateProduct } from "../actions"
 import { toast } from "react-hot-toast"
 
-type SelectOptions = {
-  id: string
-  name: string
-}[]
 
 type ProductFormProps = {
   product?: ProductNeed
-  productFamilies: SelectOptions
-  productSubFamilies: SelectOptions
-  productCapacities: SelectOptions
+  productFamilies: Array<{
+    id: string
+    name: string
+  }>
+  productSubFamilies: Array<{
+    id: string
+    name: string
+    familyId: string
+  }>
+  productCapacities: Array<{
+    id: string
+    name: string
+    subFamilyId: string
+  }>
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, productFamilies, productSubFamilies }) => {
@@ -33,7 +40,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
   }
 
   const methods = useForm<ProductNeed>(formOptions)
-  const { handleSubmit, formState } = methods
+  const { handleSubmit, formState, watch } = methods
   const { errors } = formState
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
@@ -43,6 +50,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
     toast.success("Product submited successfully")
     router.push('/product')
   }
+
+  const [selectedProductFamily, selectedSubProductFamily] = watch(["familyId", "subFamilyId"])
 
   return (
     <>
@@ -61,14 +70,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
               ))}
             </Select>
             <Select name="subFamilyId" label="Product Sub Family" error={errors.subFamilyId}>
-              {productSubFamilies?.map(({ id, name }) => (
-                <option key={id} value={id}>{name}</option>
-              ))}
+              {productSubFamilies?.filter(({ familyId }) => familyId === selectedProductFamily)
+                .map(({ id, name }) => (
+                  <option key={id} value={id}>{name}</option>
+                ))}
             </Select>
             <Select name="capacityId" label="Product Capacity" error={errors.capacityId}>
-              {productCapacities?.map(({ id, name }) => (
-                <option key={id} value={id}>{name}</option>
-              ))}
+              {productCapacities?.filter(({ subFamilyId }) => subFamilyId === selectedSubProductFamily)
+                .map(({ id, name }) => (
+                  <option key={id} value={id}>{name}</option>
+                ))}
             </Select>
             <Select name="country" label="Country" error={errors.country}>
               {Object.entries(COUNTRY).map(([key, value]) => (
