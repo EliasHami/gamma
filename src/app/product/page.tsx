@@ -23,7 +23,6 @@ const Product = async () => {
             <table className="min-w-full text-left text-sm font-light">
               <thead className="border-b font-medium dark:border-neutral-500">
                 <tr>
-                  <th scope="col" className="px-6 py-4">#</th>
                   <th scope="col" className="px-6 py-4">Name</th>
                   <th scope="col" className="px-6 py-4">Department</th>
                   <th scope="col" className="px-6 py-4">Family</th>
@@ -40,7 +39,6 @@ const Product = async () => {
                 {products?.map((product) => {
                   return (
                     <tr key={product.id} className="border-b dark:border-neutral-500">
-                      <td className="whitespace-nowrap px-6 py-4 font-medium">{product.id}</td>
                       <td className="whitespace-nowrap px-6 py-4">{product.name}</td>
                       <td className="whitespace-nowrap px-6 py-4">{product.department}</td>
                       <td className="whitespace-nowrap px-6 py-4">{product.family.name}</td>
