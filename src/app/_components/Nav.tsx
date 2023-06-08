@@ -17,13 +17,10 @@ const NotificationBell = () => (
 )
 
 export default function Nav() {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { user } = useUser();
 
-  if (!isLoaded || !isSignedIn) {
-    return null;
-  }
   return (
-    <Disclosure as="nav" className="min-h-full bg-purple-900">
+    <Disclosure as="nav" className="min-h-full bg-purple-900 sticky top-0">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -91,8 +88,8 @@ export default function Nav() {
               <div className="flex items-center px-5">
                 <UserButton afterSignOutUrl="/" />
                 <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">{user.fullName}</div>
-                  <div className="text-sm font-medium leading-none text-gray-400">{user.primaryEmailAddress?.emailAddress}</div>
+                  <div className="text-base font-medium leading-none text-white">{user?.fullName}</div>
+                  <div className="text-sm font-medium leading-none text-gray-400">{user?.primaryEmailAddress?.emailAddress}</div>
                 </div>
                 <button
                   type="button"
