@@ -5,7 +5,13 @@ const navigation = [
   { name: "Suppliers", href: "/supplier" },
 ];
 
-export { navigation };
+const userNavigation = [
+  { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "#" },
+  { name: "Sign out", href: "#" },
+];
+
+export { navigation, userNavigation };
 
 export const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
