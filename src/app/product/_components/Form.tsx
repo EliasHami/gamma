@@ -47,8 +47,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
     product
       ? startTransition(() => updateProduct({ ...data, id: product.id }))
       : startTransition(() => createProduct({ ...data }))
-    toast.success("Product submited successfully")
     router.push('/product')
+    toast.success("Product submited successfully")
   }
 
   const [selectedProductFamily, selectedSubProductFamily] = watch(["familyId", "subFamilyId"])

@@ -1,4 +1,4 @@
-import { ClerkProvider, auth } from '@clerk/nextjs';
+import { ClerkProvider, SignedIn } from '@clerk/nextjs';
 import { type Metadata } from 'next';
 import "~/styles/globals.css";
 import { type PropsWithChildren } from 'react';
@@ -15,17 +15,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: PropsWithChildren) {
-  const { userId } = auth()
   return (
     <ClerkProvider>
       <html lang="en">
         <body>
-          {userId && (
-            <>
-              <Nav />
-              <Header />
-            </>
-          )}
+          <SignedIn>
+            <Nav />
+            <Header />
+          </SignedIn>
           <main className="container mx-auto max-w-7xl py-6 lg:px-8">{children}</main>
           <Toaster position="bottom-center" />
         </body>

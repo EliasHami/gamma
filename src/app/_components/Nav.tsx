@@ -3,10 +3,15 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import NavLink, { classNames } from '~/app/_components/NavLink'
-import { navigation, userNavigation } from '../utils'
-import { useUser } from '@clerk/nextjs'
+import { navigation } from '../utils'
+import { SignOutButton, useUser } from '@clerk/nextjs'
 import { Fragment } from 'react'
 import Link from 'next/link'
+
+const userNavigation = [
+  { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "/company" },
+];
 
 const ProfileDropdown = () => (
   <Menu as="div" className="relative ml-3">
@@ -41,6 +46,11 @@ const ProfileDropdown = () => (
             )}
           </Menu.Item>
         ))}
+        <Menu.Item>
+          <SignOutButton >
+            <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-start" >Sign Out</button>
+          </SignOutButton>
+        </Menu.Item>
       </Menu.Items>
     </Transition>
   </Menu>
@@ -60,7 +70,7 @@ export default function Nav() {
   const { user } = useUser();
 
   return (
-    <Disclosure as="nav" className="min-h-full bg-purple-900 sticky z-[60]">
+    <Disclosure as="nav" className="min-h-full bg-purple-900 sticky top-0 z-[60]">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
