@@ -130,3 +130,15 @@ model ProductResult {
   status  RESULT_STATUSES 
   image Json
 }
+
+model Company {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  name      String
+  address   String
+  email     String
+  phone     String
+  country   COUNTRY
+}
