@@ -75,6 +75,7 @@ model ProductNeed {
     state    VALIDATION_STATE
     results   ProductResult[]
     additionalCost Float
+    customsTax Float
 }
 
 enum YESNO {

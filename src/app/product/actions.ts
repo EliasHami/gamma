@@ -18,6 +18,7 @@ export const productFormSchema = z.object({
   targetPublicPrice: z.number(),
   state: z.nativeEnum(VALIDATION_STATE),
   additionalCost: z.number(),
+  customsTax: z.number(),
 });
 
 export async function deleteProduct(id: string) {

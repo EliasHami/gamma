@@ -13,7 +13,6 @@ import { toast } from "react-hot-toast"
 import { getNames } from "country-list"
 import { getErrorMessage } from "~/app/utils"
 
-
 type ProductFormProps = {
   product?: ProductNeed
   productFamilies: Array<{
@@ -104,6 +103,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
               ))}
             </Select>
             <Input name="additionalCost" label="Additional Cost" type="number" placeholder="999.999" error={errors.additionalCost} />
+            <Input name="customsTax" label="Customs Tax" type="number" placeholder="999.999" error={errors.customsTax} />
             <Input type="color" name="color" label="Color" error={errors.color} />
             <button type="submit" className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               {(formState.isSubmitting || isPending) && <LoadingSpinner />}
