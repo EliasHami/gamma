@@ -1,5 +1,5 @@
 "use client"
-import { COUNTRY, type Supplier, YESNO, SUPPLIER_STATUSES } from "@prisma/client"
+import { type Supplier, YESNO, SUPPLIER_STATUSES } from "@prisma/client"
 import React, { useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
@@ -11,6 +11,7 @@ import { toast } from 'react-hot-toast'
 import { zodResolver } from "@hookform/resolvers/zod"
 import supplierFormSchema from "~/schemas/supplier"
 import { createSupplier, updateSupplier } from "../actions"
+import { getNames } from "country-list"
 
 const SupplierForm: React.FC<{ supplier?: Supplier }> = ({ supplier }) => {
   const router = useRouter()
@@ -41,8 +42,8 @@ const SupplierForm: React.FC<{ supplier?: Supplier }> = ({ supplier }) => {
             <Input name="email" label="Email" type="email" placeholder="Your supplier email" error={errors.email} />
             <Input name="phone" label="Phone" type="tel" placeholder="Your supplier phone" error={errors.phone} />
             <Select name="country" label="Country" error={errors.country}>
-              {Object.entries(COUNTRY).map(([key, value]) => (
-                <option key={key} value={key}>{value}</option>
+              {getNames().map(name => (
+                <option key={name} value={name}>{name}</option>
               ))}
             </Select>
             <Select name="validation" label="Validation" error={errors.validation}>

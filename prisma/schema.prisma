@@ -52,11 +52,6 @@ enum DEPARTMENT {
     DOMICILE
 }
 
-enum COUNTRY {
-  CHINA
-  ITALY
-}
-
 enum VALIDATION_STATE {
   VALIDATED
   NOT_VALIDATED
@@ -75,7 +70,7 @@ model ProductNeed {
     capacity   ProductCapacity @relation(fields: [capacityId], references: [id])
     capacityId String
     color     String?
-    country  COUNTRY
+    country  String
     targetPublicPrice Float
     state    VALIDATION_STATE
     results   ProductResult[]
@@ -100,7 +95,7 @@ model Supplier {
     name      String
     email     String
     phone     String
-    country   COUNTRY
+    country   String
     validation YESNO
     status    SUPPLIER_STATUSES
     results   ProductResult[]
@@ -141,4 +136,5 @@ model Company {
   email     String
   phone     String
   country   COUNTRY
+  country   String
 }

@@ -1,5 +1,5 @@
 "use client"
-import { COUNTRY, DEPARTMENT, type ProductNeed, VALIDATION_STATE } from "@prisma/client"
+import { DEPARTMENT, type ProductNeed, VALIDATION_STATE } from "@prisma/client"
 import React, { useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import productFormSchema from "~/schemas/product"
 import { createProduct, updateProduct } from "../actions"
 import { toast } from "react-hot-toast"
+import { getNames } from "country-list"
 
 
 type ProductFormProps = {
@@ -82,8 +83,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
                 ))}
             </Select>
             <Select name="country" label="Country" error={errors.country}>
-              {Object.entries(COUNTRY).map(([key, value]) => (
-                <option key={key} value={key}>{value}</option>
+              {getNames().map(name => (
+                <option key={name} value={name}>{name}</option>
               ))}
             </Select>
             <Input name="targetPublicPrice" label="Target Public Price" type="number" placeholder="999.999" error={errors.targetPublicPrice} />
