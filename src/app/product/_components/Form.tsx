@@ -12,6 +12,7 @@ import productFormSchema from "~/schemas/product"
 import { createProduct, updateProduct } from "../actions"
 import { toast } from "react-hot-toast"
 import { getNames } from "country-list"
+import { getErrorMessage } from "~/app/utils"
 
 
 type ProductFormProps = {
@@ -45,11 +46,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
   const { errors } = formState
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
-    product
-      ? startTransition(() => updateProduct({ ...data, id: product.id }))
-      : startTransition(() => createProduct({ ...data }))
+    startTransition(async () => {
+      try {
+        product ? await updateProduct({ ...data, id: product.id }) : await createProduct({ ...data })
+      } catch (error) {
+        toast.error("Error while submitting product : " + getErrorMessage(error))
+      }
+      toast.success("Product submited successfully")
+    })
     router.push('/product')
-    toast.success("Product submited successfully")
   }
 
   const [selectedProductFamily, selectedSubProductFamily] = watch(["familyId", "subFamilyId"])
@@ -70,13 +75,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
                 <option key={id} value={id}>{name}</option>
               ))}
             </Select>
-            <Select name="subFamilyId" label="Product Sub Family" error={errors.subFamilyId}>
+            <Select name="subFamilyId" label="Product Sub Family" error={errors.subFamilyId} disabled={!Boolean(selectedProductFamily)}>
               {productSubFamilies?.filter(({ familyId }) => familyId === selectedProductFamily)
                 .map(({ id, name }) => (
                   <option key={id} value={id}>{name}</option>
                 ))}
             </Select>
-            <Select name="capacityId" label="Product Capacity" error={errors.capacityId}>
+            <Select name="capacityId" label="Product Capacity" error={errors.capacityId} disabled={!Boolean(selectedSubProductFamily)}>
               {productCapacities?.filter(({ subFamilyId }) => subFamilyId === selectedSubProductFamily)
                 .map(({ id, name }) => (
                   <option key={id} value={id}>{name}</option>

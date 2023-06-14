@@ -74,6 +74,7 @@ model ProductNeed {
     targetPublicPrice Float
     state    VALIDATION_STATE
     results   ProductResult[]
+    additionalCost Float
 }
 
 enum YESNO {

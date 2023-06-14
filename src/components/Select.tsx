@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { type PropsWithChildren } from "react"
 import { type FieldError, useFormContext } from "react-hook-form"
 
@@ -5,22 +6,31 @@ type InputProps = {
   name: string
   label: string
   error?: FieldError
+  disabled?: boolean
 }
 
-const Select = ({ name, label, error, children }: PropsWithChildren<InputProps>) => {
+const Select = ({ name, label, error, children, disabled }: PropsWithChildren<InputProps>) => {
   const { register } = useFormContext()
 
   if (!name) return null
 
   return (
     <div className="mb-6">
-      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
+      <label className={clsx("block", "text-gray-700", "text-sm", "font-bold", "mb-2", disabled && "opacity-50")} htmlFor="input">
         {label}
       </label>
       <div className={`${error ? "border-red-500" : ""} inline-block relative w-full`}>
         <select
-          className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          {...register(name)}>
+          className={clsx("block", "appearance-none", "w-full", "disabled:opacity-50",
+            "bg-white", "border", "border-gray-400",
+            "enabled:hover:border-gray-500",
+            "px-4", "py-2", "pr-8",
+            "rounded",
+            "shadow", "leading-tight",
+            "focus:outline-none",
+            "focus:shadow-outline")}
+          {...register(name)}
+          disabled={disabled}>
           {children}
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
