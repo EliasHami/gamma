@@ -8,6 +8,7 @@ export async function addFamily(name: string) {
       data: { name },
     });
     revalidatePath("/library/family");
+    revalidatePath("/product"); // revalidate only fetch, not working
   } catch (error) {
     console.error(error);
   }
@@ -25,6 +26,7 @@ export async function addSubFamily(
       data: { name, familyId },
     });
     revalidatePath("/library/family");
+    revalidatePath("/product"); // revalidate only fetch
   } catch (error) {
     console.error(error);
   }
@@ -42,6 +44,7 @@ export async function addCapacity(
       data: { name, subFamilyId },
     });
     revalidatePath("/library/family");
+    revalidatePath("product"); // revalidate only fetch
   } catch (error) {
     console.error(error);
   }
