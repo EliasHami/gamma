@@ -8,8 +8,7 @@ import LoadingSpinner from "~/components/Spinner"
 import { DevTool } from "@hookform/devtools"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import productFormSchema from "~/schemas/product"
-import { createProduct, updateProduct } from "../actions"
+import { createProduct, productFormSchema, updateProduct } from "../actions"
 import { toast } from "react-hot-toast"
 import { getNames } from "country-list"
 import { getErrorMessage } from "~/app/utils"
@@ -39,6 +38,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
   const formOptions: UseFormProps<ProductNeed> = { resolver: zodResolver(productFormSchema), }
   if (product) {
     formOptions.defaultValues = product
+  } else {
+    formOptions.defaultValues = {
+      familyId: "",
+      subFamilyId: "",
+      capacityId: "",
+    }
   }
 
   const methods = useForm<ProductNeed>(formOptions)
@@ -98,6 +103,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
                 <option key={key} value={key}>{value}</option>
               ))}
             </Select>
+            <Input name="additionalCost" label="Additional Cost" type="number" placeholder="999.999" error={errors.additionalCost} />
             <Input type="color" name="color" label="Color" error={errors.color} />
             <button type="submit" className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               {(formState.isSubmitting || isPending) && <LoadingSpinner />}
