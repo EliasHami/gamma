@@ -7,7 +7,7 @@ import { type Company } from "@prisma/client";
 export async function updateCompany(company: Company) {
   try {
     await prisma.company.update({
-      where: { id: company.id, userId: company.userId },
+      where: { id: company.id },
       data: { ...company },
     });
     revalidatePath("/company");

@@ -1,5 +1,5 @@
 "use client"
-import { type Company, COUNTRY } from "@prisma/client"
+import { type Company } from "@prisma/client"
 import React, { useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "react-hot-toast"
 import companyFormSchema from "~/schemas/company"
 import { updateCompany } from "../actions"
+import { getNames } from "country-list"
 
 type CompanyFormProps = {
   company: Company
@@ -23,8 +24,11 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
   const { errors } = formState
 
   const onSubmit: SubmitHandler<Company> = (data) => {
-    startTransition(() => updateCompany({ ...data, id: company.id, userId: company.userId }))
-    toast.success("Company submited successfully")
+    console.log({ data })
+    startTransition(async () => {
+      await updateCompany({ ...data, id: company.id, userId: company.userId })
+      toast.success("Company submited successfully")
+    })
   }
 
   return (
@@ -41,6 +45,10 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
                 <option key={name} value={name}>{name}</option>
               ))}
             </Select>
+            <Input name="insuranceRate" label="Insurance rate" type="number" error={errors.insuranceRate} />
+            <Input name="bankChargeRate" label="Bank charge rate" type="number" error={errors.bankChargeRate} />
+            <Input name="customsRate" label="Customs rate" type="number" error={errors.customsRate} />
+            <Input name="VATRate" label="VAT Rate" type="number" error={errors.VATRate} />
             <button type="submit" className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               {(formState.isSubmitting || isPending) && <LoadingSpinner />}
               Submit

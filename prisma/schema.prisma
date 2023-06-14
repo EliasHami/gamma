@@ -135,6 +135,9 @@ model Company {
   address   String
   email     String
   phone     String
-  country   COUNTRY
+  insuranceRate Float
+  bankChargeRate Float
+  customsRate Float
+  VATRate Float
   country   String
 }
