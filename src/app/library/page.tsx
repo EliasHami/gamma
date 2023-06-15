@@ -3,7 +3,7 @@ import { ArchiveBoxIcon, BuildingOfficeIcon, LightBulbIcon, ReceiptPercentIcon, 
 import Link from "next/link"
 
 const libraries = [
-  { Icon: TruckIcon, name: "Freights", href: "/" },
+  { Icon: TruckIcon, name: "Freights", href: "/library/freight" },
   { Icon: ReceiptPercentIcon, name: "Custom Tax", href: "/" },
   { Icon: LightBulbIcon, name: "Assumptions", href: "/" },
   { Icon: BuildingOfficeIcon, name: "Departments", href: "/" },

@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { type FieldError, useFormContext } from "react-hook-form"
 
 type InputProps = {
@@ -5,17 +6,18 @@ type InputProps = {
   label?: string
   type: string
   placeholder?: string
-  error?: FieldError
+  error?: FieldError,
+  className?: string
 }
 
-const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error }) => {
+const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, className }) => {
   const { register } = useFormContext()
   let options = {}
   if (!name) return null
   if (type === "number") options = { valueAsNumber: true }
 
   return (
-    <div className="mb-6">
+    <div className={clsx(className, "mb-6")}>
       {label && <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
         {label}
       </label>}

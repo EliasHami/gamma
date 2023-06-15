@@ -24,7 +24,6 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
   const { errors } = formState
 
   const onSubmit: SubmitHandler<Company> = (data) => {
-    console.log({ data })
     startTransition(async () => {
       await updateCompany({ ...data, id: company.id, userId: company.userId })
       toast.success("Company submited successfully")

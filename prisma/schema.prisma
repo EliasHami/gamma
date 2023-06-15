@@ -143,3 +143,12 @@ model Company {
   VATRate Float
   country   String
 }
+
+model Freight {
+  id       String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  country String
+  price   Float
+}
