@@ -17,9 +17,10 @@ type FreightForm = {
 
 type AddFreightProps = {
   addFreight: (data: FreightForm) => Promise<void>
+  className?: string
 }
 
-const AddFreight: React.FC<AddFreightProps> = ({ addFreight }) => {
+const AddFreight: React.FC<AddFreightProps> = ({ addFreight, className }) => {
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<FreightForm> = { resolver: zodResolver(freightFormSchema), }
 
@@ -42,7 +43,7 @@ const AddFreight: React.FC<AddFreightProps> = ({ addFreight }) => {
 
   return (
     <FormProvider {...methods}>
-      <form className="min-w-full items-center justify-center font-light flex flex-row gap-5" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
+      <form className={clsx(className)} onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
         <Input className="flex-1" name="country" type="text" placeholder="Country" error={formState.errors.country} />
         <Input className="flex-1" name="price" type="number" placeholder="Price" error={formState.errors.price} />
         <button
