@@ -1,7 +1,7 @@
 import { prisma } from "~/server/db";
-import AddItem from "~/app/library/_components/AddItem";
-import Item from "../_components/Item";
-import { addCapacity, addFamily, addSubFamily } from "../actions";
+import AddItem from "~/app/library/family/_components/AddItem";
+import Item from "./_components/Item";
+import { addCapacity, addFamily, addSubFamily } from "./actions";
 
 const ProductFamily = async ({
   searchParams
