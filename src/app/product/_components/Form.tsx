@@ -8,10 +8,11 @@ import LoadingSpinner from "~/components/Spinner"
 import { DevTool } from "@hookform/devtools"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createProduct, productFormSchema, updateProduct } from "../actions"
+import { createProduct, updateProduct } from "../actions"
 import { toast } from "react-hot-toast"
 import { getNames } from "country-list"
 import { getErrorMessage } from "~/app/utils"
+import { productFormSchema } from "../schemas"
 
 type ProductFormProps = {
   product?: ProductNeed
