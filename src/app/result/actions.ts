@@ -1,39 +1,30 @@
 "use server";
 
+import { type Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { zact } from "zact/server";
+import { z } from "zod";
 import { prisma } from "../../server/db";
-import { type Prisma, type ProductResult } from "@prisma/client";
+import resultFormSchema from "./schemas";
 
-export async function deleteResult(id: string) {
-  try {
-    await prisma.productResult.delete({
-      where: { id },
-    });
-    revalidatePath("/result");
-  } catch (error) {
-    console.error(error);
-  }
-}
+export const deleteResult = zact(z.string())(async (id) => {
+  await prisma.productResult.delete({
+    where: { id },
+  });
+  revalidatePath("/result");
+});
 
-export async function createResult(result: ProductResult) {
-  try {
-    await prisma.productResult.create({
-      data: { ...result, image: result.image as Prisma.JsonObject }, // https://github.com/prisma/prisma/issues/9247
-    });
-    revalidatePath("/result");
-  } catch (error) {
-    console.error(error);
-  }
-}
+export const createResult = zact(resultFormSchema)(async (result) => {
+  await prisma.productResult.create({
+    data: { ...result, image: result.image as Prisma.JsonObject }, // https://github.com/prisma/prisma/issues/9247
+  });
+  revalidatePath("/result");
+});
 
-export async function updateResult(result: ProductResult) {
-  try {
-    await prisma.productResult.update({
-      where: { id: result.id },
-      data: { ...result, image: result.image as Prisma.JsonObject },
-    });
-    revalidatePath("/result");
-  } catch (error) {
-    console.error(error);
-  }
-}
+export const updateResult = zact(resultFormSchema)(async (result) => {
+  await prisma.productResult.update({
+    where: { id: result.id },
+    data: { ...result, image: result.image as Prisma.JsonObject },
+  });
+  revalidatePath("/result");
+});

@@ -10,8 +10,9 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createResult, updateResult } from "../actions"
 import { toast } from "react-hot-toast"
-import resultFormSchema from "~/schemas/result"
+import resultFormSchema from "../schemas"
 import ImagePicker from "~/components/ImagePicker"
+import { getErrorMessage } from "~/app/utils"
 
 type SelectOptions = {
   id: string
@@ -37,10 +38,16 @@ const ProductResultForm: React.FC<ProductResultFormProps> = ({ result, products,
   const { errors } = formState
 
   const onSubmit: SubmitHandler<ProductResult> = (data) => {
-    result
-      ? startTransition(() => updateResult({ ...data, id: result.id }))
-      : startTransition(() => createResult({ ...data }))
-    toast.success("Result submited successfully")
+    startTransition(async () => {
+      try {
+        result ? await updateResult({ ...data, id: result.id }) : await createResult(data)
+      } catch (error) {
+        toast.error("Error while submitting result. Please try again later.")
+        console.error(getErrorMessage(error))
+        return
+      }
+      toast.success("Result submited successfully")
+    })
     router.push('/result')
   }
 

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 import { prisma } from "~/server/db"
 import Actions from "./_components/Actions"
+import { toast } from "react-hot-toast"
 
 const Product = async () => {
   let results = null
@@ -14,6 +15,7 @@ const Product = async () => {
       },
     });
   } catch (error) {
+    toast.error("Could not retrieve results. Please try again later.");
     console.error(error);
   }
 

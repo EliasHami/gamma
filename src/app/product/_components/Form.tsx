@@ -55,7 +55,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
       try {
         product ? await updateProduct({ ...data, id: product.id }) : await createProduct({ ...data })
       } catch (error) {
-        toast.error("Error while submitting product : " + getErrorMessage(error))
+        toast.error("Error while submitting product. Please try again later.")
+        console.error(getErrorMessage(error))
+        return
       }
       toast.success("Product submited successfully")
     })
