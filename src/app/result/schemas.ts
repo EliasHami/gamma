@@ -10,6 +10,7 @@ const resultFormSchema = z.object({
   validation: z.nativeEnum(YESNO),
   status: z.nativeEnum(RESULT_STATUSES),
   image: z.object({}).nullable(), //z.instanceof(File),
+  quantityPerContainer: z.number(),
 });
 
 export default resultFormSchema;

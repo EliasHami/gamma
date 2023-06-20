@@ -126,6 +126,7 @@ model ProductResult {
   validation YESNO
   status  RESULT_STATUSES 
   image Json
+  quantityPerContainer Int
 }
 
 model Company {
