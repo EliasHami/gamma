@@ -2,16 +2,13 @@ import ProductForm from "~/app/product/_components/Form";
 import { prisma } from "~/server/db";
 import { fetchLibrarySelect } from "../utils";
 
-// TODO : fix this error
-//    Unhandled Runtime Error
-//    Error: Dynamic server usage: headers
-// export async function generateStaticParams() {
-//   const products = await prisma.productNeed.findMany()
+export async function generateStaticParams() {
+  const products = await prisma.productNeed.findMany()
 
-//   return products.map((product) => ({
-//     id: product.id,
-//   }));
-// }
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
 
 const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
   const productPromise = prisma.productNeed.findUnique({ where: { id } })
