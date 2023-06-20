@@ -1,17 +1,20 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { zact } from "zact/server";
 import { prisma } from "../../server/db";
-import { type Company } from "@prisma/client";
+import companyFormSchema from "./shemas";
 
-export async function updateCompany(company: Company) {
-  try {
-    await prisma.company.update({
-      where: { id: company.id },
-      data: { ...company },
-    });
+export const updateOrCreateCompany = zact(companyFormSchema)(
+  async (company) => {
+    if (!company.id) {
+      await prisma.company.create({ data: company }); // should be created during registration
+    } else {
+      await prisma.company.update({
+        where: { id: company.id },
+        data: { ...company },
+      });
+    }
     revalidatePath("/company");
-  } catch (error) {
-    console.error(error);
   }
-}
+);

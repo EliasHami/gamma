@@ -1,9 +1,7 @@
-import { type Company } from "@prisma/client";
 import { z } from "zod";
 
-type CompanyForm = Omit<Company, "id" | "updatedAt" | "createdAt" | "userId">;
-
-const companyFormSchema: z.ZodSchema<CompanyForm> = z.object({
+const companyFormSchema = z.object({
+  id: z.string().optional(),
   name: z.string(),
   address: z.string(),
   phone: z.string(),
@@ -13,6 +11,7 @@ const companyFormSchema: z.ZodSchema<CompanyForm> = z.object({
   bankChargeRate: z.number().min(0).max(100),
   customsRate: z.number().min(0).max(100),
   VATRate: z.number().min(0).max(100),
+  userId: z.string(),
 });
 
 export default companyFormSchema;

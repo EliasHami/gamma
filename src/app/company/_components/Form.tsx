@@ -8,24 +8,36 @@ import LoadingSpinner from "~/components/Spinner"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "react-hot-toast"
-import companyFormSchema from "~/schemas/company"
-import { updateCompany } from "../actions"
 import { getNames } from "country-list"
+import { useAuth } from "@clerk/nextjs"
+import { updateOrCreateCompany } from "../actions"
+import companyFormSchema from "../shemas"
+import { getErrorMessage } from "~/app/utils"
 
 type CompanyFormProps = {
-  company: Company
+  company: Company | null,
 }
 
 const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
   const [isPending, startTransition] = useTransition()
-  const formOptions: UseFormProps<Company> = { resolver: zodResolver(companyFormSchema), defaultValues: company }
+  const defaultValues = company ? company : {
+    name: "",
+  }
+  const formOptions: UseFormProps<Company> = { resolver: zodResolver(companyFormSchema), defaultValues }
   const methods = useForm<Company>(formOptions)
   const { handleSubmit, formState } = methods
   const { errors } = formState
+  const { userId } = useAuth()
+  if (!userId) return null
 
   const onSubmit: SubmitHandler<Company> = (data) => {
     startTransition(async () => {
-      await updateCompany({ ...data, id: company.id, userId: company.userId })
+      try {
+        await updateOrCreateCompany({ ...data, id: company?.id, userId: company?.userId || userId })
+      } catch (error) {
+        toast.error("Error while submitting company")
+        console.error(getErrorMessage(error))
+      }
       toast.success("Company submited successfully")
     })
   }
