@@ -1,6 +1,6 @@
 "use client"
 import { DEPARTMENT, type ProductNeed, VALIDATION_STATE } from "@prisma/client"
-import React, { useTransition } from "react"
+import React, { useEffect, useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
 import Select from "~/components/Select"
@@ -47,7 +47,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
   }
 
   const methods = useForm<ProductNeed>(formOptions)
-  const { handleSubmit, formState, watch } = methods
+  const { handleSubmit, formState, watch, setValue } = methods
   const { errors } = formState
 
   const onSubmit: SubmitHandler<ProductNeed> = (data) => {
@@ -65,6 +65,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
   }
 
   const [selectedProductFamily, selectedSubProductFamily] = watch(["familyId", "subFamilyId"])
+
+  useEffect(() => {
+    if (selectedProductFamily && !selectedSubProductFamily) {
+      setValue("subFamilyId", "")
+    } else if (selectedSubProductFamily) {
+      setValue("capacityId", "")
+    }
+  }, [selectedProductFamily, selectedSubProductFamily, setValue])
 
   return (
     <>
