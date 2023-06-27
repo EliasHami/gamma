@@ -12,7 +12,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ['images.clerk.dev', 'tailwindui.com'],
+    domains: ["tailwindui.com"],
   },
   experimental: {
     serverActions: true,

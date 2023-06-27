@@ -1,14 +1,11 @@
-import { auth } from "@clerk/nextjs"
 import { prisma } from "~/server/db"
 import AddFreight from "./_components/AddFreight"
 import { addFreight } from "./actions"
 import clsx from "clsx"
 
 const Freight = async () => {
-  const { userId } = auth()
-  if (!userId) return null
   const freights = await prisma.freight.findMany({
-    where: { userId }
+    where: { userId: "1" }
   })
   const flexBar = "min-w-full justify-center flex flex-row gap-5"
 

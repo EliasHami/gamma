@@ -9,7 +9,6 @@ import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "react-hot-toast"
 import { getNames } from "country-list"
-import { useAuth } from "@clerk/nextjs"
 import { updateOrCreateCompany } from "../actions"
 import companyFormSchema from "../shemas"
 import { getErrorMessage } from "~/app/utils"
@@ -27,13 +26,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
   const methods = useForm<Company>(formOptions)
   const { handleSubmit, formState } = methods
   const { errors } = formState
-  const { userId } = useAuth()
-  if (!userId) return null
+
 
   const onSubmit: SubmitHandler<Company> = (data) => {
     startTransition(async () => {
       try {
-        await updateOrCreateCompany({ ...data, id: company?.id, userId: company?.userId || userId })
+        await updateOrCreateCompany({ ...data, id: company?.id, userId: "1" })
       } catch (error) {
         toast.error("Error while submitting company")
         console.error(getErrorMessage(error))

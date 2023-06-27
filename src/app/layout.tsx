@@ -1,4 +1,3 @@
-import { ClerkProvider, SignedIn } from '@clerk/nextjs';
 import { type Metadata } from 'next';
 import "~/styles/globals.css";
 import { type PropsWithChildren } from 'react';
@@ -16,17 +15,13 @@ export default function RootLayout({
   children,
 }: PropsWithChildren) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>
-          <SignedIn>
-            <Nav />
-            <Header />
-          </SignedIn>
-          <main className="container mx-auto max-w-7xl py-6 lg:px-8">{children}</main>
-          <Toaster position="bottom-center" />
-        </body>
-      </html>
-    </ClerkProvider >
+    <html lang="en">
+      <body>
+        <Nav />
+        <Header />
+        <main className="container mx-auto max-w-7xl py-6 lg:px-8">{children}</main>
+        <Toaster position="bottom-center" />
+      </body>
+    </html>
   );
 }
