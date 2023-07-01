@@ -1,10 +1,9 @@
 const navigation = [
-  { name: "Libraries", href: "/library", noHeader : true, type: "menu" },
+  { name: "Libraries", href: "/library", noHeader: true, type: "menu" },
   { name: "Product Needs", href: "/product" },
   { name: "Product Results", href: "/result" },
   { name: "Suppliers", href: "/supplier" },
 ];
-
 
 export { navigation };
 

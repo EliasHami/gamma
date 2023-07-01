@@ -7,10 +7,11 @@ type InputProps = {
   type: string
   placeholder?: string
   error?: FieldError,
-  className?: string
+  className?: string,
+  step?: string
 }
 
-const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, className }) => {
+const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, className, step }) => {
   const { register } = useFormContext()
   let options = {}
   if (!name) return null
@@ -25,6 +26,7 @@ const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, cl
         id="input"
         type={type}
         placeholder={placeholder}
+        step={type === "number" ? step : undefined}
         {...register(name, options)}
       />
       {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}

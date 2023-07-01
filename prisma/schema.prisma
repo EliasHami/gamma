@@ -127,6 +127,7 @@ model ProductResult {
   status  RESULT_STATUSES 
   image Json
   quantityPerContainer Int
+  DDPPrice Float @default(0)
 }
 
 model Company {

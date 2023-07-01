@@ -8,7 +8,9 @@ import companyFormSchema from "./shemas";
 export const updateOrCreateCompany = zact(companyFormSchema)(
   async (company) => {
     if (!company.id) {
-      await prisma.company.create({ data: company }); // should be created during registration
+      await prisma.company.create({
+        data: { ...company, userId: company.userId || "1" },
+      }); // should be created during registration
     } else {
       await prisma.company.update({
         where: { id: company.id },
