@@ -39,8 +39,6 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
     })
   }
 
-  console.log("errors", errors)
-
   return (
     <>
       <FormProvider {...methods}>
