@@ -68,17 +68,22 @@ export const calculateDDPPrice = async (
   } = productResult;
   const company = await prisma.company.findUnique({ where: { userId: "1" } });
   const countryCustomsRate = 0.25; // todo get this from country
-  const insuranceRate = company?.insuranceRate || 0.01; // todo make sure that company is created during registration
-  const insurance = insuranceRate * fobPrice; // I11
+  const { insuranceRate, bankChargeRate } = company || {
+    insuranceRate: 0.01,
+    bankChargeRate: 1,
+  }; // todo make sure that company is created during registration
+  const insurance = (insuranceRate / 100) * fobPrice; // I11
   const freight = freightRate / quantityPerContainer; // J11
 
   const customs =
-    (productCustomsRate + countryCustomsRate) *
+    (productCustomsRate / 100 + countryCustomsRate / 100) *
     (fobPrice + insurance + freight); // K11
-  const transit = (fobPrice + insurance + freight + customs) * exchangeRate; // L11
+  const transit =
+    (fobPrice + insurance + freight + customs) * (bankChargeRate / 100); // L11
 
   const ddpPrice =
     (fobPrice + insurance + freight + customs + transit) * exchangeRate +
     additionalCosts;
+
   return Math.round(ddpPrice);
 };

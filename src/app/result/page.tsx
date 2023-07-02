@@ -5,6 +5,18 @@ import Actions from "./_components/Actions"
 import { toast } from "react-hot-toast"
 import { calculateDDPPrice } from "./actions"
 
+function getCurrencySymbol(locale: string, currency: string) {
+  return (0).toLocaleString(
+    locale,
+    {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }
+  ).replace(/\d/g, '').trim()
+}
+
 const Product = async () => {
   let results = null
 
@@ -46,6 +58,7 @@ const Product = async () => {
                   const ddpPrice = await calculateDDPPrice(result, 11, 800,) // todo : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
                   const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2);
                   const publicPrice = Math.round(grossPrice / (1 - 0.1));
+                  const symbol = getCurrencySymbol('en-US', result.currency) // todo : doesnt work
                   return (
                     <tr key={result.id} className="border-b dark:border-neutral-500">
                       <td className="whitespace-nowrap px-6 py-4 font-medium">
@@ -65,9 +78,9 @@ const Product = async () => {
                       <td className="whitespace-nowrap px-6 py-4">{result.validation}</td>
                       <td className="whitespace-nowrap px-6 py-4">{result.status}</td>
                       <td className="whitespace-nowrap px-6 py-4">{JSON.stringify(result.image)}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{`${ddpPrice} $`}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{`${grossPrice} $`}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{`${publicPrice} $`}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{`${ddpPrice} ${symbol}`}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{`${grossPrice} ${symbol}`}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{`${publicPrice} ${symbol}`}</td>
                       <td className="whitespace-nowrap px-6 py-4"><Actions id={result.id} /></td>
                     </tr>
                   )

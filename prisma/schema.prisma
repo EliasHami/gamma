@@ -105,7 +105,8 @@ model Supplier {
 
 enum CURRENCIES {
   USD
-  EURO
+  EUR
+  MAD
 }
 
 enum RESULT_STATUSES {
