@@ -2,13 +2,14 @@ import ProductForm from "~/app/result/_components/Form";
 import { fetchSelect } from "../utils";
 import { prisma } from "~/server/db";
 
-export async function generateStaticParams() {
-  const products = await prisma.productResult.findMany()
+// https://github.com/vercel/next.js/issues/49408
+// export async function generateStaticParams() {
+//   const products = await prisma.productResult.findMany()
 
-  return products.map((product) => ({
-    id: product.id,
-  }));
-}
+//   return products.map((product) => ({
+//     id: product.id,
+//   }));
+// }
 
 const EditProductResult = async ({ params: { id } }: { params: { id: string } }) => {
   const resultPromise = prisma.productResult.findUnique({ where: { id } })
