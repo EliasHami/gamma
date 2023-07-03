@@ -64,15 +64,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, productCapacities, p
     router.push('/product')
   }
 
-  const [selectedProductFamily, selectedSubProductFamily] = watch(["familyId", "subFamilyId"])
+  const [selectedProductFamily, selectedSubProductFamily, selectedCapacityId] = watch(["familyId", "subFamilyId", "capacityId"])
 
   useEffect(() => {
     if (selectedProductFamily && !selectedSubProductFamily) {
       setValue("subFamilyId", "")
-    } else if (selectedSubProductFamily) {
+    } else if (selectedProductFamily && selectedSubProductFamily && !selectedCapacityId) {
       setValue("capacityId", "")
     }
-  }, [selectedProductFamily, selectedSubProductFamily, setValue])
+  }, [selectedProductFamily, selectedSubProductFamily, selectedCapacityId, setValue])
 
   return (
     <>
