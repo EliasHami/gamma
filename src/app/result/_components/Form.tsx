@@ -61,7 +61,7 @@ const ProductResultForm: React.FC<ProductResultFormProps> = ({ result, products,
                 <option key={id} value={id}>{name}</option>
               ))}
             </Select>
-            <Select name="supplierId" label="Product Sub Family" error={errors.supplierId}>
+            <Select name="supplierId" label="Supplier" error={errors.supplierId}>
               {suppliers?.map(({ id, name }) => (
                 <option key={id} value={id}>{name}</option>
               ))}
