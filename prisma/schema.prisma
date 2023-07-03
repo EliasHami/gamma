@@ -11,12 +11,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 model ProductCapacity {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
@@ -25,6 +19,7 @@ model ProductCapacity {
     subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
     subFamilyId String
     productNeeds ProductNeed[]
+    @@index([subFamilyId])
 }
 
 model ProductSubFamily {
@@ -36,6 +31,7 @@ model ProductSubFamily {
     family   ProductFamily @relation(fields: [familyId], references: [id])
     familyId String
     productNeeds ProductNeed[]
+    @@index([familyId])
 }
 
 model ProductFamily {
@@ -76,6 +72,9 @@ model ProductNeed {
     results   ProductResult[]
     additionalCost Float
     customsTax Float
+    @@index(familyId)
+    @@index(subFamilyId)
+    @@index(capacityId)
 }
 
 enum YESNO {
@@ -118,9 +117,9 @@ enum RESULT_STATUSES {
 
 model ProductResult {
   id        String   @id @default(cuid())
-  need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Cascade)
+  need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Restrict)
   needId  String
-  supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
   supplierId String
   fobPrice  Float
   currency  CURRENCIES
@@ -129,6 +128,8 @@ model ProductResult {
   image Json
   quantityPerContainer Int
   DDPPrice Float @default(0)
+  @@index(needId)
+  @@index(supplierId)
 }
 
 model Company {
