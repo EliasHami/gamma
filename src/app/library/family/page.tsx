@@ -22,15 +22,15 @@ const ProductFamily = async ({
           <div className="min-w-full text-left font-light flex flex-row gap-5 ">
             <div className="border font-medium dark:border-neutral-500 flex-1 flex flex-col gap-5">
               <h1 className="text-2xl font-bold">Families</h1>
-              {productFamilies?.map(({ id, name }) => <Item key={id} id={id} name={name} searchKey="family" resetKey="subFamily" />)}
-              <AddItem action={addFamily} />
+              {productFamilies?.map(({ id, name }) => <Item key={id} id={id} name={name} searchKey="family" resetKey="subFamily" selected={id === family} />)}
+              <AddItem searchKey="family" action={addFamily} />
             </div>
             <div className="border font-medium dark:border-neutral-500 flex-1 flex flex-col gap-5">
               <h1 className="text-2xl font-bold">Sub Families</h1>
               {productSubFamilies?.filter(({ familyId }) => familyId === family)
-                .map(({ id, name }) => <Item key={id} id={id} name={name} searchKey="subFamily" />)}
+                .map(({ id, name }) => <Item key={id} id={id} name={name} searchKey="subFamily" selected={id === subFamily} />)}
               {family ? (
-                <AddItem action={addSubFamily} options={{ familyId: family }} />
+                <AddItem searchKey="subFamily" action={addSubFamily} searchParams={searchParams} />
               ) : (
                 <p>Please select a product family</p>
               )}
@@ -40,7 +40,7 @@ const ProductFamily = async ({
               {productCapacities?.filter(({ subFamily: sF }) => sF.id === subFamily && sF.familyId === family)
                 .map(({ id, name }) => <Item key={id} id={id} name={name} />)}
               {subFamily ? (
-                <AddItem action={addCapacity} options={{ subFamilyId: subFamily }} />
+                <AddItem action={addCapacity} searchParams={searchParams} />
               ) : (
                 <p>Please select a product sub family</p>
               )}

@@ -1,9 +1,10 @@
 "use client"
 
+import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-const Item = ({ id, name, searchKey, resetKey }: { id: string, name: string, searchKey?: string, resetKey?: string }) => {
+const Item = ({ id, name, searchKey, resetKey, selected }: { id: string, name: string, searchKey?: string, resetKey?: string, selected?: boolean }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [, startTransition] = useTransition();
@@ -21,7 +22,7 @@ const Item = ({ id, name, searchKey, resetKey }: { id: string, name: string, sea
   }
 
   return (
-    <div onClick={handleFilter} className="bg-slate-100 border border-gray-300 dark:border-neutral-700 rounded-lg p-5 cursor-pointer">
+    <div onClick={handleFilter} className={clsx(selected ? "bg-slate-400" : "bg-slate-100", " border border-gray-300 dark:border-neutral-700 rounded-lg p-5 cursor-pointer")}>
       <span>{name}</span>
     </div>
   )

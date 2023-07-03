@@ -1,6 +1,8 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { type ProductCapacity, type ProductFamily, type ProductSubFamily } from "@prisma/client"
+import { usePathname, useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { FormProvider, type SubmitHandler, type UseFormProps, useForm } from "react-hook-form"
 import { z } from "zod"
@@ -13,19 +15,22 @@ type AddItemForm = { name: string }
 type AddItemProps = {
   action: (
     name: string,
-    options: {
-      familyId?: string,
-      subFamilyId?: string
+    searchParams: {
+      family?: string,
+      subFamily?: string
     }
-  ) => Promise<void>
-  options?: {
-    familyId?: string
-    subFamilyId?: string
+  ) => Promise<ProductFamily | ProductSubFamily | ProductCapacity | undefined>
+  searchParams?: {
+    family: string
+    subFamily: string
   }
+  searchKey?: string
 }
 
-const AddItem: React.FC<AddItemProps> = ({ action, options }) => {
+const AddItem: React.FC<AddItemProps> = ({ action, searchParams, searchKey }) => {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter();
+  const pathname = usePathname();
   const formOptions: UseFormProps<AddItemForm> = { resolver: zodResolver(z.object({ name: z.string() })), }
 
   const methods = useForm<AddItemForm>(formOptions)
@@ -33,9 +38,17 @@ const AddItem: React.FC<AddItemProps> = ({ action, options }) => {
   const onSubmit: SubmitHandler<AddItemForm> = (data) => {
     const name = data.name
 
+    if (!name) return
+
     try {
-      startTransition(() => action(name, options ?? {}))
-      setValue("name", "")
+      startTransition(async () => {
+        const savedItem = await action(name, searchParams ?? {})
+        setValue("name", "")
+        if (!searchKey || !savedItem) return
+        const params = new URLSearchParams(searchParams)
+        params.set(searchKey, savedItem.id)
+        router.replace(`${pathname}?${params.toString()}`);
+      })
     } catch (e) {
       setError("name", { type: 'custom', message: getErrorMessage(e) })
     }
