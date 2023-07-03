@@ -18,5 +18,6 @@ export const updateOrCreateCompany = zact(companyFormSchema)(
       });
     }
     revalidatePath("/company");
+    revalidatePath("/result");
   }
 );

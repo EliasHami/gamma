@@ -57,17 +57,16 @@ type ProductResultWithNeed = Prisma.ProductResultGetPayload<{
 
 export const calculateDDPPrice = async (
   productResult: ProductResultWithNeed,
-  exchangeRate = 1,
-  freightRate = 0,
-  additionalCosts = 0
+  exchangeRate = 1, // todo get this from country
+  freightRate = 0 // todo get this from country
 ) => {
   const {
     fobPrice,
     quantityPerContainer,
-    need: { customsTax: productCustomsRate },
+    need: { customsTax: productCustomsRate, additionalCost }, // additionalCost c'est bien celui du produit ?
   } = productResult;
   const company = await prisma.company.findUnique({ where: { userId: "1" } });
-  const countryCustomsRate = 0.25; // todo get this from country
+  const countryCustomsRate = 0.25; // L5 todo get this from country
   const { insuranceRate, bankChargeRate } = company || {
     insuranceRate: 0.01,
     bankChargeRate: 1,
@@ -83,7 +82,7 @@ export const calculateDDPPrice = async (
 
   const ddpPrice =
     (fobPrice + insurance + freight + customs + transit) * exchangeRate +
-    additionalCosts;
+    additionalCost;
 
   return Math.round(ddpPrice);
 };

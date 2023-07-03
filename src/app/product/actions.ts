@@ -10,6 +10,7 @@ export async function deleteProduct(id: string) {
     where: { id },
   });
   revalidatePath("/product");
+  revalidatePath("/result");
 }
 
 export const createProduct = zact(productFormSchema)(async (product) => {
@@ -17,6 +18,7 @@ export const createProduct = zact(productFormSchema)(async (product) => {
     data: product,
   });
   revalidatePath("/product");
+  revalidatePath("/result");
 });
 
 export const updateProduct = zact(productFormSchema)(async (product) => {
@@ -25,4 +27,5 @@ export const updateProduct = zact(productFormSchema)(async (product) => {
     data: product,
   });
   revalidatePath("/product");
+  revalidatePath("/result");
 });
