@@ -2,6 +2,7 @@ import { prisma } from "~/server/db"
 import AddFreight from "./_components/AddFreight"
 import { addFreight } from "./actions"
 import clsx from "clsx"
+import Delete from "./_components/Delete"
 
 const Freight = async () => {
   const freights = await prisma.freight.findMany({
@@ -17,11 +18,13 @@ const Freight = async () => {
             <div className={flexBar}>
               <h1 className="flex-1 text-2xl font-bold">Country</h1>
               <h1 className="flex-1 text-2xl font-bold">Price</h1>
+              <h1 className="flex-0" >&nbsp;</h1>
             </div>
             {freights?.map(({ id, country, price }) => (
               <div key={id} className={clsx(flexBar, "font-light")}>
                 <div className="flex-1">{country}</div>
                 <div className="flex-1">{price}</div>
+                <div className="flex-0">{<Delete id={id} />}</div>
               </div>
             ))}
             <AddFreight addFreight={addFreight} className={flexBar} />
