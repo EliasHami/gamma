@@ -1,10 +1,9 @@
 "use client"
 import { type Freight } from "@prisma/client"
-import React, { useTransition } from "react"
+import React from "react"
 import { type UseFormProps, useForm, FormProvider, useFieldArray } from "react-hook-form"
 import Input from "~/components/Input"
 import { DevTool } from "@hookform/devtools"
-import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { freightFormSchema } from "../schemas"
 import { z } from "zod"
@@ -18,15 +17,12 @@ type FreightFormProps = {
 // TODO : form input for each field, workaround for now delete and add new 
 
 const EditFreight: React.FC<FreightFormProps> = ({ freights }) => {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<FreightFormProps> = { resolver: zodResolver(z.array(freightFormSchema)), defaultValues: { freights } }
 
   const methods = useForm<FreightFormProps>(formOptions)
-  const { handleSubmit, formState, watch, setValue, control } = methods
-  const { errors } = formState
+  const { control } = methods
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({ control, name: "freights" });
+  const { fields, } = useFieldArray({ control, name: "freights" });
 
   // const onSubmit: SubmitHandler<ProductNeed> = (data) => {
   //   startTransition(async () => {

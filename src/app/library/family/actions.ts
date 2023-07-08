@@ -15,6 +15,13 @@ export async function addFamily(name: string) {
   }
 }
 
+export const deleteFamily = async (id: string) => {
+  await prisma.productFamily.delete({
+    where: { id },
+  });
+  revalidatePath("/library/family");
+};
+
 export async function addSubFamily(
   name: string,
   { family }: { family?: string }
@@ -34,6 +41,13 @@ export async function addSubFamily(
   }
 }
 
+export const deleteSubFamily = async (id: string) => {
+  await prisma.productSubFamily.delete({
+    where: { id },
+  });
+  revalidatePath("/library/family");
+};
+
 export async function addCapacity(
   name: string,
   { subFamily }: { subFamily?: string }
@@ -52,3 +66,10 @@ export async function addCapacity(
     console.error(error);
   }
 }
+
+export const deleteCapacity = async (id: string) => {
+  await prisma.productCapacity.delete({
+    where: { id },
+  });
+  revalidatePath("/library/family");
+};

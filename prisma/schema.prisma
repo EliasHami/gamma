@@ -16,7 +16,7 @@ model ProductCapacity {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
-    subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
+    subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id], onDelete: Cascade)
     subFamilyId String
     productNeeds ProductNeed[]
     @@index([subFamilyId])
@@ -28,7 +28,7 @@ model ProductSubFamily {
     updatedAt DateTime @updatedAt
     name      String
     capacities ProductCapacity[]
-    family   ProductFamily @relation(fields: [familyId], references: [id])
+    family   ProductFamily @relation(fields: [familyId], references: [id], onDelete: Cascade)
     familyId String
     productNeeds ProductNeed[]
     @@index([familyId])
