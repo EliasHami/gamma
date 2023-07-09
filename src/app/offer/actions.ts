@@ -5,31 +5,31 @@ import { revalidatePath } from "next/cache";
 import { zact } from "zact/server";
 import { z } from "zod";
 import { prisma } from "../../server/db";
-import resultFormSchema from "./schemas";
+import offerFormSchema from "./schemas";
 
-export const deleteResult = zact(z.string())(async (id) => {
-  await prisma.productResult.delete({
+export const deleteOffer = zact(z.string())(async (id) => {
+  await prisma.offer.delete({
     where: { id },
   });
-  revalidatePath("/result");
+  revalidatePath("/offer");
 });
 
-export const createResult = zact(resultFormSchema)(async (result) => {
-  await prisma.productResult.create({
-    data: { ...result, image: result.image as Prisma.JsonObject }, // https://github.com/prisma/prisma/issues/9247
+export const createOffer = zact(offerFormSchema)(async (offer) => {
+  await prisma.offer.create({
+    data: { ...offer, image: offer.image as Prisma.JsonObject }, // https://github.com/prisma/prisma/issues/9247
   });
-  revalidatePath("/result");
+  revalidatePath("/offer");
 });
 
-export const updateResult = zact(resultFormSchema)(async (result) => {
-  await prisma.productResult.update({
-    where: { id: result.id },
-    data: { ...result, image: result.image as Prisma.JsonObject },
+export const updateOffer = zact(offerFormSchema)(async (offer) => {
+  await prisma.offer.update({
+    where: { id: offer.id },
+    data: { ...offer, image: offer.image as Prisma.JsonObject },
   });
-  revalidatePath("/result");
+  revalidatePath("/offer");
 });
 
-type ProductResultWithNeed = Prisma.ProductResultGetPayload<{
+type OfferWithNeed = Prisma.OfferGetPayload<{
   include: { need: true };
 }>;
 
@@ -37,7 +37,7 @@ type ProductResultWithNeed = Prisma.ProductResultGetPayload<{
 // l'intégralité des risques jusqu'au lieu de destination dans le pays d'importation;
 // il prend en charge toutes les formalités et paie tous les droits et frais à l'importation.
 // Args
-//      ProductResult (full object)
+//      Offer (full object)
 //      Exchange Rate (default = 1 USD)
 //      Freight Rate
 // DDPPrice  = (F11+SOMME(I11:L11))*F16+E11
@@ -56,7 +56,7 @@ type ProductResultWithNeed = Prisma.ProductResultGetPayload<{
 // E11 = Additional Costs (default = 0)
 
 export const calculateDDPPrice = async (
-  productResult: ProductResultWithNeed,
+  offer: OfferWithNeed,
   exchangeRate = 1, // todo get this from country
   freightRate = 0 // todo get this from country
 ) => {
@@ -64,7 +64,7 @@ export const calculateDDPPrice = async (
     fobPrice,
     quantityPerContainer,
     need: { customsTax: productCustomsRate, additionalCost }, // additionalCost c'est bien celui du produit ?
-  } = productResult;
+  } = offer;
   const company = await prisma.company.findUnique({ where: { userId: "1" } });
   const countryCustomsRate = 0.25; // L5 todo get this from country
   const { insuranceRate, bankChargeRate } = company || {

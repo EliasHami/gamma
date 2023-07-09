@@ -17,18 +17,18 @@ function getCurrencySymbol(locale: string, currency: string) {
   ).replace(/\d/g, '').trim()
 }
 
-const Product = async () => {
-  let results = null
+const Offer = async () => {
+  let offers = null
 
   try {
-    results = await prisma.productResult.findMany({
+    offers = await prisma.offer.findMany({
       include: {
         need: true,
         supplier: true,
       },
     });
   } catch (error) {
-    toast.error("Could not retrieve results. Please try again later.");
+    toast.error("Could not retrieve offers. Please try again later.");
     console.error(error);
   }
 
@@ -54,34 +54,34 @@ const Product = async () => {
                 </tr>
               </thead>
               <tbody>
-                {results?.map(async (result) => {
-                  const ddpPrice = await calculateDDPPrice(result, 11, 800,) // todo : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
+                {offers?.map(async (offer) => {
+                  const ddpPrice = await calculateDDPPrice(offer, 11, 800,) // todo : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
                   const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2);
                   const publicPrice = Math.round(grossPrice / (1 - 0.1));
-                  const symbol = getCurrencySymbol('en-US', result.currency) // todo : doesnt work
+                  const symbol = getCurrencySymbol('en-US', offer.currency) // todo : doesnt work
                   return (
-                    <tr key={result.id} className="border-b dark:border-neutral-500">
+                    <tr key={offer.id} className="border-b dark:border-neutral-500">
                       <td className="whitespace-nowrap px-6 py-4 font-medium">
-                        <Link href={`/product/${result.needId}`} className="flex gap-1 items-center">
+                        <Link href={`/product/${offer.needId}`} className="flex gap-1 items-center">
                           <ArrowTopRightOnSquareIcon className="h-3 w-3" />
-                          <span>{result.need.name}</span>
+                          <span>{offer.need.name}</span>
                         </Link>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        <Link href={`/supplier/${result.supplierId}`} className="flex gap-1 items-center" >
+                        <Link href={`/supplier/${offer.supplierId}`} className="flex gap-1 items-center" >
                           <ArrowTopRightOnSquareIcon className="h-3 w-3" />
-                          <span>{result.supplier.name}</span>
+                          <span>{offer.supplier.name}</span>
                         </Link>
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4">{result.fobPrice}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{result.currency}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{result.validation}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{result.status}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{JSON.stringify(result.image)}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{offer.fobPrice}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{offer.currency}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{offer.validation}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{offer.status}</td>
+                      <td className="whitespace-nowrap px-6 py-4">{JSON.stringify(offer.image)}</td>
                       <td className="whitespace-nowrap px-6 py-4">{`${ddpPrice} ${symbol}`}</td>
                       <td className="whitespace-nowrap px-6 py-4">{`${grossPrice} ${symbol}`}</td>
                       <td className="whitespace-nowrap px-6 py-4">{`${publicPrice} ${symbol}`}</td>
-                      <td className="whitespace-nowrap px-6 py-4"><Actions id={result.id} /></td>
+                      <td className="whitespace-nowrap px-6 py-4"><Actions id={offer.id} /></td>
                     </tr>
                   )
                 }
@@ -95,4 +95,4 @@ const Product = async () => {
   )
 }
 
-export default Product
+export default Offer

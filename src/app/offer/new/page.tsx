@@ -1,7 +1,7 @@
-import ProductForm from "~/app/result/_components/Form";
+import ProductForm from "~/app/offer/_components/Form";
 import { fetchSelect } from "../utils";
 
-const NewProductResult = async () => {
+const NewProductOffer = async () => {
   const [products, suppliers] = await fetchSelect()
 
   return (
@@ -11,4 +11,4 @@ const NewProductResult = async () => {
     />)
 }
 
-export default NewProductResult
+export default NewProductOffer

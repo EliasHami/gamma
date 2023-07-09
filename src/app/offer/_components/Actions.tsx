@@ -3,7 +3,7 @@ import { TrashIcon, CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outl
 import { useRouter } from 'next/navigation'
 import React, { useTransition } from 'react'
 import LoadingSpinner from '~/components/Spinner'
-import { deleteResult } from '../actions'
+import { deleteOffer } from '../actions'
 import { toast } from 'react-hot-toast'
 import { getErrorMessage } from '~/app/utils'
 
@@ -14,16 +14,16 @@ type ActionsProps = {
 const Actions: React.FC<ActionsProps> = ({ id }) => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const handleEdit = () => router.push(`result/${id}`)
+  const handleEdit = () => router.push(`offer/${id}`)
   const handleDelete = () => startTransition(async () => {
     try {
-      await deleteResult(id)
+      await deleteOffer(id)
     } catch (e) {
-      toast.error("Error deleting result. Please try again later.")
+      toast.error("Error deleting offer. Please try again later.")
       console.error(getErrorMessage(e))
       return
     }
-    toast.success("Result deleted successfully.")
+    toast.success("Offer deleted successfully.")
   })
 
   return (

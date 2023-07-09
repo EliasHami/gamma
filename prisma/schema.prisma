@@ -69,7 +69,7 @@ model ProductNeed {
     country  String
     targetPublicPrice Float
     state    VALIDATION_STATE
-    results   ProductResult[]
+    offers   Offer[]
     additionalCost Float
     customsTax Float
     @@index(familyId)
@@ -99,7 +99,7 @@ model Supplier {
     country   String
     validation YESNO
     status    SUPPLIER_STATUSES
-    results   ProductResult[]
+    offers   Offer[]
 }
 
 enum CURRENCIES {
@@ -108,14 +108,14 @@ enum CURRENCIES {
   MAD
 }
 
-enum RESULT_STATUSES {
+enum OFFER_STATUSES {
     OPEN
     CLOSED
     ACTIVE
     COMPETITOR
 }
 
-model ProductResult {
+model Offer {
   id        String   @id @default(cuid())
   need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Restrict)
   needId  String
@@ -124,7 +124,7 @@ model ProductResult {
   fobPrice  Float
   currency  CURRENCIES
   validation YESNO
-  status  RESULT_STATUSES 
+  status  OFFER_STATUSES 
   image Json
   quantityPerContainer Int
   DDPPrice Float @default(0)

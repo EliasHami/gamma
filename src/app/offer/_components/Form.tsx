@@ -1,5 +1,5 @@
 "use client"
-import { type ProductResult, CURRENCIES, YESNO, RESULT_STATUSES } from "@prisma/client"
+import { type Offer, CURRENCIES, YESNO, OFFER_STATUSES } from "@prisma/client"
 import React, { useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "~/components/Input"
@@ -8,9 +8,9 @@ import LoadingSpinner from "~/components/Spinner"
 import { DevTool } from "@hookform/devtools"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createResult, updateResult } from "../actions"
+import { createOffer, updateOffer } from "../actions"
 import { toast } from "react-hot-toast"
-import resultFormSchema from "../schemas"
+import offerFormSchema from "../schemas"
 import ImagePicker from "~/components/ImagePicker"
 import { getErrorMessage } from "~/app/utils"
 
@@ -19,36 +19,36 @@ type SelectOptions = {
   name: string
 }[]
 
-type ProductResultFormProps = {
-  result?: ProductResult
+type OfferFormProps = {
+  offer?: Offer
   products: SelectOptions
   suppliers: SelectOptions
 }
 
-const ProductResultForm: React.FC<ProductResultFormProps> = ({ result, products, suppliers }) => {
+const OfferForm: React.FC<OfferFormProps> = ({ offer, products, suppliers }) => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const formOptions: UseFormProps<ProductResult> = { resolver: zodResolver(resultFormSchema), }
-  if (result) {
-    formOptions.defaultValues = result
+  const formOptions: UseFormProps<Offer> = { resolver: zodResolver(offerFormSchema), }
+  if (offer) {
+    formOptions.defaultValues = offer
   }
 
-  const methods = useForm<ProductResult>(formOptions)
+  const methods = useForm<Offer>(formOptions)
   const { handleSubmit, formState } = methods
   const { errors } = formState
 
-  const onSubmit: SubmitHandler<ProductResult> = (data) => {
+  const onSubmit: SubmitHandler<Offer> = (data) => {
     startTransition(async () => {
       try {
-        result ? await updateResult({ ...data, id: result.id }) : await createResult(data)
+        offer ? await updateOffer({ ...data, id: offer.id }) : await createOffer(data)
       } catch (error) {
-        toast.error("Error while submitting result. Please try again later.")
+        toast.error("Error while submitting offer. Please try again later.")
         console.error(getErrorMessage(error))
         return
       }
-      toast.success("Result submited successfully")
+      toast.success("Offer submited successfully")
     })
-    router.push('/result')
+    router.push('/offer')
   }
 
   return (
@@ -78,7 +78,7 @@ const ProductResultForm: React.FC<ProductResultFormProps> = ({ result, products,
               ))}
             </Select>
             <Select name="status" label="Status" error={errors.status}>
-              {Object.entries(RESULT_STATUSES).map(([key, value]) => (
+              {Object.entries(OFFER_STATUSES).map(([key, value]) => (
                 <option key={key} value={key}>{value}</option>
               ))}
             </Select>
@@ -96,4 +96,4 @@ const ProductResultForm: React.FC<ProductResultFormProps> = ({ result, products,
   )
 }
 
-export default ProductResultForm
+export default OfferForm

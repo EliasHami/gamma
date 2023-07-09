@@ -1,4 +1,4 @@
-import ProductForm from "~/app/result/_components/Form";
+import ProductForm from "~/app/offer/_components/Form";
 import { fetchSelect } from "../utils";
 import { prisma } from "~/server/db";
 
@@ -11,19 +11,19 @@ import { prisma } from "~/server/db";
 //   }));
 // }
 
-const EditProductResult = async ({ params: { id } }: { params: { id: string } }) => {
-  const resultPromise = prisma.productResult.findUnique({ where: { id } })
+const EditProductOffer = async ({ params: { id } }: { params: { id: string } }) => {
+  const offerPromise = prisma.offer.findUnique({ where: { id } })
   const selectPromises = fetchSelect()
-  const [result, [products, suppliers]] = await Promise.all([resultPromise, selectPromises])
+  const [offer, [products, suppliers]] = await Promise.all([offerPromise, selectPromises])
 
-  if (!result) return <div>Result not found</div>
+  if (!offer) return <div>Offer not found</div>
 
   return (
     <ProductForm
-      result={result}
+      offer={offer}
       products={products}
       suppliers={suppliers}
     />)
 }
 
-export default EditProductResult
+export default EditProductOffer
