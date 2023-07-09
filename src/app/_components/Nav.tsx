@@ -6,6 +6,7 @@ import NavLink, { classNames } from '~/app/_components/NavLink'
 import { navigation } from '../utils'
 import { Fragment } from 'react'
 import Link from 'next/link'
+import { SignOutButton, useUser } from '@clerk/nextjs'
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -46,7 +47,9 @@ const ProfileDropdown = () => (
           </Menu.Item>
         ))}
         <Menu.Item>
-          <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-start" >Sign Out</button>
+          <SignOutButton >
+            <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-start" >Sign Out</button>
+          </SignOutButton>
         </Menu.Item>
       </Menu.Items>
     </Transition>
@@ -64,6 +67,7 @@ const NotificationBell = () => (
 )
 
 export default function Nav() {
+  const { user } = useUser();
 
   return (
     <Disclosure as="nav" className="min-h-full bg-purple-900 sticky top-0 z-[60]">
@@ -134,8 +138,8 @@ export default function Nav() {
                   <UserIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">{"user?.fullName"}</div>
-                  <div className="text-sm font-medium leading-none text-gray-400">{"user?.primaryEmailAddress?.emailAddress"}</div>
+                  <div className="text-base font-medium leading-none text-white">{user?.fullName}</div>
+                  <div className="text-sm font-medium leading-none text-gray-400">{user?.primaryEmailAddress?.emailAddress}</div>
                 </div>
                 <button
                   type="button"

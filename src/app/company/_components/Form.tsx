@@ -15,9 +15,10 @@ import { getErrorMessage } from "~/app/utils"
 
 type CompanyFormProps = {
   company: Company | null,
+  userId: string
 }
 
-const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
+const CompanyForm: React.FC<CompanyFormProps> = ({ company, userId }) => {
   const [isPending, startTransition] = useTransition()
   const defaultValues = company ? company : {
     name: "",
@@ -30,7 +31,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company }) => {
   const onSubmit: SubmitHandler<Company> = (data) => {
     startTransition(async () => {
       try {
-        await updateOrCreateCompany({ ...data, id: company?.id, userId: "1" })
+        await updateOrCreateCompany({ ...data, id: company?.id, userId })
       } catch (error) {
         toast.error("Error while submitting company")
         console.error(getErrorMessage(error))

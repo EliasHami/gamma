@@ -1,12 +1,14 @@
 import { prisma } from "~/server/db"
 import AddFreight from "./_components/AddFreight"
-import { addFreight } from "./actions"
 import clsx from "clsx"
 import Delete from "./_components/Delete"
+import { auth } from "@clerk/nextjs"
 
 const Freight = async () => {
+  const { userId } = auth()
+  if (!userId) return null // should never happen because this route is protected
   const freights = await prisma.freight.findMany({
-    where: { userId: "1" }
+    where: { userId }
   })
   const flexBar = "min-w-full justify-center flex flex-row gap-5"
 
@@ -27,9 +29,7 @@ const Freight = async () => {
                 <div className="flex-0">{<Delete id={id} />}</div>
               </div>
             ))}
-            <AddFreight addFreight={addFreight} className={flexBar} />
-            {/* server actions need to be prop drilled to use clerk auth 
-             (https://clerk.com/docs/nextjs/server-actions?utm_source=github.com&utm_medium=referral&utm_campaign=none#with-client-components)  */}
+            <AddFreight className={flexBar} />
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ import Input from "~/components/Input"
 import LoadingSpinner from "~/components/Spinner"
 import { getErrorMessage } from "~/app/utils"
 import { freightFormSchema } from "../schemas"
+import { addFreight } from "../actions"
 
 type FreightForm = {
   country: string
@@ -16,11 +17,10 @@ type FreightForm = {
 }
 
 type AddFreightProps = {
-  addFreight: (data: FreightForm) => Promise<void>
   className?: string
 }
 
-const AddFreight: React.FC<AddFreightProps> = ({ addFreight, className }) => {
+const AddFreight: React.FC<AddFreightProps> = ({ className }) => {
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<FreightForm> = { resolver: zodResolver(freightFormSchema), }
 
