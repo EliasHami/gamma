@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export default authMiddleware({
   // Public routes are routes that don't require authentication
-  publicRoutes: ["/", "/signin(.*)", "/signup(.*)"],
+  publicRoutes: ["/signin(.*)", "/signup(.*)"],
   afterAuth(auth, req) {
     if (auth.isPublicRoute) {
       //  For public routes, we don't need to do anything
