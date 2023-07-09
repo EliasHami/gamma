@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { SignOutButton, useUser } from '@clerk/nextjs'
 
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
+  { name: "Account", href: "/account" },
   { name: "Settings", href: "/company" },
 ];
 
