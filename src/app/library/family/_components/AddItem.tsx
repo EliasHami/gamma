@@ -6,9 +6,9 @@ import { usePathname, useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { FormProvider, type SubmitHandler, type UseFormProps, useForm } from "react-hook-form"
 import { z } from "zod"
-import { getErrorMessage } from "~/app/utils"
-import Input from "~/components/Input"
-import LoadingSpinner from "~/components/Spinner"
+import { getErrorMessage } from "@/app/utils"
+import Input from "@/components/Input"
+import LoadingSpinner from "@/components/Spinner"
 
 type AddItemForm = { name: string }
 

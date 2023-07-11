@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
-import { prisma } from "~/server/db"
+import { prisma } from "@/server/db"
 import Actions from "./_components/Actions"
 import { toast } from "react-hot-toast"
 import { calculateDDPPrice } from "./actions"

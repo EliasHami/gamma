@@ -1,5 +1,5 @@
-import SupplierForm from "~/app/supplier/_components/Form";
-import { prisma } from "~/server/db";
+import SupplierForm from "@/app/supplier/_components/Form";
+import { prisma } from "@/server/db";
 
 // https://github.com/vercel/next.js/issues/49408
 // export async function generateStaticParams() {

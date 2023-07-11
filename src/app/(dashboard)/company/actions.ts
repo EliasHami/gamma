@@ -1,8 +1,8 @@
 "use server";
 
+import { prisma } from "@/server/db";
 import { revalidatePath } from "next/cache";
 import { zact } from "zact/server";
-import { prisma } from "~/server/db";
 import companyFormSchema from "./shemas";
 
 export const updateOrCreateCompany = zact(companyFormSchema)(

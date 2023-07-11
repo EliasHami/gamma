@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
-import Actions from "~/app/supplier/_components/Actions"
-import { prisma } from "~/server/db"
+import Actions from "@/app/supplier/_components/Actions"
+import { prisma } from "@/server/db"
 
 const Supplier = async () => {
   const suppliers = await prisma.supplier.findMany()

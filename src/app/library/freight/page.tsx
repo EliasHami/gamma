@@ -1,12 +1,13 @@
-import { prisma } from "~/server/db"
+import { prisma } from "@/server/db"
 import AddFreight from "./_components/AddFreight"
 import clsx from "clsx"
 import Delete from "./_components/Delete"
 import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
 const Freight = async () => {
   const { userId } = auth()
-  if (!userId) return null // should never happen because this route is protected
+  if (!userId) redirect("/signin")
   const freights = await prisma.freight.findMany({
     where: { userId }
   })

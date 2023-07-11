@@ -1,5 +1,5 @@
-import ProductForm from "~/app/product/_components/Form";
-import { prisma } from "~/server/db";
+import ProductForm from "@/app/product/_components/Form";
+import { prisma } from "@/server/db";
 import { fetchLibrarySelect } from "../utils";
 
 // https://github.com/vercel/next.js/issues/49408

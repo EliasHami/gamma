@@ -1,4 +1,4 @@
-import { prisma } from "~/server/db";
+import { prisma } from "@/server/db";
 
 const fetchSelect = async () => {
   const productsPromise = prisma.productNeed.findMany({

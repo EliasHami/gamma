@@ -2,17 +2,17 @@
 import { type Offer, CURRENCIES, YESNO, OFFER_STATUSES } from "@prisma/client"
 import React, { useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
-import Input from "~/components/Input"
-import Select from "~/components/Select"
-import LoadingSpinner from "~/components/Spinner"
+import Input from "@/components/Input"
+import Select from "@/components/Select"
+import LoadingSpinner from "@/components/Spinner"
 import { DevTool } from "@hookform/devtools"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createOffer, updateOffer } from "../actions"
 import { toast } from "react-hot-toast"
 import offerFormSchema from "../schemas"
-import ImagePicker from "~/components/ImagePicker"
-import { getErrorMessage } from "~/app/utils"
+import ImagePicker from "@/components/ImagePicker"
+import { getErrorMessage } from "@/app/utils"
 
 type SelectOptions = {
   id: string

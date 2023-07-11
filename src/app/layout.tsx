@@ -1,5 +1,5 @@
 import { type Metadata } from 'next';
-import "~/styles/globals.css";
+import "@/styles/globals.css";
 import { type PropsWithChildren } from 'react';
 import Nav from './_components/Nav';
 import Header from './_components/Header';

@@ -1,4 +1,4 @@
-import ProductForm from "~/app/offer/_components/Form";
+import ProductForm from "@/app/offer/_components/Form";
 import { fetchSelect } from "../utils";
 
 const NewProductOffer = async () => {

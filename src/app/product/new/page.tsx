@@ -1,4 +1,4 @@
-import ProductForm from "~/app/product/_components/Form";
+import ProductForm from "@/app/product/_components/Form";
 import { fetchLibrarySelect } from "../utils";
 
 const NewProduct = async () => {

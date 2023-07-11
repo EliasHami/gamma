@@ -1,5 +1,5 @@
 import Actions from "./_components/Actions";
-import { prisma } from "~/server/db";
+import { prisma } from "@/server/db";
 
 const Product = async () => {
   let products = null

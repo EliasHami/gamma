@@ -2,7 +2,7 @@
 import { type Freight } from "@prisma/client"
 import React from "react"
 import { type UseFormProps, useForm, FormProvider, useFieldArray } from "react-hook-form"
-import Input from "~/components/Input"
+import Input from "@/components/Input"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { freightFormSchema } from "../schemas"

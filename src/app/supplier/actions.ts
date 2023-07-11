@@ -1,8 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { prisma } from "~/server/db";
+import { prisma } from "@/server/db";
 import { type Supplier } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function deleteSupplier(id: string) {
   try {

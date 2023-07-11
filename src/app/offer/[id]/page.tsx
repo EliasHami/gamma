@@ -1,6 +1,6 @@
-import ProductForm from "~/app/offer/_components/Form";
+import ProductForm from "@/app/offer/_components/Form";
 import { fetchSelect } from "../utils";
-import { prisma } from "~/server/db";
+import { prisma } from "@/server/db";
 
 // https://github.com/vercel/next.js/issues/49408
 // export async function generateStaticParams() {

@@ -1,6 +1,6 @@
 "use server";
+import { prisma } from "@/server/db";
 import { revalidatePath } from "next/cache";
-import { prisma } from "~/server/db";
 
 export async function addFamily(name: string) {
   try {
