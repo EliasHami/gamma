@@ -30,7 +30,7 @@ const Freight = async () => {
                 <div className="flex-0">{<Delete id={id} />}</div>
               </div>
             ))}
-            <AddFreight className={flexBar} freights={freights} />
+            <AddFreight className={flexBar} freights={freights} userId={userId} />
           </div>
         </div>
       </div>

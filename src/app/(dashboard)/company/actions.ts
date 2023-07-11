@@ -9,7 +9,7 @@ export const updateOrCreateCompany = zact(companyFormSchema)(
   async (company) => {
     if (!company.id) {
       await prisma.company.create({
-        data: { ...company, userId: company.userId || "1" },
+        data: { ...company, userId: company.userId || "1" }, // TODO userid shoudnlt be optional in schema, find a way to ignore it in form validation
       }); // should be created during registration
     } else {
       await prisma.company.update({

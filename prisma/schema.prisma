@@ -148,7 +148,7 @@ model Freight {
   id       String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
+  userId    String @unique
   country String
   price   Float
 }

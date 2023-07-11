@@ -20,9 +20,10 @@ type FreightForm = {
 type AddFreightProps = {
   className?: string
   freights: Freight[]
+  userId: string
 }
 
-const AddFreight: React.FC<AddFreightProps> = ({ className, freights }) => {
+const AddFreight: React.FC<AddFreightProps> = ({ className, freights, userId }) => {
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<FreightForm> = { resolver: zodResolver(freightFormSchema), }
 
@@ -35,7 +36,7 @@ const AddFreight: React.FC<AddFreightProps> = ({ className, freights }) => {
           toast.error("This country already exists.")
           return
         }
-        await addFreight(data)
+        await addFreight({ ...data, userId })
         setValue("country", "")
         setValue("price", 0)
       } catch (e) {

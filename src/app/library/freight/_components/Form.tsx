@@ -38,7 +38,7 @@ const EditFreight: React.FC<FreightFormProps> = ({ freights }) => {
   //   router.push('/product')
   // }
 
-  const className = "min-w-full justify-center flex flex-row gap-5" // todo get from props
+  const className = "min-w-full justify-center flex flex-row gap-5" // TODO get from props
 
   return (
     <>
