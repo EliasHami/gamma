@@ -4,6 +4,8 @@ import { prisma } from "@/server/db"
 import Actions from "./_components/Actions"
 import { toast } from "react-hot-toast"
 import { calculateDDPPrice } from "./actions"
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
 function getCurrencySymbol(locale: string, currency: string) {
   return (0).toLocaleString(
@@ -18,6 +20,8 @@ function getCurrencySymbol(locale: string, currency: string) {
 }
 
 const Offer = async () => {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
   let offers = null
 
   try {
@@ -55,10 +59,10 @@ const Offer = async () => {
               </thead>
               <tbody>
                 {offers?.map(async (offer) => {
-                  const ddpPrice = await calculateDDPPrice(offer, 11, 800,) // todo : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
+                  const ddpPrice = await calculateDDPPrice(offer, 11, userId) // TODO : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
                   const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2);
                   const publicPrice = Math.round(grossPrice / (1 - 0.1));
-                  const symbol = getCurrencySymbol('en-US', offer.currency) // todo : doesnt work
+                  const symbol = getCurrencySymbol('en-US', offer.currency) // TODO : doesnt work
                   return (
                     <tr key={offer.id} className="border-b dark:border-neutral-500">
                       <td className="whitespace-nowrap px-6 py-4 font-medium">

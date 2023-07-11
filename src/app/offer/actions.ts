@@ -29,8 +29,8 @@ export const updateOffer = zact(offerFormSchema)(async (offer) => {
   revalidatePath("/offer");
 });
 
-type OfferWithNeed = Prisma.OfferGetPayload<{
-  include: { need: true };
+type OfferWithNeedAndSupplier = Prisma.OfferGetPayload<{
+  include: { need: true; supplier: true };
 }>;
 
 // Sur la base du DDP (Delivered Duty Paid, ou «Rendu droits acquittés»), le vendeur doit livrer la marchandise à ses frais et assume
@@ -56,21 +56,28 @@ type OfferWithNeed = Prisma.OfferGetPayload<{
 // E11 = Additional Costs (default = 0)
 
 export const calculateDDPPrice = async (
-  offer: OfferWithNeed,
-  exchangeRate = 1, // todo get this from country
-  freightRate = 0 // todo get this from country
+  offer: OfferWithNeedAndSupplier,
+  exchangeRate = 1, // todo get this from country supplier + company
+  userId: string
 ) => {
   const {
     fobPrice,
     quantityPerContainer,
-    need: { customsTax: productCustomsRate, additionalCost }, // additionalCost c'est bien celui du produit ?
+    need: { customsTax: productCustomsRate, additionalCost },
+    supplier: { country: supplierCountry },
   } = offer;
-  const company = await prisma.company.findUnique({ where: { userId: "1" } });
-  const countryCustomsRate = 0.25; // L5 todo get this from country
-  const { insuranceRate, bankChargeRate } = company || {
+  const company = await prisma.company.findUnique({ where: { userId } });
+  const { price: freightRate } = (await prisma.freight.findFirst({
+    where: { country: supplierCountry, userId },
+  })) || { price: 0 };
+  const {
+    insuranceRate,
+    bankChargeRate,
+    customsRate: countryCustomsRate = 0,
+  } = company || {
     insuranceRate: 0.01,
     bankChargeRate: 1,
-  }; // todo make sure that company is created during registration
+  }; // TODO make sure that company is created during registration
   const insurance = (insuranceRate / 100) * fobPrice; // I11
   const freight = freightRate / quantityPerContainer; // J11
 
