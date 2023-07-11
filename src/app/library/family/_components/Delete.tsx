@@ -1,7 +1,7 @@
 "use client"
 import { TrashIcon } from '@heroicons/react/24/outline'
 import React, { useTransition } from 'react'
-import LoadingSpinner from '~/components/Spinner'
+import LoadingSpinner from '@/components/Spinner'
 
 type DeleteProps = {
   id: string
