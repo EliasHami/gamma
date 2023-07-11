@@ -2,10 +2,10 @@
 import { TrashIcon, CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import React, { useTransition } from 'react'
-import LoadingSpinner from '~/components/Spinner'
+import LoadingSpinner from '@/components/Spinner'
 import { deleteOffer } from '../actions'
 import { toast } from 'react-hot-toast'
-import { getErrorMessage } from '~/app/utils'
+import { getErrorMessage } from '@/app/utils'
 
 type ActionsProps = {
   id: string

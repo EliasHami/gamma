@@ -2,7 +2,7 @@
 import { TrashIcon, CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import React, { useTransition } from 'react'
-import LoadingSpinner from '~/components/Spinner'
+import LoadingSpinner from '@/components/Spinner'
 import { deleteProduct } from '../actions'
 
 type ActionsProps = {
