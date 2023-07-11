@@ -10,6 +10,7 @@ import LoadingSpinner from "@/components/Spinner"
 import { getErrorMessage } from "@/app/utils"
 import { freightFormSchema } from "../schemas"
 import { addFreight } from "../actions"
+import { type Freight } from "@prisma/client"
 
 type FreightForm = {
   country: string
@@ -18,9 +19,10 @@ type FreightForm = {
 
 type AddFreightProps = {
   className?: string
+  freights: Freight[]
 }
 
-const AddFreight: React.FC<AddFreightProps> = ({ className }) => {
+const AddFreight: React.FC<AddFreightProps> = ({ className, freights }) => {
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<FreightForm> = { resolver: zodResolver(freightFormSchema), }
 
@@ -29,6 +31,10 @@ const AddFreight: React.FC<AddFreightProps> = ({ className }) => {
   const onSubmit: SubmitHandler<FreightForm> = (data) => {
     startTransition(async () => {
       try {
+        if (freights.some((freight) => freight.country.toUpperCase() === data.country.toUpperCase())) {
+          toast.error("This country already exists.")
+          return
+        }
         await addFreight(data)
         setValue("country", "")
         setValue("price", 0)
