@@ -4,6 +4,7 @@ import clsx from "clsx"
 import Delete from "./_components/Delete"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
+import { getName } from "country-list"
 
 const Freight = async () => {
   const { userId } = auth()
@@ -25,7 +26,7 @@ const Freight = async () => {
             </div>
             {freights?.map(({ id, country, price }) => (
               <div key={id} className={clsx(flexBar, "font-light")}>
-                <div className="flex-1">{country}</div>
+                <div className="flex-1">{getName(country)}</div>
                 <div className="flex-1">{price}</div>
                 <div className="flex-0">{<Delete id={id} />}</div>
               </div>

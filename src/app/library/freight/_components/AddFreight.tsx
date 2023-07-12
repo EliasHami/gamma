@@ -11,6 +11,8 @@ import { getErrorMessage } from "@/app/utils"
 import { freightFormSchema } from "../schemas"
 import { addFreight } from "../actions"
 import { type Freight } from "@prisma/client"
+import { getData } from "country-list"
+import Select from "@/components/Select"
 
 type FreightForm = {
   country: string
@@ -51,7 +53,11 @@ const AddFreight: React.FC<AddFreightProps> = ({ className, freights, userId }) 
   return (
     <FormProvider {...methods}>
       <form className={clsx(className)} onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
-        <Input className="flex-1" name="country" type="text" placeholder="Country" error={formState.errors.country} />
+        <Select className="flex-1" name="country" error={formState.errors.country}>
+          {getData().map(country => (
+            <option key={country.code} value={country.code}>{country.name}</option>
+          ))}
+        </Select>
         <Input className="flex-1" name="price" type="number" placeholder="Price" error={formState.errors.price} />
         <button
           type="submit"

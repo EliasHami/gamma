@@ -4,19 +4,20 @@ import { type FieldError, useFormContext } from "react-hook-form"
 
 type InputProps = {
   name: string
-  label: string
+  label?: string
   error?: FieldError
   disabled?: boolean
+  className?: string
 }
 
-const Select = ({ name, label, error, children, disabled }: PropsWithChildren<InputProps>) => {
+const Select = ({ name, label, error, children, disabled, className }: PropsWithChildren<InputProps>) => {
   const { register } = useFormContext()
 
   if (!name) return null
 
   return (
     <div className="mb-6">
-      <label className={clsx("block", "text-gray-700", "text-sm", "font-bold", "mb-2", disabled && "opacity-50")} htmlFor="input">
+      <label className={clsx(className, "block", "text-gray-700", "text-sm", "font-bold", "mb-2", disabled && "opacity-50")} htmlFor="input">
         {label}
       </label>
       <div className={`${error ? "border-red-500" : ""} inline-block relative w-full`}>

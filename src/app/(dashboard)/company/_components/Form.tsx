@@ -8,7 +8,7 @@ import LoadingSpinner from "@/components/Spinner"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "react-hot-toast"
-import { getNames } from "country-list"
+import { getData } from "country-list"
 import { updateOrCreateCompany } from "../actions"
 import companyFormSchema from "../shemas"
 import { getErrorMessage } from "@/app/utils"
@@ -50,8 +50,8 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company, userId }) => {
             <Input name="email" label="email" type="text" error={errors.email} />
             <Input name="phone" label="phone" type="text" error={errors.phone} />
             <Select name="country" label="country" error={errors.country}>
-              {getNames().map(name => (
-                <option key={name} value={name}>{name}</option>
+              {getData().map(country => (
+                <option key={country.code} value={country.code}>{country.name}</option>
               ))}
             </Select>
             <Input name="insuranceRate" label="Insurance rate" type="number" error={errors.insuranceRate} step="0.01" />
