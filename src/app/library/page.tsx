@@ -1,5 +1,6 @@
 import { type NextPage } from "next"
 import { ArchiveBoxIcon, BuildingOfficeIcon, LightBulbIcon, ReceiptPercentIcon, TruckIcon } from "@heroicons/react/24/outline"
+import { Icons } from "@/components/icons"
 import Link from "next/link"
 
 const libraries = [
@@ -8,6 +9,7 @@ const libraries = [
   { Icon: LightBulbIcon, name: "Assumptions", href: "/" },
   { Icon: BuildingOfficeIcon, name: "Departments", href: "/" },
   { Icon: ArchiveBoxIcon, name: "Products", href: "/library/family" },
+  { Icon: Icons.dollarSign, name: "Currency Rates", href: "/library/currency" },
 ]
 
 const Libraries: NextPage = () => {
