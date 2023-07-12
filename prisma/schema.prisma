@@ -99,12 +99,6 @@ model Supplier {
     offers   Offer[]
 }
 
-enum CURRENCIES {
-  USD
-  EUR
-  MAD
-}
-
 enum OFFER_STATUSES {
     OPEN
     CLOSED
@@ -118,7 +112,7 @@ model Offer {
   supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
   supplierId String
   fobPrice  Float
-  currency  CURRENCIES
+  currency  String
   validation YESNO
   status  OFFER_STATUSES 
   image Json
@@ -137,6 +131,7 @@ model Company {
   address   String
   email     String
   phone     String
+  currency  String
   insuranceRate Float
   bankChargeRate Float
   customsRate Float

@@ -3,26 +3,18 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 import { prisma } from "@/server/db"
 import Actions from "./_components/Actions"
 import { toast } from "react-hot-toast"
-import { calculateDDPPrice } from "./actions"
+import { calculateDDPPrice } from "@/lib/currency"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
-
-function getCurrencySymbol(locale: string, currency: string) {
-  return (0).toLocaleString(
-    locale,
-    {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }
-  ).replace(/\d/g, '').trim()
-}
+import { Shell } from "@/components/shell"
+import { ErrorCard } from "@/components/error-card"
+import CurrencyList from "currency-list"
 
 const Offer = async () => {
   const { userId } = auth()
   if (!userId) redirect("/signin")
   let offers = null
+  const company = await prisma.company.findUnique({ where: { userId } });
 
   try {
     offers = await prisma.offer.findMany({
@@ -31,9 +23,23 @@ const Offer = async () => {
         supplier: true,
       },
     });
+
   } catch (error) {
     toast.error("Could not retrieve offers. Please try again later.");
     console.error(error);
+  }
+
+  if (!company) {
+    return (
+      <Shell variant="centered">
+        <ErrorCard
+          title="No country configured in settings"
+          description="No country configured in settings. Please check settings."
+          retryLink="/company"
+          retryLinkText="Go to company settings"
+        />
+      </Shell>
+    )
   }
 
   return (
@@ -59,10 +65,10 @@ const Offer = async () => {
               </thead>
               <tbody>
                 {offers?.map(async (offer) => {
-                  const ddpPrice = await calculateDDPPrice(offer, 11, userId) // TODO : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
+                  const ddpPrice = await calculateDDPPrice(offer, userId, company) // TODO : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
                   const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2);
                   const publicPrice = Math.round(grossPrice / (1 - 0.1));
-                  const symbol = getCurrencySymbol('en-US', offer.currency) // TODO : doesnt work
+                  const symbol = CurrencyList.get(company.currency)["symbol"]
                   return (
                     <tr key={offer.id} className="border-b dark:border-neutral-500">
                       <td className="whitespace-nowrap px-6 py-4 font-medium">

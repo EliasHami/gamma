@@ -1,5 +1,5 @@
 "use client"
-import { type Offer, CURRENCIES, YESNO, OFFER_STATUSES } from "@prisma/client"
+import { type Offer, YESNO, OFFER_STATUSES } from "@prisma/client"
 import React, { useTransition } from "react"
 import { type UseFormProps, useForm, type SubmitHandler, FormProvider } from "react-hook-form"
 import Input from "@/components/Input"
@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast"
 import offerFormSchema from "../schemas"
 import ImagePicker from "@/components/ImagePicker"
 import { getErrorMessage } from "@/app/utils"
+import CurrencyList from "currency-list"
 
 type SelectOptions = {
   id: string
@@ -68,8 +69,8 @@ const OfferForm: React.FC<OfferFormProps> = ({ offer, products, suppliers }) => 
             </Select>
             <Input name="fobPrice" label="FOB Price" type="number" placeholder="999.999" error={errors.fobPrice} />
             <Select name="currency" label="Currency" error={errors.currency}>
-              {Object.entries(CURRENCIES).map(([key, value]) => (
-                <option key={key} value={key}>{value}</option>
+              {Object.values(CurrencyList.getAll("en_US")).map((currency: { code: string, name: string }) => (
+                <option key={currency.code} value={currency.code}>{currency.name}</option>
               ))}
             </Select>
             <Select name="validation" label="Validation" error={errors.validation}>

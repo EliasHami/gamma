@@ -12,6 +12,7 @@ import { getData } from "country-list"
 import { updateOrCreateCompany } from "../actions"
 import companyFormSchema from "../shemas"
 import { getErrorMessage } from "@/app/utils"
+import CurrencyList from "currency-list"
 
 type CompanyFormProps = {
   company: Company | null,
@@ -35,6 +36,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company, userId }) => {
       } catch (error) {
         toast.error("Error while submitting company")
         console.error(getErrorMessage(error))
+        return
       }
       toast.success("Company submited successfully")
     })
@@ -52,6 +54,11 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company, userId }) => {
             <Select name="country" label="country" error={errors.country}>
               {getData().map(country => (
                 <option key={country.code} value={country.code}>{country.name}</option>
+              ))}
+            </Select>
+            <Select name="currency" label="Currency" error={errors.currency}>
+              {Object.values(CurrencyList.getAll("en_US")).map((currency: { code: string, name: string }) => (
+                <option key={currency.code} value={currency.code}>{currency.name}</option>
               ))}
             </Select>
             <Input name="insuranceRate" label="Insurance rate" type="number" error={errors.insuranceRate} step="0.01" />

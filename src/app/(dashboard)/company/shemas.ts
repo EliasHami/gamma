@@ -7,6 +7,7 @@ const companyFormSchema = z.object({
   phone: z.string(),
   email: z.string().email(),
   country: z.string(),
+  currency: z.string(),
   insuranceRate: z.number().min(0).max(100),
   bankChargeRate: z.number().min(0).max(100),
   customsRate: z.number().min(0).max(100),
