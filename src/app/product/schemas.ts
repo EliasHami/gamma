@@ -8,7 +8,6 @@ export const productFormSchema = z.object({
   familyId: z.string().cuid(),
   subFamilyId: z.string().cuid(),
   capacityId: z.string().cuid(),
-  color: z.string().nullable(),
   country: z.string(),
   targetPublicPrice: z.number(),
   state: z.nativeEnum(VALIDATION_STATE),
