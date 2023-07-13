@@ -1,10 +1,11 @@
 import { type Metadata } from 'next';
 import "@/styles/globals.css";
 import { type PropsWithChildren } from 'react';
-import Nav from './_components/Nav';
-import Header from './_components/Header';
+
 import { Toaster } from 'react-hot-toast';
 import { ClerkProvider, SignedIn } from '@clerk/nextjs';
+import Nav from '@/components/layouts/Nav';
+import Header from '@/components/layouts/Header';
 
 export const metadata: Metadata = {
   title: 'Gamma',
