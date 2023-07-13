@@ -42,5 +42,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 # vscode
-.vscode
 *.code-workspace
