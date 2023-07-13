@@ -2,11 +2,11 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
-import NavLink, { classNames } from '@/app/_components/NavLink'
-import { navigation } from '../utils'
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { SignOutButton, useUser } from '@clerk/nextjs'
+import NavLink, { classNames } from '@/components/layouts/NavLink'
+import { navigation } from '@/config/site'
 
 const userNavigation = [
   { name: "Account", href: "/account" },
