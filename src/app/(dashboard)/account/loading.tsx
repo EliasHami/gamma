@@ -1,4 +1,4 @@
-import { Skeleton } from "src/components/Skeleton"
+import { Skeleton } from "src/components/ui/skeleton"
 
 export default function AccountLoading() {
   return (
