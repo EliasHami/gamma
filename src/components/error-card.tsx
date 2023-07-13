@@ -1,7 +1,7 @@
-import * as React from "react"
 import Link from "next/link"
+import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { Icons } from "@/components/icons"
 import { buttonVariants } from "@/components/ui/button"
 import {
   Card,
@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Icons } from "@/components/icons"
+import { cn } from "@/lib/utils"
 
 interface ErrorCardProps extends React.ComponentPropsWithoutRef<typeof Card> {
   icon?: keyof typeof Icons

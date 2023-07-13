@@ -1,6 +1,12 @@
-import { type NextPage } from "next"
-import { ArchiveBoxIcon, BuildingOfficeIcon, LightBulbIcon, ReceiptPercentIcon, TruckIcon } from "@heroicons/react/24/outline"
 import { Icons } from "@/components/icons"
+import {
+  ArchiveBoxIcon,
+  BuildingOfficeIcon,
+  LightBulbIcon,
+  ReceiptPercentIcon,
+  TruckIcon,
+} from "@heroicons/react/24/outline"
+import { type NextPage } from "next"
 import Link from "next/link"
 
 const libraries = [
@@ -16,14 +22,21 @@ const Libraries: NextPage = () => {
   return (
     <div className="flex flex-wrap">
       {libraries.map(({ Icon, name, href }) => (
-        <div key={name} className="my-5 px-8 w-full md:w-1/2 lg:my-10 lg:px-16 lg:w-1/3">
-          <div className="overflow-hidden rounded-lg shadow-lg border">
-            <Link className="flex flex-col h-auto w-full justify-center items-center p-2 md:p-10 gap-5" href={href}>
-              <Icon className="w-14 h-14" />
-              <span className="font-bold text-lg">{name}</span>
+        <div
+          key={name}
+          className="my-5 w-full px-8 md:w-1/2 lg:my-10 lg:w-1/3 lg:px-16"
+        >
+          <div className="overflow-hidden rounded-lg border shadow-lg">
+            <Link
+              className="flex h-auto w-full flex-col items-center justify-center gap-5 p-2 md:p-10"
+              href={href}
+            >
+              <Icon className="h-14 w-14" />
+              <span className="text-lg font-bold">{name}</span>
             </Link>
           </div>
-        </div>))}
+        </div>
+      ))}
     </div>
   )
 }

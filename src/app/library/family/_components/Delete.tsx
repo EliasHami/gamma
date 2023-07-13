@@ -1,7 +1,7 @@
 "use client"
-import { TrashIcon } from '@heroicons/react/24/outline'
-import React, { useTransition } from 'react'
-import LoadingSpinner from '@/components/Spinner'
+import LoadingSpinner from "@/components/Spinner"
+import { TrashIcon } from "@heroicons/react/24/outline"
+import React, { useTransition } from "react"
 
 type DeleteProps = {
   id: string
@@ -13,7 +13,11 @@ const Delete: React.FC<DeleteProps> = ({ id, action }) => {
 
   return (
     <button onClick={() => startTransition(() => action(id))}>
-      {isPending ? <LoadingSpinner /> : <TrashIcon className="w-5 h-5 text-red-500" />}
+      {isPending ? (
+        <LoadingSpinner />
+      ) : (
+        <TrashIcon className="h-5 w-5 text-red-500" />
+      )}
     </button>
   )
 }

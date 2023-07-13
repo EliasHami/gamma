@@ -1,16 +1,16 @@
 import { prisma } from "@/server/db"
-import AddFreight from "./_components/AddFreight"
-import clsx from "clsx"
-import Delete from "./_components/Delete"
 import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
+import clsx from "clsx"
 import { getName } from "country-list"
+import { redirect } from "next/navigation"
+import AddFreight from "./_components/AddFreight"
+import Delete from "./_components/Delete"
 
 const Freight = async () => {
   const { userId } = auth()
   if (!userId) redirect("/signin")
   const freights = await prisma.freight.findMany({
-    where: { userId }
+    where: { userId },
   })
   const flexBar = "min-w-full justify-center flex flex-row gap-5"
 
@@ -22,7 +22,7 @@ const Freight = async () => {
             <div className={flexBar}>
               <h1 className="flex-1 text-2xl font-bold">Country</h1>
               <h1 className="flex-1 text-2xl font-bold">Price</h1>
-              <h1 className="flex-0" >&nbsp;</h1>
+              <h1 className="flex-0">&nbsp;</h1>
             </div>
             {freights?.map(({ id, country, price }) => (
               <div key={id} className={clsx(flexBar, "font-light")}>
@@ -31,7 +31,11 @@ const Freight = async () => {
                 <div className="flex-0">{<Delete id={id} />}</div>
               </div>
             ))}
-            <AddFreight className={flexBar} freights={freights} userId={userId} />
+            <AddFreight
+              className={flexBar}
+              freights={freights}
+              userId={userId}
+            />
           </div>
         </div>
       </div>

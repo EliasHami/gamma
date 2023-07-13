@@ -1,6 +1,5 @@
-import type { Metadata } from "next"
 import { UserProfile } from "@clerk/nextjs"
-
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   // metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function AccountPage() {
   return (
-    <div className="mx-auto flex min-h-screen items-center justify-center sm:px-">
+    <div className="sm:px- mx-auto flex min-h-screen items-center justify-center">
       <UserProfile
         appearance={{
           variables: {

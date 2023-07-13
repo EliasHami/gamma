@@ -1,9 +1,13 @@
 "use client"
-import { TrashIcon, CheckIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
-import { useRouter } from 'next/navigation'
-import React, { useTransition } from 'react'
-import LoadingSpinner from '@/components/Spinner'
-import { deleteSupplier } from '../actions'
+import LoadingSpinner from "@/components/Spinner"
+import {
+  CheckIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline"
+import { useRouter } from "next/navigation"
+import React, { useTransition } from "react"
+import { deleteSupplier } from "../actions"
 
 type ActionsProps = {
   id: string
@@ -15,15 +19,21 @@ const Actions: React.FC<ActionsProps> = ({ id }) => {
   const handleEdit = () => router.push(`supplier/${id}`)
 
   return (
-    <div className="flex justify-center items-center gap-1">
+    <div className="flex items-center justify-center gap-1">
       <button onClick={handleEdit}>
-        <PencilSquareIcon className="w-5 h-5 text-blue-500" />
+        <PencilSquareIcon className="h-5 w-5 text-blue-500" />
       </button>
-      <button onClick={() => startTransition(() => deleteSupplier(id))}> {/* 👈 use formAction for progressive enhancement*/}
-        {isPending ? <LoadingSpinner /> : <TrashIcon className="w-5 h-5 text-red-500" />}
+      <button onClick={() => startTransition(() => deleteSupplier(id))}>
+        {" "}
+        {/* 👈 use formAction for progressive enhancement*/}
+        {isPending ? (
+          <LoadingSpinner />
+        ) : (
+          <TrashIcon className="h-5 w-5 text-red-500" />
+        )}
       </button>
       <button>
-        <CheckIcon className="w-5 h-5 text-green-500" />
+        <CheckIcon className="h-5 w-5 text-green-500" />
       </button>
     </div>
   )

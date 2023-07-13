@@ -1,17 +1,25 @@
 import clsx from "clsx"
-import { type FieldError, useFormContext } from "react-hook-form"
+import { useFormContext, type FieldError } from "react-hook-form"
 
 type InputProps = {
   name: string
   label?: string
   type: string
   placeholder?: string
-  error?: FieldError,
-  className?: string,
+  error?: FieldError
+  className?: string
   step?: string
 }
 
-const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, className, step }) => {
+const Input: React.FC<InputProps> = ({
+  name,
+  label,
+  type,
+  placeholder,
+  error,
+  className,
+  step,
+}) => {
   const { register } = useFormContext()
   let options = {}
   if (!name) return null
@@ -19,17 +27,25 @@ const Input: React.FC<InputProps> = ({ name, label, type, placeholder, error, cl
 
   return (
     <div className={clsx(className, "mb-6")}>
-      {label && <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input">
-        {label}
-      </label>}
-      <input className={`${error ? "border-red-500" : ""} min-h-[50px] shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+      {label && (
+        <label
+          className="mb-2 block text-sm font-bold text-gray-700"
+          htmlFor="input"
+        >
+          {label}
+        </label>
+      )}
+      <input
+        className={`${
+          error ? "border-red-500" : ""
+        } focus:shadow-outline mb-3 min-h-[50px] w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none`}
         id="input"
         type={type}
         placeholder={placeholder}
         step={type === "number" ? step : undefined}
         {...register(name, options)}
       />
-      {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}
+      {error && <p className="text-xs italic text-red-500">{error?.message}</p>}
     </div>
   )
 }

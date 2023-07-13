@@ -1,24 +1,29 @@
 "use client"
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
-import { Fragment } from 'react'
-import Link from 'next/link'
-import { SignOutButton, useUser } from '@clerk/nextjs'
-import NavLink, { classNames } from '@/components/layouts/NavLink'
-import { navigation } from '@/config/site'
+import NavLink, { classNames } from "@/components/layouts/NavLink"
+import { navigation } from "@/config/site"
+import { SignOutButton, useUser } from "@clerk/nextjs"
+import { Disclosure, Menu, Transition } from "@headlessui/react"
+import {
+  Bars3Icon,
+  BellIcon,
+  UserIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline"
+import Image from "next/image"
+import Link from "next/link"
+import { Fragment } from "react"
 
 const userNavigation = [
   { name: "Account", href: "/account" },
   { name: "Settings", href: "/company" },
-];
+]
 
 const ProfileDropdown = () => (
   <Menu as="div" className="relative ml-3">
     <div>
-      <Menu.Button className="flex items-center max-w-xs text-sm text-gray-400 bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+      <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
         <span className="sr-only">Open user menu</span>
-        <UserIcon className="w-8 h-8" aria-hidden="true" />
+        <UserIcon className="h-8 w-8" aria-hidden="true" />
       </Menu.Button>
     </div>
     <Transition
@@ -30,15 +35,15 @@ const ProfileDropdown = () => (
       leaveFrom="transform opacity-100 scale-100"
       leaveTo="transform opacity-0 scale-95"
     >
-      <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         {userNavigation.map((item) => (
           <Menu.Item key={item.name}>
             {({ active }) => (
               <Link
                 href={item.href}
                 className={classNames(
-                  active ? 'bg-gray-100' : '',
-                  'block px-4 py-2 text-sm text-gray-700'
+                  active ? "bg-gray-100" : "",
+                  "block px-4 py-2 text-sm text-gray-700"
                 )}
               >
                 {item.name}
@@ -47,8 +52,10 @@ const ProfileDropdown = () => (
           </Menu.Item>
         ))}
         <Menu.Item>
-          <SignOutButton >
-            <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-start" >Sign Out</button>
+          <SignOutButton>
+            <button className="block w-full px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100">
+              Sign Out
+            </button>
           </SignOutButton>
         </Menu.Item>
       </Menu.Items>
@@ -59,18 +66,21 @@ const ProfileDropdown = () => (
 const NotificationBell = () => (
   <button
     type="button"
-    className="p-1 text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+    className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
   >
     <span className="sr-only">View notifications</span>
-    <BellIcon className="w-6 h-6" aria-hidden="true" />
+    <BellIcon className="h-6 w-6" aria-hidden="true" />
   </button>
 )
 
 export default function Nav() {
-  const { user } = useUser();
+  const { user } = useUser()
 
   return (
-    <Disclosure as="nav" className="min-h-full bg-purple-900 sticky top-0 z-[60]">
+    <Disclosure
+      as="nav"
+      className="sticky top-0 z-[60] min-h-full bg-purple-900"
+    >
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -90,11 +100,14 @@ export default function Nav() {
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {navigation.map((item) => (
-                      <NavLink key={item.name} href={item.href} className='rounded-md px-3 py-2 text-sm font-medium'>
+                      <NavLink
+                        key={item.name}
+                        href={item.href}
+                        className="rounded-md px-3 py-2 text-sm font-medium"
+                      >
                         {item.name}
                       </NavLink>
-                    )
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>
@@ -125,12 +138,11 @@ export default function Nav() {
                   key={item.name}
                   as={NavLink}
                   href={item.href}
-                  className='block rounded-md px-3 py-2 text-base font-medium'
+                  className="block rounded-md px-3 py-2 text-base font-medium"
                 >
                   {item.name}
                 </Disclosure.Button>
-              )
-              )}
+              ))}
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
               <div className="flex items-center px-5">
@@ -138,8 +150,12 @@ export default function Nav() {
                   <UserIcon className="h-8 w-8" aria-hidden="true" />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">{user?.fullName}</div>
-                  <div className="text-sm font-medium leading-none text-gray-400">{user?.primaryEmailAddress?.emailAddress}</div>
+                  <div className="text-base font-medium leading-none text-white">
+                    {user?.fullName}
+                  </div>
+                  <div className="text-sm font-medium leading-none text-gray-400">
+                    {user?.primaryEmailAddress?.emailAddress}
+                  </div>
                 </div>
                 <button
                   type="button"

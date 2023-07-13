@@ -1,6 +1,6 @@
-import ProductForm from "@/app/offer/_components/Form";
-import { fetchSelect } from "../utils";
-import { prisma } from "@/server/db";
+import ProductForm from "@/app/offer/_components/Form"
+import { prisma } from "@/server/db"
+import { fetchSelect } from "../utils"
 
 // https://github.com/vercel/next.js/issues/49408
 // export async function generateStaticParams() {
@@ -11,19 +11,21 @@ import { prisma } from "@/server/db";
 //   }));
 // }
 
-const EditProductOffer = async ({ params: { id } }: { params: { id: string } }) => {
+const EditProductOffer = async ({
+  params: { id },
+}: {
+  params: { id: string }
+}) => {
   const offerPromise = prisma.offer.findUnique({ where: { id } })
   const selectPromises = fetchSelect()
-  const [offer, [products, suppliers]] = await Promise.all([offerPromise, selectPromises])
+  const [offer, [products, suppliers]] = await Promise.all([
+    offerPromise,
+    selectPromises,
+  ])
 
   if (!offer) return <div>Offer not found</div>
 
-  return (
-    <ProductForm
-      offer={offer}
-      products={products}
-      suppliers={suppliers}
-    />)
+  return <ProductForm offer={offer} products={products} suppliers={suppliers} />
 }
 
 export default EditProductOffer

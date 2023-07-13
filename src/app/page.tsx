@@ -1,11 +1,7 @@
-import { type NextPage } from "next";
+import { type NextPage } from "next"
 
 const Home: NextPage = () => {
-  return (
-    <>
-      Gamma
-    </>
-  );
-};
+  return <>Gamma</>
+}
 
-export default Home;
+export default Home

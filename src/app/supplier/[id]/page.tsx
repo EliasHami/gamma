@@ -1,5 +1,5 @@
-import SupplierForm from "@/app/supplier/_components/Form";
-import { prisma } from "@/server/db";
+import SupplierForm from "@/app/supplier/_components/Form"
+import { prisma } from "@/server/db"
 
 // https://github.com/vercel/next.js/issues/49408
 // export async function generateStaticParams() {
@@ -15,9 +15,7 @@ const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
 
   if (!supplier) return <div>Supplier not found</div>
 
-  return (
-    <SupplierForm supplier={supplier} />
-  )
+  return <SupplierForm supplier={supplier} />
 }
 
 export default EditProduct

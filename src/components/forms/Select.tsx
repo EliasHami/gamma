@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { type PropsWithChildren } from "react"
-import { type FieldError, useFormContext } from "react-hook-form"
+import { useFormContext, type FieldError } from "react-hook-form"
 
 type InputProps = {
   name: string
@@ -10,35 +10,74 @@ type InputProps = {
   className?: string
 }
 
-const Select = ({ name, label, error, children, disabled, className }: PropsWithChildren<InputProps>) => {
+const Select = ({
+  name,
+  label,
+  error,
+  children,
+  disabled,
+  className,
+}: PropsWithChildren<InputProps>) => {
   const { register } = useFormContext()
 
   if (!name) return null
 
   return (
     <div className="mb-6">
-      <label className={clsx(className, "block", "text-gray-700", "text-sm", "font-bold", "mb-2", disabled && "opacity-50")} htmlFor="input">
+      <label
+        className={clsx(
+          className,
+          "block",
+          "text-gray-700",
+          "text-sm",
+          "font-bold",
+          "mb-2",
+          disabled && "opacity-50"
+        )}
+        htmlFor="input"
+      >
         {label}
       </label>
-      <div className={`${error ? "border-red-500" : ""} inline-block relative w-full`}>
+      <div
+        className={`${
+          error ? "border-red-500" : ""
+        } relative inline-block w-full`}
+      >
         <select
-          className={clsx("block", "appearance-none", "w-full", "disabled:opacity-50",
-            "bg-white", "border", "border-gray-400",
+          className={clsx(
+            "block",
+            "appearance-none",
+            "w-full",
+            "disabled:opacity-50",
+            "bg-white",
+            "border",
+            "border-gray-400",
             "enabled:hover:border-gray-500",
-            "px-4", "py-2", "pr-8",
+            "px-4",
+            "py-2",
+            "pr-8",
             "rounded",
-            "shadow", "leading-tight",
+            "shadow",
+            "leading-tight",
             "focus:outline-none",
-            "focus:shadow-outline")}
+            "focus:shadow-outline"
+          )}
           {...register(name)}
-          disabled={disabled}>
+          disabled={disabled}
+        >
           {children}
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+          <svg
+            className="h-4 w-4 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+          </svg>
         </div>
       </div>
-      {error && <p className="text-red-500 text-xs italic">{error?.message}</p>}
+      {error && <p className="text-xs italic text-red-500">{error?.message}</p>}
     </div>
   )
 }
