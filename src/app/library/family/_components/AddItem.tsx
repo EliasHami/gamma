@@ -1,7 +1,7 @@
 "use client"
 
 import { getErrorMessage } from "@/app/utils"
-import Input from "@/components/Input"
+import Input from "@/components/forms/Input"
 import LoadingSpinner from "@/components/Spinner"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {

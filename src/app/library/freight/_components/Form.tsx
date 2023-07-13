@@ -1,5 +1,5 @@
 "use client"
-import Input from "@/components/Input"
+import Input from "@/components/forms/Input"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type Freight } from "@prisma/client"

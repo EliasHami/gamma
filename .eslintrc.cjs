@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require("path");
+const path = require("path")
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
@@ -22,6 +22,7 @@ const config = {
   extends: [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "prettier",
     "plugin:tailwindcss/recommended",
   ],
@@ -46,6 +47,6 @@ const config = {
       rootDir: ["./"],
     },
   },
-};
+}
 
-module.exports = config;
+module.exports = config
