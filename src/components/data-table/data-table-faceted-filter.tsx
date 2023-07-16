@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import { type Column } from "@tanstack/react-table"
 
 import { Icons } from "@/components/icons"
@@ -18,15 +16,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import type { Option } from "@/types"
 
 interface DataTableFacetedFilter<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
-  options: {
-    label: string
-    value: string
-    icon?: React.ComponentType<{ className?: string }>
-  }[]
+  options: Option[]
 }
 
 export function DataTableFacetedFilter<TData, TValue>({

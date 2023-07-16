@@ -1,6 +1,6 @@
-import ProductTable from "@/app/product/_components/table"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
+import ProductTable from "@/components/tables/product-table"
 import { prisma } from "@/server/db"
 
 const Product = async () => {

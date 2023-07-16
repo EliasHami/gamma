@@ -16,8 +16,8 @@ import {
   type UseFormProps,
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { createProduct, updateProduct } from "../actions"
-import { productFormSchema } from "../schemas"
+import { createProduct, updateProduct } from "../../app/product/actions"
+import { productFormSchema } from "../../lib/validations/product"
 
 type ProductFormProps = {
   product?: ProductNeed

@@ -12,6 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import type {
+  DataTableFilterableColumn,
+  DataTableSearchableColumn,
+} from "@/types"
 import {
   flexRender,
   getCoreRowModel,
@@ -27,11 +31,15 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  filterableColumns?: DataTableFilterableColumn<TData>[]
+  searchableColumns?: DataTableSearchableColumn<TData>[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filterableColumns = [],
+  searchableColumns = [],
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -54,7 +62,11 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-auto">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar
+        table={table}
+        filterableColumns={filterableColumns}
+        searchableColumns={searchableColumns}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

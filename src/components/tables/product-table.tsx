@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { type Prisma, type ProductNeed } from "@prisma/client"
+import { DEPARTMENT, type Prisma, type ProductNeed } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
 import Link from "next/link"
 import { useTransition } from "react"
@@ -123,7 +123,28 @@ const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
     []
   )
 
-  return <DataTable columns={columns} data={products || []} />
+  return (
+    <DataTable
+      columns={columns}
+      data={products || []}
+      searchableColumns={[
+        {
+          id: "name",
+          title: "name",
+        },
+      ]}
+      filterableColumns={[
+        {
+          id: "department",
+          title: "Department",
+          options: Object.entries(DEPARTMENT).map(([key, value]) => ({
+            label: String(value),
+            value: String(key),
+          })),
+        },
+      ]}
+    />
+  )
 }
 
 export default ProductTable
