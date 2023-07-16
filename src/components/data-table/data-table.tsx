@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import DataTablePagination from "@/components/data-table/data-table-pagination"
-import { Input } from "@/components/ui/input"
+import DataTableToolbar from "@/components/data-table/data-table-toolbar"
 import {
   Table,
   TableBody,
@@ -54,16 +54,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-auto">
-      <div className="flex items-center overflow-auto py-4">
-        <Input
-          placeholder="Filter name"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
+      <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
