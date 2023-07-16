@@ -127,6 +127,7 @@ const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
     <DataTable
       columns={columns}
       data={products || []}
+      newRowLink="/product/new"
       searchableColumns={[
         {
           id: "name",

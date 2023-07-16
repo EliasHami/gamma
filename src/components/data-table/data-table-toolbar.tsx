@@ -2,28 +2,32 @@
 
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
 import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import type {
   DataTableFilterableColumn,
   DataTableSearchableColumn,
 } from "@/types"
 import { type Table } from "@tanstack/react-table"
+import Link from "next/link"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
   filterableColumns: DataTableFilterableColumn<TData>[]
   searchableColumns: DataTableSearchableColumn<TData>[]
+  newRowLink?: string
 }
 
 export default function DataTableToolbar<TData>({
   table,
   searchableColumns,
   filterableColumns,
+  newRowLink,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
   return (
-    <div className="flex items-center justify-between overflow-auto py-4">
+    <div className="flex w-full items-center justify-between overflow-auto py-4">
       <div className="flex flex-1 items-center space-x-2">
         {searchableColumns.length > 0 &&
           searchableColumns.map(
@@ -68,6 +72,24 @@ export default function DataTableToolbar<TData>({
             Reset
             <Icons.close className="ml-2 h-4 w-4" aria-hidden="true" />
           </Button>
+        )}
+      </div>
+      <div className="flex items-center space-x-2">
+        {newRowLink && (
+          <Link aria-label="Create new row" href={newRowLink}>
+            <div
+              className={cn(
+                buttonVariants({
+                  variant: "outline",
+                  size: "sm",
+                  className: "h-8",
+                })
+              )}
+            >
+              <Icons.addCircle className="mr-2 h-4 w-4" aria-hidden="true" />
+              New
+            </div>
+          </Link>
         )}
       </div>
     </div>

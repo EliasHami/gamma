@@ -33,6 +33,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   filterableColumns?: DataTableFilterableColumn<TData>[]
   searchableColumns?: DataTableSearchableColumn<TData>[]
+  newRowLink?: string
 }
 
 export function DataTable<TData, TValue>({
@@ -40,6 +41,7 @@ export function DataTable<TData, TValue>({
   data,
   filterableColumns = [],
   searchableColumns = [],
+  newRowLink,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -66,6 +68,7 @@ export function DataTable<TData, TValue>({
         table={table}
         filterableColumns={filterableColumns}
         searchableColumns={searchableColumns}
+        newRowLink={newRowLink}
       />
       <div className="rounded-md border">
         <Table>
