@@ -107,6 +107,8 @@ enum OFFER_STATUSES {
 
 model Offer {
   id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Restrict)
   needId  String
   supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
