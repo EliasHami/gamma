@@ -105,8 +105,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                       // }
                       // const filterValues = Array.from(selectedValues)
                       // TODO for now selecting multiple values doesn't work, fix it
-
-                      column?.setFilterValue(option.value)
+                      if (isSelected) {
+                        column?.setFilterValue(undefined)
+                      } else {
+                        column?.setFilterValue(option.value)
+                      }
                     }}
                   >
                     <div
