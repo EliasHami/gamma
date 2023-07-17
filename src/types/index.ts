@@ -1,3 +1,5 @@
+import type { HTMLInputTypeAttribute } from "react"
+
 export type Option = {
   label: string
   value: string
@@ -7,6 +9,7 @@ export type Option = {
 export interface DataTableSearchableColumn<TData> {
   id: keyof TData
   title: string
+  type?: HTMLInputTypeAttribute
 }
 
 export interface DataTableFilterableColumn<TData>

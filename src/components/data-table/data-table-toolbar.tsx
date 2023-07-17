@@ -27,15 +27,16 @@ export default function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
   return (
-    <div className="flex w-full items-center justify-between overflow-auto py-4">
-      <div className="flex flex-1 items-center space-x-2">
+    <div className="flex w-full items-center justify-between overflow-auto px-1 py-4">
+      <div className="flex flex-1 flex-wrap items-center space-x-2 space-y-1">
         {searchableColumns.length > 0 &&
           searchableColumns.map(
             (column) =>
               table.getColumn(column.id ? String(column.id) : "") && (
                 <Input
                   key={String(column.id)}
-                  placeholder={`Filter ${column.title}...`}
+                  placeholder={`${column.title}`}
+                  type={column.type ?? "text"}
                   value={
                     (table
                       .getColumn(String(column.id))
@@ -68,13 +69,13 @@ export default function DataTableToolbar<TData>({
             variant="ghost"
             className="h-8 px-2 lg:px-3"
             onClick={() => table.resetColumnFilters()}
+            title="Reset filters"
           >
-            Reset
-            <Icons.close className="ml-2 h-4 w-4" aria-hidden="true" />
+            <Icons.close className="h-4 w-4" aria-hidden="true" />
           </Button>
         )}
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 self-start">
         {newRowLink && (
           <Link aria-label="Create new row" href={newRowLink}>
             <div
