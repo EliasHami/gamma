@@ -25,7 +25,9 @@ import {
   useReactTable,
   type ColumnDef,
   type ColumnFiltersState,
+  type Row,
   type SortingState,
+  type VisibilityState,
 } from "@tanstack/react-table"
 
 interface DataTableProps<TData, TValue> {
@@ -34,6 +36,8 @@ interface DataTableProps<TData, TValue> {
   filterableColumns?: DataTableFilterableColumn<TData>[]
   searchableColumns?: DataTableSearchableColumn<TData>[]
   newRowLink?: string
+  getRowClassName?: (row: Row<TData>) => string
+  columnVisibility?: VisibilityState
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +46,8 @@ export function DataTable<TData, TValue>({
   filterableColumns = [],
   searchableColumns = [],
   newRowLink,
+  getRowClassName,
+  columnVisibility,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -59,6 +65,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
   })
 
@@ -96,6 +103,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={getRowClassName ? getRowClassName(row) : ""}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

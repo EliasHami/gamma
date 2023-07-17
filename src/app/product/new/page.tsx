@@ -1,9 +1,9 @@
 import ProductForm from "@/components/forms/add-product-form"
-import { fetchLibrarySelect } from "../../../lib/product"
+import { fetchProductCategoriesSelect } from "../../../lib/product"
 
 const NewProduct = async () => {
   const [productFamilies, productSubFamilies, productCapacities] =
-    await fetchLibrarySelect()
+    await fetchProductCategoriesSelect()
 
   return (
     <ProductForm

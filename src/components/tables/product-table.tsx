@@ -15,8 +15,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { DEPARTMENT, type Prisma, type ProductNeed } from "@prisma/client"
+import type {
+  ProductCapacitySelect,
+  ProductFamilySelect,
+  ProductSubFamilySelect,
+} from "@/lib/product"
+import {
+  DEPARTMENT,
+  VALIDATION_STATE,
+  type Prisma,
+  type ProductNeed,
+} from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
+import { getNames } from "country-list"
 import Link from "next/link"
 import { useTransition } from "react"
 
@@ -24,7 +35,19 @@ type ProductWithCategories = Prisma.ProductNeedGetPayload<{
   include: { family: true; subFamily: true; capacity: true }
 }>
 
-const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
+type ProductTableProps = {
+  products: ProductWithCategories[]
+  productFamilies: ProductFamilySelect[]
+  productSubFamilies: ProductSubFamilySelect[]
+  productCapacities: ProductCapacitySelect[]
+}
+
+const ProductTable = ({
+  products,
+  productFamilies,
+  productSubFamilies,
+  productCapacities,
+}: ProductTableProps) => {
   const [, startTransition] = useTransition()
 
   const columns = React.useMemo<ColumnDef<ProductWithCategories, unknown>[]>(
@@ -42,22 +65,25 @@ const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
         ),
       },
       {
-        accessorKey: "family.name",
+        accessorKey: "familyId",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Family" />
         ),
+        cell: ({ row }) => row.original.family.name,
       },
       {
-        accessorKey: "subFamily.name",
+        accessorKey: "subFamilyId",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Sub Family" />
         ),
+        cell: ({ row }) => row.original.subFamily.name,
       },
       {
-        accessorKey: "capacity.name",
+        accessorKey: "capacityId",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Capacity" />
         ),
+        cell: ({ row }) => row.original.capacity.name,
       },
       {
         accessorKey: "country",
@@ -79,6 +105,10 @@ const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
 
           return formatted
         },
+      },
+      {
+        accessorKey: "state",
+        filterFn: (row, id, filterValue) => row.original.state === filterValue,
       },
       {
         id: "actions",
@@ -128,6 +158,10 @@ const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
       columns={columns}
       data={products || []}
       newRowLink="/product/new"
+      getRowClassName={(row) =>
+        row.original.state === VALIDATION_STATE.VALIDATED ? "bg-green-50" : ""
+      }
+      columnVisibility={{ state: false }}
       searchableColumns={[
         {
           id: "name",
@@ -140,6 +174,46 @@ const ProductTable = ({ products }: { products: ProductWithCategories[] }) => {
           title: "Department",
           options: Object.entries(DEPARTMENT).map(([key, value]) => ({
             label: String(value),
+            value: String(key),
+          })),
+        },
+        {
+          id: "familyId",
+          title: "Family",
+          options: productFamilies.map(({ id, name }) => ({
+            label: String(name),
+            value: String(id),
+          })),
+        },
+        {
+          id: "subFamilyId",
+          title: "Sub family",
+          options: productSubFamilies.map(({ id, name }) => ({
+            label: String(name),
+            value: String(id),
+          })),
+        },
+        {
+          id: "capacityId",
+          title: "Capacity",
+          options: productCapacities.map(({ id, name }) => ({
+            label: String(name),
+            value: String(id),
+          })),
+        },
+        {
+          id: "country",
+          title: "Country",
+          options: getNames().map((name) => ({
+            label: String(name),
+            value: String(name),
+          })),
+        },
+        {
+          id: "state",
+          title: "State",
+          options: Object.entries(VALIDATION_STATE).map(([key, label]) => ({
+            label: String(label),
             value: String(key),
           })),
         },

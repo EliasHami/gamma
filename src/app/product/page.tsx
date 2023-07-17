@@ -2,18 +2,29 @@ import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
 import ProductTable from "@/components/tables/product-table"
+import { fetchProductCategoriesSelect } from "@/lib/product"
 import { prisma } from "@/server/db"
 
 const Product = async () => {
   let products = null
+  let productFamilies, productSubFamilies, productCapacities
   try {
-    products = await prisma.productNeed.findMany({
+    const productsPromise = prisma.productNeed.findMany({
       include: {
         family: true,
         subFamily: true,
         capacity: true,
       },
     })
+    const libraryPromises = fetchProductCategoriesSelect()
+    const [p, [pF, pSF, pC]] = await Promise.all([
+      productsPromise,
+      libraryPromises,
+    ])
+    products = p
+    productFamilies = pF
+    productSubFamilies = pSF
+    productCapacities = pC
   } catch (error) {
     console.error(error)
   }
@@ -34,7 +45,12 @@ const Product = async () => {
   return (
     <Shell>
       <Header title="Products" description={`List of products`} />
-      <ProductTable products={products} />
+      <ProductTable
+        products={products}
+        productFamilies={productFamilies || []}
+        productSubFamilies={productSubFamilies || []}
+        productCapacities={productCapacities || []}
+      />
     </Shell>
   )
 }

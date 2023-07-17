@@ -3,6 +3,11 @@ import { getErrorMessage } from "@/app/utils"
 import LoadingSpinner from "@/components/Spinner"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
+import type {
+  ProductCapacitySelect,
+  ProductFamilySelect,
+  ProductSubFamilySelect,
+} from "@/lib/product"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DEPARTMENT, VALIDATION_STATE, type ProductNeed } from "@prisma/client"
@@ -21,20 +26,9 @@ import { productFormSchema } from "../../lib/validations/product"
 
 type ProductFormProps = {
   product?: ProductNeed
-  productFamilies: Array<{
-    id: string
-    name: string
-  }>
-  productSubFamilies: Array<{
-    id: string
-    name: string
-    familyId: string
-  }>
-  productCapacities: Array<{
-    id: string
-    name: string
-    subFamilyId: string
-  }>
+  productFamilies: ProductFamilySelect[]
+  productSubFamilies: ProductSubFamilySelect[]
+  productCapacities: ProductCapacitySelect[]
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
