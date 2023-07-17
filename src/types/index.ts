@@ -14,5 +14,10 @@ export interface DataTableSearchableColumn<TData> {
 
 export interface DataTableFilterableColumn<TData>
   extends DataTableSearchableColumn<TData> {
-  options: Option[]
+  options?: Option[]
+}
+
+export type CompareFilterValue = {
+  operation: "===" | ">" | "<"
+  value: number
 }

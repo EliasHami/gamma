@@ -61,6 +61,7 @@ import {
   X,
   type Icon as LucideIcon,
   type LucideProps,
+  Equal,
 } from "lucide-react"
 
 export type Icon = LucideIcon
@@ -126,6 +127,7 @@ export const Icons = {
   clothing: Shirt,
   shoes: Footprints,
   accessories: HardHat,
+  equal: Equal,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,6 @@
 "use client"
 
+import { DataTableCompareFilter } from "@/components/data-table/data-table-compare-filter"
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
 import { Icons } from "@/components/icons"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -54,14 +55,22 @@ export default function DataTableToolbar<TData>({
         {filterableColumns.length > 0 &&
           filterableColumns.map(
             (column) =>
-              table.getColumn(column.id ? String(column.id) : "") && (
-                <DataTableFacetedFilter
-                  key={String(column.id)}
+              table.getColumn(column.id ? String(column.id) : "") &&
+              (column.type === "number" ? (
+                <DataTableCompareFilter
                   column={table.getColumn(column.id ? String(column.id) : "")}
                   title={column.title}
-                  options={column.options}
                 />
-              )
+              ) : (
+                column.options && (
+                  <DataTableFacetedFilter
+                    key={String(column.id)}
+                    column={table.getColumn(column.id ? String(column.id) : "")}
+                    title={column.title}
+                    options={column.options}
+                  />
+                )
+              ))
           )}
         {isFiltered && (
           <Button

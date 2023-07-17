@@ -20,6 +20,7 @@ import type {
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
+import type { CompareFilterValue } from "@/types"
 import {
   DEPARTMENT,
   VALIDATION_STATE,
@@ -105,6 +106,14 @@ const ProductTable = ({
 
           return formatted
         },
+        filterFn: (row, id, filterValue: CompareFilterValue) =>
+          Boolean(
+            eval(
+              String(row.original.targetPublicPrice) +
+                filterValue.operation +
+                String(filterValue.value)
+            )
+          ),
       },
       {
         accessorKey: "state",
@@ -165,7 +174,7 @@ const ProductTable = ({
       searchableColumns={[
         {
           id: "name",
-          title: "name",
+          title: "Filter name...",
         },
       ]}
       filterableColumns={[
@@ -216,6 +225,11 @@ const ProductTable = ({
             label: String(label),
             value: String(key),
           })),
+        },
+        {
+          id: "targetPublicPrice",
+          title: "Target Public Price",
+          type: "number",
         },
       ]}
     />
