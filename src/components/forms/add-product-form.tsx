@@ -1,19 +1,11 @@
 "use client"
-import { getErrorMessage } from "@/app/utils"
-import LoadingSpinner from "@/components/Spinner"
-import Input from "@/components/forms/Input"
-import Select from "@/components/forms/Select"
-import type {
-  ProductCapacitySelect,
-  ProductFamilySelect,
-  ProductSubFamilySelect,
-} from "@/lib/product"
+
+import React, { useEffect, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DEPARTMENT, VALIDATION_STATE, type ProductNeed } from "@prisma/client"
-import { getNames } from "country-list"
-import { useRouter } from "next/navigation"
-import React, { useEffect, useTransition } from "react"
+import { getData } from "country-list"
 import {
   FormProvider,
   useForm,
@@ -21,6 +13,17 @@ import {
   type UseFormProps,
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
+
+import type {
+  ProductCapacitySelect,
+  ProductFamilySelect,
+  ProductSubFamilySelect,
+} from "@/lib/product"
+import Input from "@/components/forms/Input"
+import Select from "@/components/forms/Select"
+import LoadingSpinner from "@/components/Spinner"
+import { getErrorMessage } from "@/app/utils"
+
 import { createProduct, updateProduct } from "../../app/product/actions"
 import { productFormSchema } from "../../lib/validations/product"
 
@@ -161,9 +164,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 ))}
             </Select>
             <Select name="country" label="Country" error={errors.country}>
-              {getNames().map((name) => (
-                <option key={name} value={name}>
-                  {name}
+              {getData().map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.name}
                 </option>
               ))}
             </Select>

@@ -1,9 +1,10 @@
+import { prisma } from "@/server/db"
+
+import { fetchProductCategoriesSelect } from "@/lib/product"
 import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
 import ProductTable from "@/components/tables/product-table"
-import { fetchProductCategoriesSelect } from "@/lib/product"
-import { prisma } from "@/server/db"
 
 const Product = async () => {
   let products = null
@@ -33,7 +34,7 @@ const Product = async () => {
     return (
       <Shell variant="centered">
         <ErrorCard
-          title="Could not retrieve offers."
+          title="Could not retrieve products."
           description="Please check your connection and try again later."
           retryLink="/product"
           retryLinkText="Retry"

@@ -1,11 +1,23 @@
 "use client"
 
 import * as React from "react"
+import { useTransition } from "react"
+import Link from "next/link"
+import type { CompareFilterValue } from "@/types"
+import {
+  DEPARTMENT,
+  VALIDATION_STATE,
+  type Prisma,
+  type ProductNeed,
+} from "@prisma/client"
+import { type ColumnDef } from "@tanstack/react-table"
+import { getData, getName } from "country-list"
 
-import { deleteProduct } from "@/app/product/actions"
-import { DataTable } from "@/components/data-table/data-table"
-import DataTableColumnHeader from "@/components/data-table/data-table-column-header"
-import { Icons } from "@/components/icons"
+import type {
+  ProductCapacitySelect,
+  ProductFamilySelect,
+  ProductSubFamilySelect,
+} from "@/lib/product"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,22 +27,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import type {
-  ProductCapacitySelect,
-  ProductFamilySelect,
-  ProductSubFamilySelect,
-} from "@/lib/product"
-import type { CompareFilterValue } from "@/types"
-import {
-  DEPARTMENT,
-  VALIDATION_STATE,
-  type Prisma,
-  type ProductNeed,
-} from "@prisma/client"
-import { type ColumnDef } from "@tanstack/react-table"
-import { getNames } from "country-list"
-import Link from "next/link"
-import { useTransition } from "react"
+import { DataTable } from "@/components/data-table/data-table"
+import DataTableColumnHeader from "@/components/data-table/data-table-column-header"
+import { Icons } from "@/components/icons"
+import { deleteProduct } from "@/app/product/actions"
 
 type ProductWithCategories = Prisma.ProductNeedGetPayload<{
   include: { family: true; subFamily: true; capacity: true }
@@ -91,6 +91,7 @@ const ProductTable = ({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Country" />
         ),
+        cell: ({ row }) => getName(row.original.country),
       },
       {
         accessorKey: "targetPublicPrice",
@@ -213,9 +214,9 @@ const ProductTable = ({
         {
           id: "country",
           title: "Country",
-          options: getNames().map((name) => ({
-            label: String(name),
-            value: String(name),
+          options: getData().map((country) => ({
+            label: String(country.name),
+            value: String(country.code),
           })),
         },
         {
