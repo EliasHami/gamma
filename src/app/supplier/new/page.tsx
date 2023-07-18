@@ -1,4 +1,4 @@
-import Form from "@/components/forms/Form"
+import Form from "@/components/forms/add-supplier-form"
 
 const NewSupplier = () => <Form />
 
