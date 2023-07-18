@@ -2,7 +2,6 @@
 
 import React, { useTransition } from "react"
 import { useRouter } from "next/navigation"
-import supplierFormSchema from "@/schemas/supplier"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SUPPLIER_STATUSES, type Supplier } from "@prisma/client"
@@ -15,6 +14,7 @@ import {
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
 
+import supplierFormSchema from "@/lib/validations/supplier"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
