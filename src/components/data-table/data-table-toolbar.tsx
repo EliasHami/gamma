@@ -1,17 +1,18 @@
 "use client"
 
-import { DataTableCompareFilter } from "@/components/data-table/data-table-compare-filter"
-import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
-import { Icons } from "@/components/icons"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import Link from "next/link"
 import type {
   DataTableFilterableColumn,
   DataTableSearchableColumn,
 } from "@/types"
 import { type Table } from "@tanstack/react-table"
-import Link from "next/link"
+
+import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { DataTableCompareFilter } from "@/components/data-table/data-table-compare-filter"
+import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
+import { Icons } from "@/components/icons"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
@@ -29,7 +30,7 @@ export default function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0
   return (
     <div className="flex w-full items-center justify-between overflow-auto px-1 py-4">
-      <div className="flex flex-1 flex-wrap items-center space-x-2 space-y-1">
+      <div className="flex flex-1 flex-wrap items-center space-x-2">
         {searchableColumns.length > 0 &&
           searchableColumns.map(
             (column) =>
@@ -48,7 +49,7 @@ export default function DataTableToolbar<TData>({
                       .getColumn(String(column.id))
                       ?.setFilterValue(event.target.value)
                   }
-                  className="h-8 w-[150px] lg:w-[250px]"
+                  className="h-8 w-[100px] lg:w-[200px]"
                 />
               )
           )}

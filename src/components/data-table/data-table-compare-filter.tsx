@@ -1,6 +1,7 @@
+import type { CompareFilterValue } from "@/types"
 import { type Column } from "@tanstack/react-table"
 
-import { Icons } from "@/components/icons"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -17,8 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils"
-import type { CompareFilterValue } from "@/types"
+import { Icons } from "@/components/icons"
 
 interface DataTableCompareFilter<TData, TValue> {
   column?: Column<TData, TValue>
@@ -52,7 +52,7 @@ export function DataTableCompareFilter<TData, TValue>({
           size="sm"
           className="h-8 border-dashed"
         >
-          <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
+          <Icons.addCircle className="mr-2 h-4 w-4" aria-hidden="true" />
           {title}
           {Icon && <Icon className="mx-2 h-4 w-4" aria-hidden="true" />}
           {selectedValue.value || ""}
