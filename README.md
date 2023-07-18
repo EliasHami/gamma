@@ -29,7 +29,7 @@
 
 eslint-config-prettier: Turns off all ESLint rules that have the potential to interfere with Prettier rules.
 
-eslint-plugin-prettier: Turns Prettier rules into ESLint rules. // issue with installation
+eslint-plugin-prettier: Turns Prettier rules into ESLint rules. // needs prettier 3.0.0 which is not "wanted"
 
 eslint-config-next : The default configuration (eslint-config-next) includes everything you need to have an optimal out-of-the-box linting experience in Next.js. Recommended rule-sets from the following ESLint plugins are all used within eslint-config-next:
 eslint-plugin-react

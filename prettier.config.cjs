@@ -26,9 +26,6 @@ module.exports = {
   importOrderTypeScriptVersion: "5.0.2",
   plugins: [
     "@ianvs/prettier-plugin-sort-imports",
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // doesn't work without require
-    require("prettier-plugin-tailwindcss"),
+    "prettier-plugin-tailwindcss",
   ],
 }
