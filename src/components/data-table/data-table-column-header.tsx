@@ -1,7 +1,8 @@
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { type Column } from "@tanstack/react-table"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,22 +1,16 @@
+import * as React from "react"
 import type { CompareFilterValue } from "@/types"
 import { type Column } from "@tanstack/react-table"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import { Icons } from "@/components/icons"
 
@@ -59,47 +53,35 @@ export function DataTableCompareFilter<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder={title} />
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              {OPERATIONS.map((operation) => {
-                const isSelected = selectedValue.operation === operation.value
-                return (
-                  <CommandItem
-                    key={operation.value}
-                    onSelect={() => {
-                      if (isSelected) {
-                        column?.setFilterValue(undefined)
-                      } else {
-                        column?.setFilterValue({
-                          ...selectedValue,
-                          operation: operation.value,
-                        })
-                      }
-                    }}
-                  >
-                    <div
-                      className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
-                      )}
-                    >
-                      <Icons.check
-                        className={cn("h-4 w-4")}
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <span>{operation.label}</span>
-                  </CommandItem>
-                )
-              })}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+        <RadioGroup
+          defaultValue="==="
+          value={selectedValue.operation}
+          className="my-2"
+          onValueChange={(value) => {
+            const isSelected = selectedValue.operation === value
+
+            if (isSelected) {
+              column?.setFilterValue(undefined)
+            } else {
+              column?.setFilterValue({
+                ...selectedValue,
+                operation: value,
+              })
+            }
+          }}
+        >
+          {OPERATIONS.map((operation) => {
+            return (
+              <div
+                key={operation.value}
+                className="ml-2 flex items-center space-x-2"
+              >
+                <RadioGroupItem value={operation.value} id={operation.value} />
+                <Label htmlFor={operation.value}>{operation.label}</Label>
+              </div>
+            )
+          })}
+        </RadioGroup>
         <Separator />
         <Input
           placeholder="Value to compare..."

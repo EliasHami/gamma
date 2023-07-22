@@ -30,7 +30,7 @@ export default function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0
   return (
     <div className="flex w-full items-center justify-between overflow-auto px-1 py-4">
-      <div className="flex flex-1 flex-wrap items-center space-x-2">
+      <div className="flex flex-1 flex-wrap items-center gap-2 space-x-2">
         {searchableColumns.length > 0 &&
           searchableColumns.map(
             (column) =>

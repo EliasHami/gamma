@@ -52,16 +52,23 @@ const Offer = async () => {
     }
 
     offers = await Promise.all(
-      o?.map(async (offer) => ({
-        ...offer,
-        ddpPrice: await calculateDDPPrice(
+      o?.map(async (offer) => {
+        const ddpPrice = await calculateDDPPrice(
           offer,
           company,
           freights?.find(
             (freight) => freight.country === offer.supplier.country
           )?.price
-        ),
-      }))
+        )
+        const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2)
+        const publicPrice = Math.round(grossPrice / (1 - 0.1))
+        return {
+          ...offer,
+          ddpPrice,
+          grossPrice,
+          publicPrice,
+        }
+      })
     )
   } catch (error) {
     console.error(getErrorMessage(error))
@@ -82,7 +89,7 @@ const Offer = async () => {
 
   return (
     <Shell>
-      <Header title="Products" description={`List of products`} />
+      <Header title="Offers" description={`List of offers from suppliers`} />
       <OfferTable
         offers={offers}
         products={products || []}

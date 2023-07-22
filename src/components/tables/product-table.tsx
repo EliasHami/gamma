@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useTransition } from "react"
 import Link from "next/link"
-import type { CompareFilterValue } from "@/types"
 import { DEPARTMENT, VALIDATION_STATE, type Prisma } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
 import { getData, getName } from "country-list"
@@ -14,6 +13,7 @@ import type {
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
+import { compareFilterFn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -95,14 +95,7 @@ const ProductTable = ({
           <DataTableColumnHeader column={column} title="Target Public Price" />
         ),
         cell: ({ row }) => formatCurrency(row.original.targetPublicPrice), // TODO get currency from company
-        filterFn: (row, id, filterValue: CompareFilterValue) =>
-          Boolean(
-            eval(
-              String(row.original.targetPublicPrice) +
-                filterValue.operation +
-                String(filterValue.value)
-            )
-          ),
+        filterFn: compareFilterFn<ProductWithCategories>,
       },
       {
         accessorKey: "state",

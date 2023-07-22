@@ -10,6 +10,7 @@ import CurrencyList from "currency-list"
 
 import { formatCurrency } from "@/lib/currency"
 import type { ProductSelect, SupplierSelect } from "@/lib/offer"
+import { compareFilterFn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -24,7 +25,11 @@ import DataTableColumnHeader from "@/components/data-table/data-table-column-hea
 import { Icons } from "@/components/icons"
 import { deleteOffer } from "@/app/offer/actions"
 
-type OfferWithPrice = OfferWithNeedAndSupplier & { ddpPrice: number }
+type OfferWithPrice = OfferWithNeedAndSupplier & {
+  ddpPrice: number
+  grossPrice: number
+  publicPrice: number
+}
 
 type OfferTableProps = {
   offers: OfferWithPrice[]
@@ -93,6 +98,24 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="DDP Price" />
         ),
+        filterFn: compareFilterFn,
+        cell: ({ row }) => formatCurrency(row.original.ddpPrice), // TODO get currency from company
+      },
+      {
+        accessorKey: "grossPrice",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Gross Price" />
+        ),
+        filterFn: compareFilterFn,
+        cell: ({ row }) => formatCurrency(row.original.grossPrice),
+      },
+      {
+        accessorKey: "publicPrice",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Public Price" />
+        ),
+        filterFn: compareFilterFn,
+        cell: ({ row }) => formatCurrency(row.original.publicPrice),
       },
       {
         id: "actions",
@@ -206,6 +229,21 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
         {
           id: "quantityPerContainer",
           title: "Quantity Per Container",
+          type: "number",
+        },
+        {
+          id: "ddpPrice",
+          title: "DDP Price",
+          type: "number",
+        },
+        {
+          id: "grossPrice",
+          title: "Gross Price",
+          type: "number",
+        },
+        {
+          id: "publicPrice",
+          title: "Public Price",
           type: "number",
         },
       ]}
