@@ -119,7 +119,6 @@ model Offer {
   status  OFFER_STATUSES 
   image Json
   quantityPerContainer Int
-  DDPPrice Float @default(0)
   @@index(needId)
   @@index(supplierId)
 }

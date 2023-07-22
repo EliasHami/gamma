@@ -4,15 +4,11 @@ import * as React from "react"
 import { useTransition } from "react"
 import Link from "next/link"
 import type { CompareFilterValue } from "@/types"
-import {
-  DEPARTMENT,
-  VALIDATION_STATE,
-  type Prisma,
-  type ProductNeed,
-} from "@prisma/client"
+import { DEPARTMENT, VALIDATION_STATE, type Prisma } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
 import { getData, getName } from "country-list"
 
+import { formatCurrency } from "@/lib/currency"
 import type {
   ProductCapacitySelect,
   ProductFamilySelect,
@@ -98,15 +94,7 @@ const ProductTable = ({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Target Public Price" />
         ),
-        cell: ({ cell }) => {
-          const amount = cell.getValue() as ProductNeed["targetPublicPrice"]
-          const formatted = new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(amount)
-
-          return formatted
-        },
+        cell: ({ row }) => formatCurrency(row.original.targetPublicPrice), // TODO get currency from company
         filterFn: (row, id, filterValue: CompareFilterValue) =>
           Boolean(
             eval(

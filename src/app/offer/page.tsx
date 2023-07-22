@@ -1,150 +1,94 @@
-import { ErrorCard } from "@/components/error-card"
-import { Shell } from "@/components/shell"
-import { calculateDDPPrice } from "@/lib/currency"
+import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
-import CurrencyList from "currency-list"
-import Link from "next/link"
-import { redirect } from "next/navigation"
-import { toast } from "react-hot-toast"
-import Actions from "./_components/Actions"
+
+import { calculateDDPPrice } from "@/lib/currency"
+import { fetchSelect } from "@/lib/offer"
+import { getErrorMessage } from "@/lib/utils"
+import { ErrorCard } from "@/components/error-card"
+import { Header } from "@/components/header"
+import { Shell } from "@/components/shell"
+import OfferTable from "@/components/tables/offer-table"
 
 const Offer = async () => {
   const { userId } = auth()
   if (!userId) redirect("/signin")
   let offers = null
-  const company = await prisma.company.findUnique({ where: { userId } })
+  let products = null
+  let suppliers = null
 
   try {
-    offers = await prisma.offer.findMany({
+    const companyPromise = prisma.company.findUnique({ where: { userId } })
+    const offersPromise = prisma.offer.findMany({
       include: {
         need: true,
         supplier: true,
       },
     })
+    const freightsPromise = prisma.freight.findMany({
+      where: { userId },
+    })
+    const relationPromises = fetchSelect()
+    const [company, o, freights, [p, s]] = await Promise.all([
+      companyPromise,
+      offersPromise,
+      freightsPromise,
+      relationPromises,
+    ])
+    products = p
+    suppliers = s
+
+    if (!company) {
+      return (
+        <Shell variant="centered">
+          <ErrorCard
+            title="No settings configured."
+            description="Please check settings."
+            retryLink="/company"
+            retryLinkText="Go to settings"
+          />
+        </Shell>
+      )
+    }
+
+    offers = await Promise.all(
+      o?.map(async (offer) => ({
+        ...offer,
+        ddpPrice: await calculateDDPPrice(
+          offer,
+          company,
+          freights?.find(
+            (freight) => freight.country === offer.supplier.country
+          )?.price
+        ),
+      }))
+    )
   } catch (error) {
-    toast.error("Could not retrieve offers. Please try again later.")
-    console.error(error)
+    console.error(getErrorMessage(error))
   }
 
-  if (!company) {
+  if (!offers) {
     return (
       <Shell variant="centered">
         <ErrorCard
-          title="No country configured in settings"
-          description="No country configured in settings. Please check settings."
-          retryLink="/company"
-          retryLinkText="Go to company settings"
+          title="Could not retrieve offers."
+          description="Please check your connection and try again later."
+          retryLink="/offers"
+          retryLinkText="Retry"
         />
       </Shell>
     )
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
-            <table className="min-w-full text-left text-sm font-light">
-              <thead className="border-b font-medium dark:border-neutral-500">
-                <tr>
-                  <th scope="col" className="px-6 py-4">
-                    Product
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Supplier
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    FOB Price
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Currency
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Validation
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Image
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    DDP Price
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Gross Price
-                  </th>
-                  <th scope="col" className="px-6 py-4">
-                    Public Price
-                  </th>
-                  <th scope="col" className="px-6 py-4"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {offers?.map(async (offer) => {
-                  const ddpPrice = await calculateDDPPrice(
-                    offer,
-                    userId,
-                    company
-                  ) // TODO : try https://www.prisma.io/docs/concepts/components/prisma-client/computed-fields
-                  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2)
-                  const publicPrice = Math.round(grossPrice / (1 - 0.1))
-                  const symbol = CurrencyList.get(company.currency)["symbol"]
-                  return (
-                    <tr
-                      key={offer.id}
-                      className="border-b dark:border-neutral-500"
-                    >
-                      <td className="whitespace-nowrap px-6 py-4 font-medium">
-                        <Link
-                          href={`/product/${offer.needId}`}
-                          className="flex items-center gap-1"
-                        >
-                          <ArrowTopRightOnSquareIcon className="h-3 w-3" />
-                          <span>{offer.need.name}</span>
-                        </Link>
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        <Link
-                          href={`/supplier/${offer.supplierId}`}
-                          className="flex items-center gap-1"
-                        >
-                          <ArrowTopRightOnSquareIcon className="h-3 w-3" />
-                          <span>{offer.supplier.name}</span>
-                        </Link>
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        {offer.fobPrice}
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        {offer.currency}
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        {offer.validation}
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        {offer.status}
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        {JSON.stringify(offer.image)}
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">{`${ddpPrice} ${symbol}`}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{`${grossPrice} ${symbol}`}</td>
-                      <td className="whitespace-nowrap px-6 py-4">{`${publicPrice} ${symbol}`}</td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        <Actions id={offer.id} />
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Shell>
+      <Header title="Products" description={`List of products`} />
+      <OfferTable
+        offers={offers}
+        products={products || []}
+        suppliers={suppliers || []}
+      />
+    </Shell>
   )
 }
 

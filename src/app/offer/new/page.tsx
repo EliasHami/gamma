@@ -1,5 +1,6 @@
 import ProductForm from "@/app/offer/_components/Form"
-import { fetchSelect } from "../utils"
+
+import { fetchSelect } from "../../../lib/offer"
 
 const NewProductOffer = async () => {
   const [products, suppliers] = await fetchSelect()

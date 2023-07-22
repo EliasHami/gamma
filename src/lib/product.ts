@@ -1,7 +1,7 @@
 import { prisma } from "@/server/db"
 import type { Prisma } from "@prisma/client"
 
-const fetchProductCategoriesSelect = async () => {
+const fetchProductCategoriesSelect = () => {
   const productFamiliesPromise = prisma.productFamily.findMany({
     select: {
       id: true,
