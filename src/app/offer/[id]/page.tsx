@@ -1,6 +1,6 @@
 import { prisma } from "@/server/db"
 
-import ProductForm from "@/app/offer/_components/Form"
+import OfferForm from "@/components/forms/add-offer-form"
 
 import { fetchSelect } from "../../../lib/offer"
 
@@ -27,7 +27,7 @@ const EditProductOffer = async ({
 
   if (!offer) return <div>Offer not found</div>
 
-  return <ProductForm offer={offer} products={products} suppliers={suppliers} />
+  return <OfferForm offer={offer} products={products} suppliers={suppliers} />
 }
 
 export default EditProductOffer
