@@ -7,6 +7,7 @@ import type { OfferWithNeedAndSupplier } from "@/types"
 import { OFFER_STATUSES, VALIDATION_STATE } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
 import CurrencyList from "currency-list"
+import { format } from "date-fns"
 
 import { formatCurrency } from "@/lib/currency"
 import type { ProductSelect, SupplierSelect } from "@/lib/offer"
@@ -55,6 +56,13 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
           <DataTableColumnHeader column={column} title="Supplier" />
         ),
         cell: ({ row }) => row.original.supplier.name,
+      },
+      {
+        accessorKey: "date",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Date" />
+        ),
+        cell: ({ row }) => format(row.original.date, "dd/MM/yyyy"),
       },
       {
         accessorKey: "fobPrice",
