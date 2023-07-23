@@ -1,5 +1,5 @@
-import { OFFER_STATUSES, YESNO } from "@prisma/client";
-import { z } from "zod";
+import { OFFER_STATUSES, YESNO } from "@prisma/client"
+import { z } from "zod"
 
 const offerFormSchema = z.object({
   id: z.string().cuid().optional(),
@@ -11,6 +11,7 @@ const offerFormSchema = z.object({
   status: z.nativeEnum(OFFER_STATUSES),
   image: z.object({}).nullable(), //z.instanceof(File),
   quantityPerContainer: z.number(),
-});
+  date: z.date(),
+})
 
-export default offerFormSchema;
+export default offerFormSchema

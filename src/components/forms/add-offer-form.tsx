@@ -14,6 +14,7 @@ import {
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
 
+import { DatePicker } from "@/components/date-picker"
 import ImagePicker from "@/components/forms/ImagePicker"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
@@ -95,6 +96,12 @@ const OfferForm: React.FC<OfferFormProps> = ({
                 </option>
               ))}
             </Select>
+            <DatePicker
+              name="date"
+              label="Date"
+              error={errors.date}
+              description="Date of the offer"
+            />
             <Input
               name="fobPrice"
               label="FOB Price"

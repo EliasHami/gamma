@@ -119,6 +119,7 @@ model Offer {
   status  OFFER_STATUSES 
   image Json
   quantityPerContainer Int
+  date DateTime
   @@index(needId)
   @@index(supplierId)
 }
