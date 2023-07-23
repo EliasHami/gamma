@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default function ProductLoading() {
+export default function OfferLoading() {
   return (
     <Card>
       <CardHeader className="space-y-2">
