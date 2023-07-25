@@ -14,6 +14,7 @@ import {
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
 
+import type { ProductSelect, SupplierSelect } from "@/lib/offer"
 import { DatePicker } from "@/components/date-picker"
 import ImagePicker from "@/components/forms/ImagePicker"
 import Input from "@/components/forms/Input"
@@ -24,15 +25,10 @@ import { getErrorMessage } from "@/app/utils"
 import { createOffer, updateOffer } from "../../app/offer/actions"
 import offerFormSchema from "../../lib/validations/offer"
 
-type SelectOptions = {
-  id: string
-  name: string
-}[]
-
 type OfferFormProps = {
   offer?: Offer
-  products: SelectOptions
-  suppliers: SelectOptions
+  products: ProductSelect[]
+  suppliers: SupplierSelect[]
 }
 
 const OfferForm: React.FC<OfferFormProps> = ({

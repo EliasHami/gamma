@@ -17,13 +17,6 @@ export function compareFilterFn<TData>(
   id: string,
   filterValue: CompareFilterValue
 ) {
-  console.log({
-    toto:
-      String(row.original[id as keyof TData]) +
-      filterValue.operation +
-      String(filterValue.value),
-  })
-
   return Boolean(
     eval(
       String(row.original[id as keyof TData]) +

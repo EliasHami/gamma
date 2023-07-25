@@ -23,6 +23,12 @@ export type CompareFilterValue = {
   value: number
 }
 
+export type OfferWithSupplier = Prisma.OfferGetPayload<{
+  include: { supplier: true }
+}>
+
 export type OfferWithNeedAndSupplier = Prisma.OfferGetPayload<{
   include: { need: true; supplier: true }
 }>
+
+export type BarChartData = { name: string; total: number }
