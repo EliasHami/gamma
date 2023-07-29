@@ -4,7 +4,7 @@ import * as React from "react"
 import { useTransition } from "react"
 import Link from "next/link"
 import type { OfferWithNeedAndSupplier } from "@/types"
-import { OFFER_STATUSES, VALIDATION_STATE } from "@prisma/client"
+import { OFFER_STATUSES, VALIDATION_STATE, type Company } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
 import CurrencyList from "currency-list"
 import { format } from "date-fns"
@@ -26,22 +26,22 @@ import DataTableColumnHeader from "@/components/data-table/data-table-column-hea
 import { Icons } from "@/components/icons"
 import { deleteOffer } from "@/app/offer/actions"
 
-type OfferWithPrice = OfferWithNeedAndSupplier & {
-  ddpPrice: number
-  grossPrice: number
-  publicPrice: number
-}
-
 type OfferTableProps = {
-  offers: OfferWithPrice[]
+  offers: OfferWithNeedAndSupplier[]
+  company: Company
   products: ProductSelect[]
   suppliers: SupplierSelect[]
 }
 
-const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
+const OfferTable = ({
+  offers,
+  company,
+  products,
+  suppliers,
+}: OfferTableProps) => {
   const [, startTransition] = useTransition()
 
-  const columns = React.useMemo<ColumnDef<OfferWithPrice, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<OfferWithNeedAndSupplier, unknown>[]>(
     () => [
       {
         accessorKey: "needId",
@@ -69,7 +69,8 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="FOB Price" />
         ),
-        cell: ({ row }) => formatCurrency(row.original.fobPrice),
+        cell: ({ row }) =>
+          formatCurrency(row.original.fobPrice, company.currency),
       },
       {
         accessorKey: "currency",
@@ -107,7 +108,8 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
           <DataTableColumnHeader column={column} title="DDP Price" />
         ),
         filterFn: compareFilterFn,
-        cell: ({ row }) => formatCurrency(row.original.ddpPrice), // TODO get currency from company
+        cell: ({ row }) =>
+          formatCurrency(row.original.ddpPrice, company.currency),
       },
       {
         accessorKey: "grossPrice",
@@ -115,7 +117,8 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
           <DataTableColumnHeader column={column} title="Gross Price" />
         ),
         filterFn: compareFilterFn,
-        cell: ({ row }) => formatCurrency(row.original.grossPrice),
+        cell: ({ row }) =>
+          formatCurrency(row.original.grossPrice, company.currency),
       },
       {
         accessorKey: "publicPrice",
@@ -123,7 +126,8 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
           <DataTableColumnHeader column={column} title="Public Price" />
         ),
         filterFn: compareFilterFn,
-        cell: ({ row }) => formatCurrency(row.original.publicPrice),
+        cell: ({ row }) =>
+          formatCurrency(row.original.publicPrice, company.currency),
       },
       {
         id: "actions",
@@ -165,7 +169,7 @@ const OfferTable = ({ offers, products, suppliers }: OfferTableProps) => {
         },
       },
     ],
-    []
+    [company.currency]
   )
 
   return (

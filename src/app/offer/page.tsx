@@ -2,7 +2,6 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
-import { calculateDDPPrice } from "@/lib/currency"
 import { fetchSelect } from "@/lib/offer"
 import { getErrorMessage } from "@/lib/utils"
 import { ErrorCard } from "@/components/error-card"
@@ -14,62 +13,30 @@ const Offer = async () => {
   const { userId } = auth()
   if (!userId) redirect("/signin")
   let offers = null
+  let company = null
   let products = null
   let suppliers = null
-
   try {
-    const companyPromise = prisma.company.findUnique({ where: { userId } })
     const offersPromise = prisma.offer.findMany({
+      where: { userId },
       include: {
         need: true,
         supplier: true,
       },
     })
-    const freightsPromise = prisma.freight.findMany({
+    const companyPromise = await prisma.company.findUnique({
       where: { userId },
     })
     const relationPromises = fetchSelect()
-    const [company, o, freights, [p, s]] = await Promise.all([
+    const [c, o, [p, s]] = await Promise.all([
       companyPromise,
       offersPromise,
-      freightsPromise,
       relationPromises,
     ])
+    company = c
     products = p
     suppliers = s
-
-    if (!company) {
-      return (
-        <Shell variant="centered">
-          <ErrorCard
-            title="No settings configured."
-            description="Please check settings."
-            retryLink="/company"
-            retryLinkText="Go to settings"
-          />
-        </Shell>
-      )
-    }
-
-    offers = await Promise.all(
-      o?.map(async (offer) => {
-        const ddpPrice = await calculateDDPPrice(
-          offer,
-          company,
-          freights?.find(
-            (freight) => freight.country === offer.supplier.country
-          )?.price
-        )
-        const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2)
-        const publicPrice = Math.round(grossPrice / (1 - 0.1))
-        return {
-          ...offer,
-          ddpPrice,
-          grossPrice,
-          publicPrice,
-        }
-      })
-    )
+    offers = o
   } catch (error) {
     console.error(getErrorMessage(error))
   }
@@ -87,11 +54,25 @@ const Offer = async () => {
     )
   }
 
+  if (!company) {
+    return (
+      <Shell variant="centered">
+        <ErrorCard
+          title="No settings configured."
+          description="Please check settings."
+          retryLink="/company"
+          retryLinkText="Go to settings"
+        />
+      </Shell>
+    )
+  }
+
   return (
     <Shell>
       <Header title="Offers" description={`List of offers from suppliers`} />
       <OfferTable
         offers={offers}
+        company={company}
         products={products || []}
         suppliers={suppliers || []}
       />
