@@ -109,6 +109,7 @@ model Offer {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId    String
   need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Restrict)
   needId  String
   supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
@@ -120,6 +121,9 @@ model Offer {
   image Json
   quantityPerContainer Int
   date DateTime
+  ddpPrice Float
+  grossPrice Float
+  publicPrice Float
   @@index(needId)
   @@index(supplierId)
 }

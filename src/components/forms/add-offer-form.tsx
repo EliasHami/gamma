@@ -29,12 +29,14 @@ type OfferFormProps = {
   offer?: Offer
   products: ProductSelect[]
   suppliers: SupplierSelect[]
+  userId: string
 }
 
 const OfferForm: React.FC<OfferFormProps> = ({
   offer,
   products,
   suppliers,
+  userId,
 }) => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -53,8 +55,8 @@ const OfferForm: React.FC<OfferFormProps> = ({
     startTransition(async () => {
       try {
         offer
-          ? await updateOffer({ ...data, id: offer.id })
-          : await createOffer(data)
+          ? await updateOffer({ ...data, id: offer.id, userId })
+          : await createOffer({ ...data, userId })
       } catch (error) {
         toast.error("Error while submitting offer. Please try again later.")
         console.error(getErrorMessage(error))

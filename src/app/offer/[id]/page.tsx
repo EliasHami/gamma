@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
+import { auth } from "@clerk/nextjs"
 
 import OfferForm from "@/components/forms/add-offer-form"
 
@@ -18,6 +20,8 @@ const EditProductOffer = async ({
 }: {
   params: { id: string }
 }) => {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
   const offerPromise = prisma.offer.findUnique({ where: { id } })
   const selectPromises = fetchSelect()
   const [offer, [products, suppliers]] = await Promise.all([
@@ -27,7 +31,14 @@ const EditProductOffer = async ({
 
   if (!offer) return <div>Offer not found</div>
 
-  return <OfferForm offer={offer} products={products} suppliers={suppliers} />
+  return (
+    <OfferForm
+      offer={offer}
+      products={products}
+      suppliers={suppliers}
+      userId={userId}
+    />
+  )
 }
 
 export default EditProductOffer

@@ -1,7 +1,8 @@
 import { cache } from "react"
-import type { OfferWithNeedAndSupplier } from "@/types"
-import { type Company } from "@prisma/client"
+import type { Company, ProductNeed } from "@prisma/client"
 import { z } from "zod"
+
+import type offerFormSchema from "@/lib/validations/offer"
 
 export const formatCurrency = (value: number, currency = "USD") =>
   new Intl.NumberFormat("en-US", {
@@ -52,16 +53,16 @@ export const getCurrencyRate = cache(
 // E11 = Additional Costs (default = 0)
 
 export const calculateDDPPrice = async (
-  offer: OfferWithNeedAndSupplier,
+  offer: z.infer<typeof offerFormSchema>,
   company: Company,
+  product: ProductNeed | null,
   freightRate: number | undefined = 0
 ) => {
-  const {
-    fobPrice,
-    quantityPerContainer,
-    need: { customsTax: productCustomsRate, additionalCost },
-    currency: baseCode,
-  } = offer
+  const { fobPrice, quantityPerContainer, currency: baseCode } = offer
+  const { customsTax: productCustomsRate, additionalCost } = product || {
+    customsTax: 0,
+    additionalCost: 0,
+  }
 
   const {
     insuranceRate,
