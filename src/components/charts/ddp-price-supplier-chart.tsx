@@ -34,7 +34,7 @@ const DdpPricePerSupplierChart = ({ products, offers }: Props) => {
       const data = productOffers.map((offer) => {
         return {
           name: offer.supplier.name,
-          total: offer.fobPrice, // TODO: calculate ddp price and store it in the db
+          total: offer.ddpPrice,
         }
       })
       setData(data)
