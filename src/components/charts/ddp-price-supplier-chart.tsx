@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import type { BarChartData, OfferWithSupplier } from "@/types"
+import type { BarChartData, ProductWithOffers } from "@/types"
+import type { Supplier } from "@prisma/client"
 
-import type { ProductSelect } from "@/lib/offer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Select,
@@ -15,31 +15,32 @@ import {
 import BarChart from "@/components/bar-chart"
 
 type Props = {
-  products: ProductSelect[] | undefined
-  offers: OfferWithSupplier[] | undefined
+  products: ProductWithOffers[] | undefined
+  suppliers: Supplier[] | undefined
 }
 
-const DdpPricePerSupplierChart = ({ products, offers }: Props) => {
+const DdpPricePerSupplierChart = ({ products, suppliers }: Props) => {
   const [data, setData] = React.useState<BarChartData[]>([])
   const [selectedProduct, setSelectedProduct] = React.useState<string>(
     products?.[0]?.id || ""
   )
 
   React.useEffect(() => {
-    if (selectedProduct && offers) {
-      const productOffers = offers.filter(
-        (offer) => offer.needId === selectedProduct
-      )
-
-      const data = productOffers.map((offer) => {
+    if (selectedProduct && suppliers && products) {
+      const product = products.find((product) => product.id === selectedProduct)
+      if (!product) return
+      const data = product.offers.map((offer) => {
+        // filter duplicate dates, keep the latest
         return {
-          name: offer.supplier.name,
+          name:
+            suppliers.find((supplier) => supplier.id === offer.supplierId)
+              ?.name || "",
           total: offer.ddpPrice,
         }
       })
       setData(data)
     }
-  }, [selectedProduct, offers])
+  }, [selectedProduct, suppliers, products])
 
   return (
     <Card>

@@ -2,27 +2,27 @@ import { type NextPage } from "next"
 import { prisma } from "@/server/db"
 
 import DdpPricePerSupplierChart from "@/components/charts/ddp-price-supplier-chart"
+import SupplierOfferEvolutionChart from "@/components/charts/supplier-offer-evolution-chart"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
 
 const Home: NextPage = async () => {
-  const offersPromise = prisma.offer.findMany({
-    include: {
-      supplier: true,
-    },
-  })
+  const suppliersPromise = prisma.supplier.findMany()
   const productsPromise = prisma.productNeed.findMany({
-    select: {
-      id: true,
-      name: true,
+    include: {
+      offers: true,
     },
   })
-  const [offers, products] = await Promise.all([offersPromise, productsPromise])
+  const [suppliers, products] = await Promise.all([
+    suppliersPromise,
+    productsPromise,
+  ])
 
   return (
     <Shell>
       <Header title="Dashboard" />
-      <DdpPricePerSupplierChart products={products} offers={offers} />
+      <DdpPricePerSupplierChart products={products} suppliers={suppliers} />
+      <SupplierOfferEvolutionChart products={products} suppliers={suppliers} />
     </Shell>
   )
 }

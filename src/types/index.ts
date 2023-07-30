@@ -27,8 +27,20 @@ export type OfferWithSupplier = Prisma.OfferGetPayload<{
   include: { supplier: true }
 }>
 
+export type OfferWithProduct = Prisma.OfferGetPayload<{
+  include: { need: true }
+}>
+
 export type OfferWithNeedAndSupplier = Prisma.OfferGetPayload<{
   include: { need: true; supplier: true }
 }>
 
+export type ProductWithOffers = Prisma.ProductNeedGetPayload<{
+  include: { offers: true }
+}>
+
 export type BarChartData = { name: string; total: number }
+
+export type LineData = Record<string, number>
+
+export type LineChartData = LineData & { name: string }
