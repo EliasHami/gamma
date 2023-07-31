@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
+import { auth } from "@clerk/nextjs"
 
 import { fetchProductCategoriesSelect } from "@/lib/product"
 import { ErrorCard } from "@/components/error-card"
@@ -7,7 +9,10 @@ import { Shell } from "@/components/shell"
 import ProductTable from "@/components/tables/product-table"
 
 const Product = async () => {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
   let products = null
+  let company = null
   let productFamilies, productSubFamilies, productCapacities
   try {
     const productsPromise = prisma.productNeed.findMany({
@@ -17,15 +22,18 @@ const Product = async () => {
         capacity: true,
       },
     })
+    const companyPromise = prisma.company.findUnique({ where: { userId } })
     const libraryPromises = fetchProductCategoriesSelect()
-    const [p, [pF, pSF, pC]] = await Promise.all([
+    const [p, [pF, pSF, pC], c] = await Promise.all([
       productsPromise,
       libraryPromises,
+      companyPromise,
     ])
     products = p
     productFamilies = pF
     productSubFamilies = pSF
     productCapacities = pC
+    company = c
   } catch (error) {
     console.error(error)
   }
@@ -43,6 +51,19 @@ const Product = async () => {
     )
   }
 
+  if (!company) {
+    return (
+      <Shell variant="centered">
+        <ErrorCard
+          title="No settings configured."
+          description="Please check settings."
+          retryLink="/company"
+          retryLinkText="Go to settings"
+        />
+      </Shell>
+    )
+  }
+
   return (
     <Shell>
       <Header title="Products" description={`List of products`} />
@@ -51,6 +72,7 @@ const Product = async () => {
         productFamilies={productFamilies || []}
         productSubFamilies={productSubFamilies || []}
         productCapacities={productCapacities || []}
+        company={company}
       />
     </Shell>
   )

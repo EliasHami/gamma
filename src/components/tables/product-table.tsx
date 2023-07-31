@@ -3,7 +3,12 @@
 import * as React from "react"
 import { useTransition } from "react"
 import Link from "next/link"
-import { DEPARTMENT, VALIDATION_STATE, type Prisma } from "@prisma/client"
+import {
+  DEPARTMENT,
+  VALIDATION_STATE,
+  type Company,
+  type Prisma,
+} from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
 import { getData, getName } from "country-list"
 
@@ -37,6 +42,7 @@ type ProductTableProps = {
   productFamilies: ProductFamilySelect[]
   productSubFamilies: ProductSubFamilySelect[]
   productCapacities: ProductCapacitySelect[]
+  company: Company
 }
 
 const ProductTable = ({
@@ -44,6 +50,7 @@ const ProductTable = ({
   productFamilies,
   productSubFamilies,
   productCapacities,
+  company,
 }: ProductTableProps) => {
   const [, startTransition] = useTransition()
 
@@ -94,7 +101,8 @@ const ProductTable = ({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Target Public Price" />
         ),
-        cell: ({ row }) => formatCurrency(row.original.targetPublicPrice), // TODO get currency from company
+        cell: ({ row }) =>
+          formatCurrency(row.original.targetPublicPrice, company.currency),
         filterFn: compareFilterFn<ProductWithCategories>,
       },
       {
@@ -141,7 +149,7 @@ const ProductTable = ({
         },
       },
     ],
-    []
+    [company.currency]
   )
 
   return (
