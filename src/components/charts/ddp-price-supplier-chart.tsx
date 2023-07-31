@@ -30,7 +30,7 @@ const DdpPricePerSupplierChart = ({ products, suppliers }: Props) => {
       const product = products.find((product) => product.id === selectedProduct)
       if (!product) return
       const data = product.offers.map((offer) => {
-        // filter duplicate dates, keep the latest
+        // TODO : filter duplicate dates, keep the latest
         return {
           name:
             suppliers.find((supplier) => supplier.id === offer.supplierId)
