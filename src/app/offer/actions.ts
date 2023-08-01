@@ -45,7 +45,7 @@ const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
     product,
     freights?.find((freight) => freight.country === supplier?.country)?.price
   )
-  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2)
+  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2)  // TODO get margin from company
   const publicPrice = Math.round(grossPrice / (1 - 0.1))
   return { ...offer, ddpPrice, grossPrice, publicPrice }
 }
