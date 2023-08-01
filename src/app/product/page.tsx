@@ -16,6 +16,7 @@ const Product = async () => {
   let productFamilies, productSubFamilies, productCapacities
   try {
     const productsPromise = prisma.productNeed.findMany({
+      where: { userId },
       include: {
         family: true,
         subFamily: true,
@@ -23,7 +24,7 @@ const Product = async () => {
       },
     })
     const companyPromise = prisma.company.findUnique({ where: { userId } })
-    const libraryPromises = fetchProductCategoriesSelect()
+    const libraryPromises = fetchProductCategoriesSelect(userId)
     const [p, [pF, pSF, pC], c] = await Promise.all([
       productsPromise,
       libraryPromises,

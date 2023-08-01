@@ -27,7 +27,7 @@ const Offer = async () => {
     const companyPromise = await prisma.company.findUnique({
       where: { userId },
     })
-    const relationPromises = fetchSelect()
+    const relationPromises = fetchSelect(userId)
     const [c, o, [p, s]] = await Promise.all([
       companyPromise,
       offersPromise,

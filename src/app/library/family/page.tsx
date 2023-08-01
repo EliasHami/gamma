@@ -1,5 +1,9 @@
-import AddItem from "@/app/library/family/_components/AddItem"
+import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
+import { auth } from "@clerk/nextjs"
+
+import AddItem from "@/app/library/family/_components/AddItem"
+
 import Item from "./_components/Item"
 import {
   addCapacity,
@@ -15,12 +19,19 @@ const ProductFamily = async ({
 }: {
   searchParams: { family: string; subFamily: string }
 }) => {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
   const family = searchParams.family ?? ""
   const subFamily = searchParams.subFamily ?? ""
-  const productFamiliesPromise = prisma.productFamily.findMany()
-  const productSubFamiliesPromise = prisma.productSubFamily.findMany()
+  const productFamiliesPromise = prisma.productFamily.findMany({
+    where: { userId },
+  })
+  const productSubFamiliesPromise = prisma.productSubFamily.findMany({
+    where: { userId },
+  })
   const productCapacitiesPromise = prisma.productCapacity.findMany({
     include: { subFamily: true },
+    where: { userId },
   })
   const [productFamilies, productSubFamilies, productCapacities] =
     await Promise.all([
@@ -47,7 +58,7 @@ const ProductFamily = async ({
                   deleteAction={deleteFamily}
                 />
               ))}
-              <AddItem searchKey="family" action={addFamily} />
+              <AddItem searchKey="family" action={addFamily} userId={userId} />
             </div>
             <div className="flex flex-1 flex-col gap-5 font-medium">
               <h1 className="text-2xl font-bold">Sub Families</h1>
@@ -68,6 +79,7 @@ const ProductFamily = async ({
                   searchKey="subFamily"
                   action={addSubFamily}
                   searchParams={searchParams}
+                  userId={userId}
                 />
               ) : (
                 <p>Please select a product family</p>
@@ -89,7 +101,11 @@ const ProductFamily = async ({
                   />
                 ))}
               {subFamily ? (
-                <AddItem action={addCapacity} searchParams={searchParams} />
+                <AddItem
+                  action={addCapacity}
+                  searchParams={searchParams}
+                  userId={userId}
+                />
               ) : (
                 <p>Please select a product sub family</p>
               )}

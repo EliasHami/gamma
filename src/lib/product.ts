@@ -1,14 +1,16 @@
 import { prisma } from "@/server/db"
 import type { Prisma } from "@prisma/client"
 
-const fetchProductCategoriesSelect = () => {
+const fetchProductCategoriesSelect = (userId: string) => {
   const productFamiliesPromise = prisma.productFamily.findMany({
+    where: { userId },
     select: {
       id: true,
       name: true,
     },
   })
   const productSubFamiliesPromise = prisma.productSubFamily.findMany({
+    where: { userId },
     select: {
       id: true,
       name: true,
@@ -16,6 +18,7 @@ const fetchProductCategoriesSelect = () => {
     },
   })
   const productCapacitiesPromise = prisma.productCapacity.findMany({
+    where: { userId },
     select: {
       id: true,
       name: true,

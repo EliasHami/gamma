@@ -15,6 +15,7 @@ model ProductCapacity {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    userId    String
     name      String
     subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id], onDelete: Cascade)
     subFamilyId String
@@ -26,6 +27,7 @@ model ProductSubFamily {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    userId    String
     name      String
     capacities ProductCapacity[]
     family   ProductFamily @relation(fields: [familyId], references: [id], onDelete: Cascade)
@@ -38,6 +40,7 @@ model ProductFamily {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    userId    String
     name      String
     subFamilies ProductSubFamily[]
     productNeeds ProductNeed[]
@@ -57,6 +60,7 @@ model ProductNeed {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    userId    String
     name      String
     department DEPARTMENT
     family   ProductFamily @relation(fields: [familyId], references: [id])
@@ -91,6 +95,7 @@ model Supplier {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    userId    String
     name      String
     email     String
     phone     String
@@ -149,7 +154,7 @@ model Freight {
   id       String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String @unique
+  userId    String
   country String
   price   Float
 }

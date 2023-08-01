@@ -23,7 +23,7 @@ const EditProductOffer = async ({
   const { userId } = auth()
   if (!userId) redirect("/signin")
   const offerPromise = prisma.offer.findUnique({ where: { id } })
-  const selectPromises = fetchSelect()
+  const selectPromises = fetchSelect(userId)
   const [offer, [products, suppliers]] = await Promise.all([
     offerPromise,
     selectPromises,

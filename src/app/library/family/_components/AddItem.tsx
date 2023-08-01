@@ -1,16 +1,13 @@
 "use client"
 
-import { getErrorMessage } from "@/app/utils"
-import Input from "@/components/forms/Input"
-import LoadingSpinner from "@/components/Spinner"
+import { useTransition } from "react"
+import { usePathname, useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   type ProductCapacity,
   type ProductFamily,
   type ProductSubFamily,
 } from "@prisma/client"
-import { usePathname, useRouter } from "next/navigation"
-import { useTransition } from "react"
 import {
   FormProvider,
   useForm,
@@ -19,11 +16,16 @@ import {
 } from "react-hook-form"
 import { z } from "zod"
 
+import Input from "@/components/forms/Input"
+import LoadingSpinner from "@/components/Spinner"
+import { getErrorMessage } from "@/app/utils"
+
 type AddItemForm = { name: string }
 
 type AddItemProps = {
   action: (
     name: string,
+    userId: string,
     searchParams: {
       family?: string
       subFamily?: string
@@ -34,12 +36,14 @@ type AddItemProps = {
     subFamily: string
   }
   searchKey?: string
+  userId: string
 }
 
 const AddItem: React.FC<AddItemProps> = ({
   action,
   searchParams,
   searchKey,
+  userId,
 }) => {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
@@ -57,7 +61,7 @@ const AddItem: React.FC<AddItemProps> = ({
 
     try {
       startTransition(async () => {
-        const savedItem = await action(name, searchParams ?? {})
+        const savedItem = await action(name, userId, searchParams ?? {})
         setValue("name", "")
         if (!searchKey || !savedItem) return
         const params = new URLSearchParams(searchParams)

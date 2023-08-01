@@ -1,5 +1,9 @@
-import ProductForm from "@/components/forms/add-product-form"
+import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
+import { auth } from "@clerk/nextjs"
+
+import ProductForm from "@/components/forms/add-product-form"
+
 import { fetchProductCategoriesSelect } from "../../../lib/product"
 
 // https://github.com/vercel/next.js/issues/49408
@@ -12,8 +16,10 @@ import { fetchProductCategoriesSelect } from "../../../lib/product"
 // }
 
 const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
   const productPromise = prisma.productNeed.findUnique({ where: { id } })
-  const libraryPromises = fetchProductCategoriesSelect()
+  const libraryPromises = fetchProductCategoriesSelect(userId)
   const [product, [productFamilies, productSubFamilies, productCapacities]] =
     await Promise.all([productPromise, libraryPromises])
 
@@ -21,6 +27,7 @@ const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <ProductForm
+      userId={userId}
       product={product}
       productFamilies={productFamilies}
       productSubFamilies={productSubFamilies}

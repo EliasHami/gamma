@@ -32,6 +32,7 @@ type ProductFormProps = {
   productFamilies: ProductFamilySelect[]
   productSubFamilies: ProductSubFamilySelect[]
   productCapacities: ProductCapacitySelect[]
+  userId: string
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
@@ -39,6 +40,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   productCapacities,
   productFamilies,
   productSubFamilies,
+  userId,
 }) => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -63,8 +65,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
     startTransition(async () => {
       try {
         product
-          ? await updateProduct({ ...data, id: product.id })
-          : await createProduct({ ...data })
+          ? await updateProduct({ ...data, id: product.id, userId })
+          : await createProduct({ ...data, userId })
       } catch (error) {
         toast.error("Error while submitting product. Please try again later.")
         console.error(getErrorMessage(error))

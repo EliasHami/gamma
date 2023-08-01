@@ -8,7 +8,7 @@ import { fetchSelect } from "../../../lib/offer"
 const NewProductOffer = async () => {
   const { userId } = auth()
   if (!userId) redirect("/signin")
-  const [products, suppliers] = await fetchSelect()
+  const [products, suppliers] = await fetchSelect(userId)
 
   return <OfferForm products={products} suppliers={suppliers} userId={userId} />
 }

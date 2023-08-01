@@ -29,7 +29,7 @@ const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
   const productPromise = prisma.productNeed.findUnique({
     where: { id: offer.needId },
   })
-  const supplierPromise = await prisma.company.findUnique({
+  const supplierPromise = await prisma.supplier.findUnique({
     where: { id: offer.supplierId },
   })
   const [product, supplier, company, freights] = await Promise.all([
@@ -45,7 +45,7 @@ const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
     product,
     freights?.find((freight) => freight.country === supplier?.country)?.price
   )
-  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2)  // TODO get margin from company
+  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2) // TODO get margin from company
   const publicPrice = Math.round(grossPrice / (1 - 0.1))
   return { ...offer, ddpPrice, grossPrice, publicPrice }
 }
