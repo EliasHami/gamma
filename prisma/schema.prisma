@@ -63,12 +63,12 @@ model ProductNeed {
     userId    String
     name      String
     department DEPARTMENT
-    family   ProductFamily @relation(fields: [familyId], references: [id])
-    familyId String
-    subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id])
-    subFamilyId String
-    capacity   ProductCapacity @relation(fields: [capacityId], references: [id])
-    capacityId String
+    family   ProductFamily? @relation(fields: [familyId], references: [id], onDelete: SetNull)
+    familyId String?
+    subFamily   ProductSubFamily? @relation(fields: [subFamilyId], references: [id], onDelete: SetNull)
+    subFamilyId String?
+    capacity   ProductCapacity? @relation(fields: [capacityId], references: [id], onDelete: SetNull)
+    capacityId String?
     country  String
     targetPublicPrice Float
     state    VALIDATION_STATE
@@ -115,9 +115,9 @@ model Offer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
-  need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Restrict)
+  need  ProductNeed @relation(fields: [needId], references: [id], onDelete: Cascade)
   needId  String
-  supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  supplier Supplier  @relation(fields: [supplierId], references: [id], onDelete: Cascade)
   supplierId String
   fobPrice  Float
   currency  String

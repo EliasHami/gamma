@@ -21,6 +21,15 @@ import type {
 import { compareFilterFn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -31,6 +40,7 @@ import {
 import { DataTable } from "@/components/data-table/data-table"
 import DataTableColumnHeader from "@/components/data-table/data-table-column-header"
 import { Icons } from "@/components/icons"
+import LoadingSpinner from "@/components/Spinner"
 import { deleteProduct } from "@/app/product/actions"
 
 type ProductWithCategories = Prisma.ProductNeedGetPayload<{
@@ -52,7 +62,8 @@ const ProductTable = ({
   productCapacities,
   company,
 }: ProductTableProps) => {
-  const [, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition()
+  const [open, setOpen] = React.useState(false)
 
   const columns = React.useMemo<ColumnDef<ProductWithCategories, unknown>[]>(
     () => [
@@ -73,21 +84,21 @@ const ProductTable = ({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Family" />
         ),
-        cell: ({ row }) => row.original.family.name,
+        cell: ({ row }) => row.original.family?.name,
       },
       {
         accessorKey: "subFamilyId",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Sub Family" />
         ),
-        cell: ({ row }) => row.original.subFamily.name,
+        cell: ({ row }) => row.original.subFamily?.name,
       },
       {
         accessorKey: "capacityId",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Capacity" />
         ),
-        cell: ({ row }) => row.original.capacity.name,
+        cell: ({ row }) => row.original.capacity?.name,
       },
       {
         accessorKey: "country",
@@ -115,41 +126,64 @@ const ProductTable = ({
           const id = row.original.id
 
           return (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <Icons.horizontalThreeDots className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href={`/product/${id}`}>
-                    <Icons.edit
-                      className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
-                      aria-hidden="true"
-                    />
-                    Edit
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => startTransition(() => deleteProduct(id))}
-                >
-                  <Icons.trash
-                    className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
-                    aria-hidden="true"
-                  />
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <Icons.horizontalThreeDots className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/product/${id}`}>
+                      <Icons.edit
+                        className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
+                        aria-hidden="true"
+                      />
+                      Edit
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DialogTrigger asChild>
+                    <DropdownMenuItem>
+                      <Icons.trash
+                        className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
+                        aria-hidden="true"
+                      />
+                      Delete
+                    </DropdownMenuItem>
+                  </DialogTrigger>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your product and all related offers.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button
+                    onClick={() =>
+                      startTransition(async () => {
+                        await deleteProduct(id)
+                        setOpen(false)
+                      })
+                    }
+                  >
+                    {isPending && <LoadingSpinner />} Confirm
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           )
         },
       },
     ],
-    [company.currency]
+    [company.currency, isPending, open, setOpen]
   )
 
   return (

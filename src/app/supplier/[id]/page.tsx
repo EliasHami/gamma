@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
+import { auth } from "@clerk/nextjs"
 
 import SupplierForm from "@/components/forms/add-supplier-form"
 
@@ -12,11 +14,13 @@ import SupplierForm from "@/components/forms/add-supplier-form"
 // }
 
 const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
   const supplier = await prisma.supplier.findUnique({ where: { id } })
 
   if (!supplier) return <div>Supplier not found</div>
 
-  return <SupplierForm supplier={supplier} />
+  return <SupplierForm userId={userId} supplier={supplier} />
 }
 
 export default EditProduct

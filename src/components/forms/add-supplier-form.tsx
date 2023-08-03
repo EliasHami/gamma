@@ -21,7 +21,10 @@ import LoadingSpinner from "@/components/Spinner"
 
 import { createSupplier, updateSupplier } from "../../app/supplier/actions"
 
-const SupplierForm: React.FC<{ supplier?: Supplier }> = ({ supplier }) => {
+const SupplierForm: React.FC<{ supplier?: Supplier; userId: string }> = ({
+  supplier,
+  userId,
+}) => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const formOptions: UseFormProps<Supplier> = {
@@ -37,8 +40,10 @@ const SupplierForm: React.FC<{ supplier?: Supplier }> = ({ supplier }) => {
 
   const onSubmit: SubmitHandler<Supplier> = (data) => {
     supplier
-      ? startTransition(() => updateSupplier({ ...data, id: supplier.id }))
-      : startTransition(() => createSupplier({ ...data }))
+      ? startTransition(() =>
+          updateSupplier({ ...data, id: supplier.id, userId })
+        )
+      : startTransition(() => createSupplier({ ...data, userId }))
     toast.success("Supplier submited successfully")
     router.push("/supplier")
   }
