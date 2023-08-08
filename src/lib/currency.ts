@@ -1,5 +1,5 @@
 import { cache } from "react"
-import type { Company, ProductNeed } from "@prisma/client"
+import type { Prisma } from "@prisma/client"
 import { z } from "zod"
 
 import type offerFormSchema from "@/lib/validations/offer"
@@ -54,8 +54,17 @@ export const getCurrencyRate = cache(
 
 export const calculateDDPPrice = async (
   offer: z.infer<typeof offerFormSchema>,
-  company: Company,
-  product: ProductNeed | null,
+  company: Prisma.CompanyGetPayload<{
+    select: {
+      insuranceRate: true
+      bankChargeRate: true
+      currency: true
+      customsRate: true
+    }
+  }>,
+  product: Prisma.ProductNeedGetPayload<{
+    select: { customsTax: true; additionalCost: true }
+  }> | null,
   freightRate: number | undefined = 0
 ) => {
   const { fobPrice, quantityPerContainer, currency: baseCode } = offer

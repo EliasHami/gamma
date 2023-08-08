@@ -18,6 +18,9 @@ export const deleteOffer = zact(z.string())(async (id) => {
 })
 
 const offerSchema = offerFormSchema.extend({ userId: z.string() })
+const offerWithIdSchema = offerSchema.extend({
+  id: z.string().cuid(),
+})
 
 const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
   const companyPromise = prisma.company.findUnique({
@@ -29,7 +32,7 @@ const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
   const productPromise = prisma.productNeed.findUnique({
     where: { id: offer.needId },
   })
-  const supplierPromise = await prisma.supplier.findUnique({
+  const supplierPromise = prisma.supplier.findUnique({
     where: { id: offer.supplierId },
   })
   const [product, supplier, company, freights] = await Promise.all([
@@ -60,7 +63,7 @@ export const createOffer = zact(offerSchema)(async (offer) => {
   revalidatePath("/offer")
 })
 
-export const updateOffer = zact(offerSchema)(async (offer) => {
+export const updateOffer = zact(offerWithIdSchema)(async (offer) => {
   await prisma.offer.update({
     where: { id: offer.id },
     data: {
