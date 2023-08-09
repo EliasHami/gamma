@@ -5,7 +5,7 @@ import { type Prisma } from "@prisma/client"
 import { zact } from "zact/server"
 import { z } from "zod"
 
-import { calculateDDPPrice } from "@/lib/currency"
+import { getPrices } from "@/lib/currency"
 
 import offerFormSchema from "../../lib/validations/offer"
 import { prisma } from "../../server/db"
@@ -42,14 +42,13 @@ const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
     freightsPromise,
   ])
   if (!company) throw new Error("Company not found")
-  const ddpPrice = await calculateDDPPrice(
+  const { ddpPrice, grossPrice, publicPrice } = await getPrices(
     offer,
     company,
     product,
-    freights?.find((freight) => freight.country === supplier?.country)?.price
+    supplier?.country || null,
+    freights
   )
-  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2) // TODO get margin from company
-  const publicPrice = Math.round(grossPrice / (1 - 0.1))
   return { ...offer, ddpPrice, grossPrice, publicPrice }
 }
 

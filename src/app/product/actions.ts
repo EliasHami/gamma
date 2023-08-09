@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs"
 import { zact } from "zact/server"
 import { z } from "zod"
 
-import { calculateDDPPrice } from "@/lib/currency"
+import { getPrices } from "@/lib/currency"
 
 import { productFormSchema } from "../../lib/validations/product"
 import { prisma } from "../../server/db"
@@ -82,7 +82,7 @@ export const updateProduct = zact(productSchema)(async (product) => {
   await prisma.$transaction(async (tx) => {
     //TODO refactor with getOfferWithPrices
 
-    const updatedProduct = await tx.productNeed.update({
+    const productPromise = tx.productNeed.update({
       where: { id: product.id },
       data: product,
       select: { offers: true },
@@ -93,9 +93,10 @@ export const updateProduct = zact(productSchema)(async (product) => {
     const freightsPromise = tx.freight.findMany({
       where: { userId: product.userId },
     })
-    const [company, freights] = await Promise.all([
+    const [company, freights, updatedProduct] = await Promise.all([
       companyPromise,
       freightsPromise,
+      productPromise,
     ])
     if (!company) throw new Error("Company not found")
     await Promise.all(
@@ -104,17 +105,15 @@ export const updateProduct = zact(productSchema)(async (product) => {
           where: { id: offer.supplierId },
         })
 
-        const ddpPrice = await calculateDDPPrice(
+        const { ddpPrice, grossPrice, publicPrice } = await getPrices(
           offer,
           company,
           product,
-          freights?.find((freight) => freight.country === supplier?.country)
-            ?.price
+          supplier?.country || null,
+          freights
         )
-        const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2) // TODO get margin from company
-        const publicPrice = Math.round(grossPrice / (1 - 0.1))
 
-        return await tx.offer.update({
+        return tx.offer.update({
           where: { id: offer.id },
           data: { ddpPrice, grossPrice, publicPrice },
         })

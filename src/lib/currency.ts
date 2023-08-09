@@ -52,7 +52,7 @@ export const getCurrencyRate = cache(
 //        = Freight Rate (20 foot container) /  QuantityPerContainer
 // E11 = Additional Costs (default = 0)
 
-export const calculateDDPPrice = async (
+export const getPrices = async (
   offer: z.infer<typeof offerFormSchema>,
   company: Prisma.CompanyGetPayload<{
     select: {
@@ -65,13 +65,20 @@ export const calculateDDPPrice = async (
   product: Prisma.ProductNeedGetPayload<{
     select: { customsTax: true; additionalCost: true }
   }> | null,
-  freightRate: number | undefined = 0
+  supplierCountry: string | null,
+  freights:
+    | Prisma.FreightGetPayload<{
+        select: { price: true; country: true }
+      }>[]
+    | null
 ) => {
   const { fobPrice, quantityPerContainer, currency: baseCode } = offer
   const { customsTax: productCustomsRate, additionalCost } = product || {
     customsTax: 0,
     additionalCost: 0,
   }
+  const freightRate =
+    freights?.find((freight) => freight.country === supplierCountry)?.price || 0
 
   const {
     insuranceRate,
@@ -89,9 +96,13 @@ export const calculateDDPPrice = async (
   const transit =
     (fobPrice + insurance + freight + customs) * (bankChargeRate / 100) // L11
 
-  const ddpPrice =
+  const ddpPrice = Math.round(
     (fobPrice + insurance + freight + customs + transit) * exchangeRate +
-    additionalCost
+      additionalCost
+  )
 
-  return Math.round(ddpPrice)
+  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2) // TODO get margin from company
+  const publicPrice = Math.round(grossPrice / (1 - 0.1))
+
+  return { ddpPrice, grossPrice, publicPrice }
 }
