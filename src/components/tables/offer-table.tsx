@@ -70,7 +70,8 @@ const OfferTable = ({
           <DataTableColumnHeader column={column} title="FOB Price" />
         ),
         cell: ({ row }) =>
-          formatCurrency(row.original.fobPrice, company.currency),
+          formatCurrency(row.original.fobPrice, row.original.currency),
+        filterFn: compareFilterFn<OfferWithNeedAndSupplier>,
       },
       {
         accessorKey: "currency",
