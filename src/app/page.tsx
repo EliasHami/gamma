@@ -26,8 +26,13 @@ const Home: NextPage = async () => {
   return (
     <Shell>
       <Header title="Dashboard" />
-      <DdpPricePerSupplierChart products={products} suppliers={suppliers} />
-      <SupplierOfferEvolutionChart products={products} suppliers={suppliers} />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <DdpPricePerSupplierChart products={products} suppliers={suppliers} />
+        <SupplierOfferEvolutionChart
+          products={products}
+          suppliers={suppliers}
+        />
+      </div>
     </Shell>
   )
 }

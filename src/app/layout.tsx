@@ -1,10 +1,11 @@
 import "@/styles/globals.css"
-import { type Metadata } from "next"
-import { type PropsWithChildren } from "react"
 
-import Nav from "@/components/layouts/Nav"
+import { type PropsWithChildren } from "react"
+import { type Metadata } from "next"
 import { ClerkProvider, SignedIn } from "@clerk/nextjs"
 import { Toaster } from "react-hot-toast"
+
+import { SideBar, TopBar } from "@/components/app-layout"
 
 export const metadata: Metadata = {
   title: "Gamma",
@@ -17,13 +18,21 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <ClerkProvider>
       <html lang="en">
         <body>
-          <SignedIn>
-            <Nav />
-          </SignedIn>
-          <main className="container mx-auto max-w-7xl py-6 lg:px-8">
-            {children}
-          </main>
-          <Toaster position="bottom-center" />
+          <div className="flex h-screen flex-col bg-gray-100 dark:bg-gray-900">
+            <SignedIn>
+              <TopBar />
+            </SignedIn>
+            <div className="flex flex-1 overflow-hidden">
+              <SideBar />
+              <main className="flex-1 overflow-y-auto p-4">{children}</main>
+            </div>
+            <Toaster position="bottom-center" />
+            <footer className="flex h-16 items-center justify-center border-t bg-white dark:bg-gray-800">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                © 2024 Gamma Inc. All rights reserved.
+              </p>
+            </footer>
+          </div>
         </body>
       </html>
     </ClerkProvider>
