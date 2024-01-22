@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache"
 import { auth } from "@clerk/nextjs"
-import { zact } from "zact/server"
 import { z } from "zod"
 
 import { getPrices } from "@/lib/currency"
@@ -58,7 +57,6 @@ const generateProducts = async () => {
     }
   }
 }
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const productSchema = productFormSchema.extend({ userId: z.string() })
 
@@ -70,15 +68,15 @@ export async function deleteProduct(id: string) {
   revalidatePath("/offer")
 }
 
-export const createProduct = zact(productSchema)(async (product) => {
+export const createProduct = async (product: z.infer<typeof productSchema>) => {
   await prisma.productNeed.create({
     data: product,
   })
   revalidatePath("/product")
   revalidatePath("/offer")
-})
+}
 
-export const updateProduct = zact(productSchema)(async (product) => {
+export const updateProduct = async (product: z.infer<typeof productSchema>) => {
   await prisma.$transaction(async (tx) => {
     //TODO refactor with getOfferWithPrices
 
@@ -123,4 +121,4 @@ export const updateProduct = zact(productSchema)(async (product) => {
   // await generateProducts()
   revalidatePath("/product")
   revalidatePath("/offer")
-})
+}

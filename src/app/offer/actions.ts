@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache"
 import { type Prisma } from "@prisma/client"
-import { zact } from "zact/server"
 import { z } from "zod"
 
 import { getPrices } from "@/lib/currency"
@@ -10,12 +9,12 @@ import { getPrices } from "@/lib/currency"
 import offerFormSchema from "../../lib/validations/offer"
 import { prisma } from "../../server/db"
 
-export const deleteOffer = zact(z.string())(async (id) => {
+export const deleteOffer = async (id: string) => {
   await prisma.offer.delete({
     where: { id },
   })
   revalidatePath("/offer")
-})
+}
 
 const offerSchema = offerFormSchema.extend({ userId: z.string() })
 const offerWithIdSchema = offerSchema.extend({
@@ -52,7 +51,7 @@ const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
   return { ...offer, ddpPrice, grossPrice, publicPrice }
 }
 
-export const createOffer = zact(offerSchema)(async (offer) => {
+export const createOffer = async (offer: z.infer<typeof offerSchema>) => {
   await prisma.offer.create({
     data: {
       ...(await getOfferWithPrices(offer)),
@@ -60,9 +59,9 @@ export const createOffer = zact(offerSchema)(async (offer) => {
     }, // https://github.com/prisma/prisma/issues/9247
   })
   revalidatePath("/offer")
-})
+}
 
-export const updateOffer = zact(offerWithIdSchema)(async (offer) => {
+export const updateOffer = async (offer: z.infer<typeof offerWithIdSchema>) => {
   await prisma.offer.update({
     where: { id: offer.id },
     data: {
@@ -71,4 +70,4 @@ export const updateOffer = zact(offerWithIdSchema)(async (offer) => {
     },
   })
   revalidatePath("/offer")
-})
+}
