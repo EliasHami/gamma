@@ -14,7 +14,7 @@ export default async function CompanyInfo() {
 
   return (
     <Shell>
-      <Header title="Company Info" />
+      <Header title="Company Info" description="Manage your account settings" />
       <Form company={company} userId={userId} />
     </Shell>
   )
