@@ -1,14 +1,10 @@
 "use client"
 
-import { getErrorMessage } from "@/app/utils"
-import LoadingSpinner from "@/components/Spinner"
-import Input from "@/components/forms/Input"
-import Select from "@/components/forms/Select"
+import React, { useTransition } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type Freight } from "@prisma/client"
 import clsx from "clsx"
 import { getData } from "country-list"
-import React, { useTransition } from "react"
 import {
   FormProvider,
   useForm,
@@ -16,6 +12,12 @@ import {
   type UseFormProps,
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
+
+import { catchError } from "@/lib/utils"
+import Input from "@/components/forms/Input"
+import Select from "@/components/forms/Select"
+import LoadingSpinner from "@/components/Spinner"
+
 import { addFreight } from "../actions"
 import { freightFormSchema } from "../schemas"
 
@@ -45,24 +47,13 @@ const AddFreight: React.FC<AddFreightProps> = ({
   const onSubmit: SubmitHandler<FreightForm> = (data) => {
     startTransition(async () => {
       try {
-        if (
-          freights.some(
-            (freight) =>
-              freight.country.toUpperCase() === data.country.toUpperCase()
-          )
-        ) {
-          toast.error("This country already exists.")
-          return
-        }
         await addFreight({ ...data, userId })
         setValue("country", "")
         setValue("price", 0)
+        toast.success("Freight added successfully.")
       } catch (e) {
-        toast.error("Error adding freight. Please try again later.")
-        console.error(getErrorMessage(e))
-        return
+        catchError(e)
       }
-      toast.success("Freight added successfully.")
     })
   }
 
@@ -77,11 +68,21 @@ const AddFreight: React.FC<AddFreightProps> = ({
           name="country"
           error={formState.errors.country}
         >
-          {getData().map((country) => (
-            <option key={country.code} value={country.code}>
-              {country.name}
-            </option>
-          ))}
+          {getData().map((country) => {
+            if (
+              freights.find(
+                (freight) =>
+                  freight.country.toUpperCase() === country.name.toUpperCase()
+              )
+            ) {
+              return null
+            }
+            return (
+              <option key={country.code} value={country.code}>
+                {country.name}
+              </option>
+            )
+          })}
         </Select>
         <Input
           className="flex-1"

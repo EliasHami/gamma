@@ -16,9 +16,9 @@ import {
 } from "react-hook-form"
 import { z } from "zod"
 
+import { catchError } from "@/lib/utils"
 import Input from "@/components/forms/Input"
 import LoadingSpinner from "@/components/Spinner"
-import { getErrorMessage } from "@/app/utils"
 
 type AddItemForm = { name: string }
 
@@ -53,24 +53,24 @@ const AddItem: React.FC<AddItemProps> = ({
   }
 
   const methods = useForm<AddItemForm>(formOptions)
-  const { handleSubmit, formState, setValue, setError } = methods
+  const { handleSubmit, formState, setValue } = methods
   const onSubmit: SubmitHandler<AddItemForm> = (data) => {
     const name = data.name
 
     if (!name) return
 
-    try {
-      startTransition(async () => {
+    startTransition(async () => {
+      try {
         const savedItem = await action(name, userId, searchParams ?? {})
         setValue("name", "")
         if (!searchKey || !savedItem) return
         const params = new URLSearchParams(searchParams)
         params.set(searchKey, savedItem.id)
         router.replace(`${pathname}?${params.toString()}`)
-      })
-    } catch (e) {
-      setError("name", { type: "custom", message: getErrorMessage(e) })
-    }
+      } catch (e) {
+        catchError(e)
+      }
+    })
   }
 
   return (

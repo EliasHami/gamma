@@ -9,6 +9,13 @@ import type { freightFormSchema } from "./schemas"
 export const addFreight = async (
   freight: z.infer<typeof freightFormSchema>
 ) => {
+  const freightWithSameCountry = await prisma.productNeed.findFirst({
+    where: { country: freight.country },
+    select: { id: true },
+  })
+  if (freightWithSameCountry) {
+    throw new Error("Freight with same country already exists")
+  }
   await prisma.freight.create({
     data: { ...freight, userId: freight.userId || "1" },
   }) // TODO userid shoudnlt be optional in schema, find a way to ignore it in form validation

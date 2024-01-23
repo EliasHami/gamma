@@ -3,7 +3,7 @@ import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
 import { fetchSelect } from "@/lib/offer"
-import { getErrorMessage } from "@/lib/utils"
+import { catchError } from "@/lib/utils"
 import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
@@ -38,7 +38,7 @@ const Offer = async () => {
     suppliers = s
     offers = o
   } catch (error) {
-    console.error(getErrorMessage(error))
+    catchError(error)
   }
 
   if (!offers) {

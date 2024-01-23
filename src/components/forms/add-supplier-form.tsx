@@ -14,6 +14,7 @@ import {
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
 
+import { catchError } from "@/lib/utils"
 import supplierFormSchema from "@/lib/validations/supplier"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
@@ -39,13 +40,17 @@ const SupplierForm: React.FC<{ supplier?: Supplier; userId: string }> = ({
   const { errors } = formState
 
   const onSubmit: SubmitHandler<Supplier> = (data) => {
-    supplier
-      ? startTransition(() =>
-          updateSupplier({ ...data, id: supplier.id, userId })
-        )
-      : startTransition(() => createSupplier({ ...data, userId }))
-    toast.success("Supplier submited successfully")
-    router.push("/supplier")
+    startTransition(async () => {
+      try {
+        supplier
+          ? await updateSupplier({ ...data, id: supplier.id, userId })
+          : await createSupplier({ ...data, userId })
+        toast.success("Supplier submited successfully")
+        router.push("/supplier")
+      } catch (error) {
+        catchError(error)
+      }
+    })
   }
 
   return (

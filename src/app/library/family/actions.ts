@@ -4,16 +4,19 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/server/db"
 
 export async function addFamily(name: string, userId: string) {
-  try {
-    const family = await prisma.productFamily.create({
-      data: { name, userId },
-    })
-    revalidatePath("/library/family")
-    revalidatePath("/product") // revalidate only fetch, not working
-    return family
-  } catch (error) {
-    console.error(error)
+  const familyWithSameName = await prisma.productFamily.findFirst({
+    where: { name: name },
+    select: { id: true },
+  })
+  if (familyWithSameName) {
+    throw new Error("Family with same name already exists")
   }
+  const family = await prisma.productFamily.create({
+    data: { name, userId },
+  })
+  revalidatePath("/library/family")
+  revalidatePath("/product") // revalidate only fetch, not working
+  return family
 }
 
 export const deleteFamily = async (id: string) => {
@@ -31,16 +34,19 @@ export async function addSubFamily(
   if (!family) {
     throw new Error("Family is required")
   }
-  try {
-    const subFamily = await prisma.productSubFamily.create({
-      data: { name, familyId: family, userId },
-    })
-    revalidatePath("/library/family")
-    revalidatePath("/product") // revalidate only fetch
-    return subFamily
-  } catch (error) {
-    console.error(error)
+  const subFamilyWithSameName = await prisma.productSubFamily.findFirst({
+    where: { name: name },
+    select: { id: true },
+  })
+  if (subFamilyWithSameName) {
+    throw new Error("Sub family with same name already exists")
   }
+  const subFamily = await prisma.productSubFamily.create({
+    data: { name, familyId: family, userId },
+  })
+  revalidatePath("/library/family")
+  revalidatePath("/product") // revalidate only fetch
+  return subFamily
 }
 
 export const deleteSubFamily = async (id: string) => {
@@ -58,16 +64,19 @@ export async function addCapacity(
   if (!subFamily) {
     throw new Error("Sub Family is required")
   }
-  try {
-    const capacity = await prisma.productCapacity.create({
-      data: { name, subFamilyId: subFamily, userId },
-    })
-    revalidatePath("/library/family")
-    revalidatePath("product") // revalidate only fetch
-    return capacity
-  } catch (error) {
-    console.error(error)
+  const capacityWithSameName = await prisma.productCapacity.findFirst({
+    where: { name: name },
+    select: { id: true },
+  })
+  if (capacityWithSameName) {
+    throw new Error("Capacity with same name already exists")
   }
+  const capacity = await prisma.productCapacity.create({
+    data: { name, subFamilyId: subFamily, userId },
+  })
+  revalidatePath("/library/family")
+  revalidatePath("product") // revalidate only fetch
+  return capacity
 }
 
 export const deleteCapacity = async (id: string) => {

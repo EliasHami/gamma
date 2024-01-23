@@ -19,10 +19,10 @@ import type {
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
+import { catchError } from "@/lib/utils"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
-import { getErrorMessage } from "@/app/utils"
 
 import { createProduct, updateProduct } from "../../app/product/actions"
 import { productFormSchema } from "../../lib/validations/product"
@@ -67,14 +67,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
         product
           ? await updateProduct({ ...data, id: product.id, userId })
           : await createProduct({ ...data, userId })
+        toast.success("Product submited successfully")
+        router.push("/product")
       } catch (error) {
-        toast.error("Error while submitting product. Please try again later.")
-        console.error(getErrorMessage(error))
-        return
+        catchError(error)
       }
-      toast.success("Product submited successfully")
     })
-    router.push("/product")
   }
 
   const [selectedProductFamily, selectedSubProductFamily, selectedCapacityId] =

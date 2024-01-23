@@ -15,12 +15,12 @@ import {
 import { toast } from "react-hot-toast"
 
 import type { ProductSelect, SupplierSelect } from "@/lib/offer"
+import { catchError } from "@/lib/utils"
 import { DatePicker } from "@/components/date-picker"
 import ImagePicker from "@/components/forms/ImagePicker"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
-import { getErrorMessage } from "@/app/utils"
 
 import { createOffer, updateOffer } from "../../app/offer/actions"
 import offerFormSchema from "../../lib/validations/offer"
@@ -57,14 +57,12 @@ const OfferForm: React.FC<OfferFormProps> = ({
         offer
           ? await updateOffer({ ...data, id: offer.id, userId })
           : await createOffer({ ...data, userId })
+        toast.success("Offer submited successfully")
+        router.push("/offer")
       } catch (error) {
-        toast.error("Error while submitting offer. Please try again later.")
-        console.error(getErrorMessage(error))
-        return
+        catchError(error)
       }
-      toast.success("Offer submited successfully")
     })
-    router.push("/offer")
   }
 
   return (

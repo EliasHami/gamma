@@ -70,14 +70,14 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="overflow-auto">
+    <div>
       <DataTableToolbar
         table={table}
         filterableColumns={filterableColumns}
         searchableColumns={searchableColumns}
         newRowLink={newRowLink}
       />
-      <div className="rounded-md border">
+      <div className="max-h-96 overflow-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

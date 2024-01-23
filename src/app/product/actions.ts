@@ -69,6 +69,13 @@ export async function deleteProduct(id: string) {
 }
 
 export const createProduct = async (product: z.infer<typeof productSchema>) => {
+  const productWithSameName = await prisma.productNeed.findFirst({
+    where: { name: product.name },
+    select: { id: true },
+  })
+  if (productWithSameName) {
+    throw new Error("Product with same name already exists")
+  }
   await prisma.productNeed.create({
     data: product,
   })

@@ -1,14 +1,11 @@
 "use client"
-import { getErrorMessage } from "@/app/utils"
-import LoadingSpinner from "@/components/Spinner"
-import Input from "@/components/forms/Input"
-import Select from "@/components/forms/Select"
+
+import React, { useTransition } from "react"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type Company } from "@prisma/client"
 import { getData } from "country-list"
 import CurrencyList from "currency-list"
-import React, { useTransition } from "react"
 import {
   FormProvider,
   useForm,
@@ -16,6 +13,12 @@ import {
   type UseFormProps,
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
+
+import { catchError } from "@/lib/utils"
+import Input from "@/components/forms/Input"
+import Select from "@/components/forms/Select"
+import LoadingSpinner from "@/components/Spinner"
+
 import { updateOrCreateCompany } from "../actions"
 import companyFormSchema from "../shemas"
 
@@ -43,12 +46,10 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company, userId }) => {
     startTransition(async () => {
       try {
         await updateOrCreateCompany({ ...data, id: company?.id, userId })
+        toast.success("Company submited successfully")
       } catch (error) {
-        toast.error("Error while submitting company")
-        console.error(getErrorMessage(error))
-        return
+        catchError(error)
       }
-      toast.success("Company submited successfully")
     })
   }
 

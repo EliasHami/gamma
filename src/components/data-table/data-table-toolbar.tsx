@@ -59,6 +59,7 @@ export default function DataTableToolbar<TData>({
               table.getColumn(column.id ? String(column.id) : "") &&
               (column.type === "number" ? (
                 <DataTableCompareFilter
+                  key={String(column.id)}
                   column={table.getColumn(column.id ? String(column.id) : "")}
                   title={column.title}
                 />

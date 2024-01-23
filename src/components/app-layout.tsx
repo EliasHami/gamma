@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { SignOutButton, useUser } from "@clerk/nextjs"
+import { ArchiveIcon } from "@radix-ui/react-icons"
+import { BadgeDollarSignIcon, FactoryIcon, PackageIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import {
@@ -95,21 +97,21 @@ export const SideBar = () => (
         <HomeIcon className="mr-3 h-5 w-5" />
         Dashboard
       </NavLink>
-      <NavLink href="/library">
-        <HomeIcon className="mr-3 h-5 w-5" />
-        Libraries
-      </NavLink>
       <NavLink href="/product">
-        <UsersIcon className="mr-3 h-5 w-5" />
+        <PackageIcon className="mr-3 h-5 w-5" />
         Product Needs
       </NavLink>
       <NavLink href="/offer">
-        <CreditCardIcon className="mr-3 h-5 w-5" />
+        <BadgeDollarSignIcon className="mr-3 h-5 w-5" />
         Offers
       </NavLink>
       <NavLink href="/supplier">
-        <CreditCardIcon className="mr-3 h-5 w-5" />
+        <FactoryIcon className="mr-3 h-5 w-5" />
         Suppliers
+      </NavLink>
+      <NavLink href="/library">
+        <ArchiveIcon className="mr-3 h-5 w-5" />
+        Libraries
       </NavLink>
     </nav>
   </aside>
@@ -120,7 +122,7 @@ export const TopBar = () => {
     <header className="flex h-16 items-center border-b bg-white px-4 dark:bg-gray-800">
       <Link
         className="flex items-center gap-2 text-lg font-semibold md:text-base"
-        href="#"
+        href="/"
       >
         <MountainIcon className="h-6 w-6" />
         <span className="sr-only">Gamma Inc</span>
