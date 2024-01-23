@@ -2,9 +2,10 @@
 
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/server/db"
-import { type Supplier } from "@prisma/client"
+import { z } from "zod"
 
 import { getPrices } from "@/lib/currency"
+import supplierFormSchema from "@/lib/validations/supplier"
 
 export async function deleteSupplier(id: string) {
   await prisma.supplier.delete({
@@ -14,7 +15,9 @@ export async function deleteSupplier(id: string) {
   revalidatePath("/offer")
 }
 
-export async function createSupplier(supplier: Supplier) {
+const supplierSchema = supplierFormSchema.extend({ userId: z.string() })
+
+export async function createSupplier(supplier: z.infer<typeof supplierSchema>) {
   const supplierWithSameName = await prisma.supplier.findFirst({
     where: { name: supplier.name },
     select: { id: true },
@@ -29,7 +32,11 @@ export async function createSupplier(supplier: Supplier) {
   revalidatePath("/offer")
 }
 
-export async function updateSupplier(supplier: Supplier) {
+const supplierWithIdSchema = supplierSchema.extend({ id: z.string().cuid() })
+
+export async function updateSupplier(
+  supplier: z.infer<typeof supplierWithIdSchema>
+) {
   await prisma.supplier.update({
     where: { id: supplier.id },
     data: supplier,

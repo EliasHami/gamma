@@ -21,11 +21,6 @@ import LoadingSpinner from "@/components/Spinner"
 import { addFreight } from "../actions"
 import { freightFormSchema } from "../schemas"
 
-type FreightForm = {
-  country: string
-  price: number
-}
-
 type AddFreightProps = {
   className?: string
   freights: Freight[]
@@ -38,13 +33,13 @@ const AddFreight: React.FC<AddFreightProps> = ({
   userId,
 }) => {
   const [isPending, startTransition] = useTransition()
-  const formOptions: UseFormProps<FreightForm> = {
+  const formOptions: UseFormProps<Freight> = {
     resolver: zodResolver(freightFormSchema),
   }
 
-  const methods = useForm<FreightForm>(formOptions)
+  const methods = useForm<Freight>(formOptions)
   const { handleSubmit, formState, setValue } = methods
-  const onSubmit: SubmitHandler<FreightForm> = (data) => {
+  const onSubmit: SubmitHandler<Freight> = (data) => {
     startTransition(async () => {
       try {
         await addFreight({ ...data, userId })

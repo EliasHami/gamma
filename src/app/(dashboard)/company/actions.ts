@@ -2,17 +2,22 @@
 
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/server/db"
-import { type z } from "zod"
+import { z } from "zod"
 
-import type companyFormSchema from "./shemas"
+import companyFormSchema from "./shemas"
+
+const companySchema = companyFormSchema.extend({
+  id: z.string().cuid().optional(),
+  userId: z.string(),
+})
 
 export const updateOrCreateCompany = async (
-  company: z.infer<typeof companyFormSchema>
+  company: z.infer<typeof companySchema>
 ) => {
   if (!company.id) {
     await prisma.company.create({
-      data: { ...company, userId: company.userId || "1" }, // TODO userid shoudnlt be optional in schema, find a way to ignore it in form validation
-    }) // should be created during registration
+      data: { ...company, userId: company.userId },
+    }) // TODO should be created during registration : move this action in step 2 of registration
   } else {
     await prisma.company.update({
       where: { id: company.id },

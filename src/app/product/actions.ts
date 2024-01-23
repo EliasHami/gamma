@@ -83,7 +83,11 @@ export const createProduct = async (product: z.infer<typeof productSchema>) => {
   revalidatePath("/offer")
 }
 
-export const updateProduct = async (product: z.infer<typeof productSchema>) => {
+const productWithIdSchema = productSchema.extend({ id: z.string().cuid() })
+
+export const updateProduct = async (
+  product: z.infer<typeof productWithIdSchema>
+) => {
   await prisma.$transaction(async (tx) => {
     //TODO refactor with getOfferWithPrices
 
