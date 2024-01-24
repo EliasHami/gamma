@@ -16,9 +16,10 @@ export const currencyRateApiResponse = z.object({
 })
 
 export const getCurrencyRates = cache(async (baseCode: string) => {
+  // TODO is it really cached since it's called in a server action ?
   const response = await fetch(
     `https://v6.exchangerate-api.com/v6/5f3a0be8072540c52669b79c/latest/${baseCode}`,
-    { next: { revalidate: 8640, tags: [`currency-rates${baseCode}`] } }
+    { next: { revalidate: 8640, tags: [`currency-rates${baseCode}`] } } //TODO revalidate fetch instead of cache
   )
   return currencyRateApiResponse.parse(await response.json())
 })
@@ -60,6 +61,7 @@ export const getPrices = async (
       bankChargeRate: true
       currency: true
       customsRate: true
+      margin: true
     }
   }>,
   product: Prisma.ProductNeedGetPayload<{
@@ -85,6 +87,7 @@ export const getPrices = async (
     bankChargeRate,
     currency: targetCode = "USD",
     customsRate: countryCustomsRate = 0,
+    margin,
   } = company
   const insurance = (insuranceRate / 100) * fobPrice // I11
   const freight = freightRate / quantityPerContainer // J11
@@ -101,7 +104,7 @@ export const getPrices = async (
       additionalCost
   )
 
-  const grossPrice = Math.round((ddpPrice / (1 - 0.38)) * 1.2) // TODO get margin from company
+  const grossPrice = Math.round((ddpPrice / (1 - margin)) * 1.2)
   const publicPrice = Math.round(grossPrice / (1 - 0.1))
 
   return { ddpPrice, grossPrice, publicPrice }

@@ -19,6 +19,7 @@ export const addFreight = async (freight: z.infer<typeof freightSchema>) => {
   await prisma.freight.create({
     data: { ...freight, userId: freight.userId },
   })
+  // TODO if I can find a supplier with this country --> call getPrices and update offers
   revalidatePath("/library/freight")
 }
 

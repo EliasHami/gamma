@@ -11,6 +11,7 @@ const companyFormSchema = z.object({
   bankChargeRate: z.number().min(0).max(100),
   customsRate: z.number().min(0).max(100),
   VATRate: z.number().min(0).max(100),
+  margin: z.number().min(0).max(100),
 })
 
 export default companyFormSchema

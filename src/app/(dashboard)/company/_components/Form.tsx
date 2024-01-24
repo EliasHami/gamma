@@ -125,6 +125,13 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ company, userId }) => {
               error={errors.VATRate}
               step="0.01"
             />
+            <Input
+              name="margin"
+              label="Margin Rate"
+              type="number"
+              error={errors.margin}
+              step="0.01"
+            />
             <button
               type="submit"
               className="flex w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"

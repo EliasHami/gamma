@@ -37,11 +37,8 @@ const supplierWithIdSchema = supplierSchema.extend({ id: z.string().cuid() })
 export async function updateSupplier(
   supplier: z.infer<typeof supplierWithIdSchema>
 ) {
-  await prisma.supplier.update({
-    where: { id: supplier.id },
-    data: supplier,
-  })
   await prisma.$transaction(async (tx) => {
+    // TODO not usefull because I await
     //TODO refactor with updateProduct
 
     const supplierPromise = tx.supplier.update({
@@ -56,6 +53,7 @@ export async function updateSupplier(
       where: { userId: supplier.userId },
     })
     const [company, freights, updatedSupplier] = await Promise.all([
+      // TODO use prisma transcation (and everywhere that we use promise all)
       companyPromise,
       freightsPromise,
       supplierPromise,
@@ -64,14 +62,16 @@ export async function updateSupplier(
     await Promise.all(
       updatedSupplier.offers.map(async (offer) => {
         const product = await tx.productNeed.findUnique({
+          // TODO do this outside in a find many (maybe with transaction ?)
           where: { id: offer.supplierId },
         })
 
         const { ddpPrice, grossPrice, publicPrice } = await getPrices(
+          // TODO outside in a promise.all
           offer,
           company,
           product,
-          supplier?.country || null,
+          supplier?.country || null, // TODO use updatedSupplier.country cause it might have changed
           freights
         )
 

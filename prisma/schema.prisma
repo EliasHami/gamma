@@ -148,6 +148,7 @@ model Company {
   customsRate Float
   VATRate Float
   country   String
+  margin Float
 }
 
 model Freight {

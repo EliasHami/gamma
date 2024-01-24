@@ -23,7 +23,7 @@ export const updateOrCreateCompany = async (
       where: { id: company.id },
       data: { ...company },
     })
-  }
+  } // TODO call getPrices and update offers
   revalidatePath("/company")
   revalidatePath("/offer")
 }
