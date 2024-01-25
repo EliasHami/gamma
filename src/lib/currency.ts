@@ -38,20 +38,29 @@ export const getCurrencyRate = cache(
 //      Offer (full object)
 //      Exchange Rate (default = 1 USD)
 //      Freight Rate
-// DDPPrice  = (F11+SOMME(I11:L11))*F16+E11
-// K11 = Customs
-//       = (H11+L5)*(F11+I11+J11)
-//                   H11 = Product Customs Rate
-//                   L5 =  Country Customs Rate ???
-// L11 = Transit
-//       =(F11+I11+J11+K11)*F16
-// F16 = Exchange Rate
-// F11 = FOB Price
-// I11 = Insurance
-//        = Insurance Rate * FOB Price
-// J11 = Freight
-//        = Freight Rate (20 foot container) /  QuantityPerContainer
-// E11 = Additional Costs (default = 0)
+
+// Example :
+// - Company
+// L3 (Insurance Rate) = 0,005
+// L4 (Bank Charge Rate) = 0,01
+// L5 (Country custom rates) = 0,0025
+
+// - Freight
+// L8 (Freight Rate (20 foot container)) = 800 (Turkey)
+
+// - Product
+// H11 (Product Customs Rate) = 0
+// F11 (FOB Price) = 158
+// G11 (Quantity per container) = 162
+
+// - Currency
+// F16 (Exchange Rate) = 11 (USD -> MAD)
+
+// I11 (Insurance, L3 * F11) = 158 * 0,005 = 0,79
+// J11 (Freight, L8 /  G11) = 800 / 162 = 4.93
+// K11 (Customs, (H11+L5)*(F11+I11+J11)) = (0+0,0025)*(158+0,79+4.93) = 0,4
+// L11 (Transit, (F11+I11+J11+K11)*L4) = (158+0,79+4.93+0,40)*0,01 = 1,64
+// DDP Price ((F11+ I11 + J11 + K11 + L11)*L4+E11) = (158 + 0,79 + 4.93 + 0,4 + 1,64)*11+0 = 1823,4
 
 export const getPrices = async (
   offer: z.infer<typeof offerFormSchema>,

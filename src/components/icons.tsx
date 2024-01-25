@@ -11,10 +11,10 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ChevronUp,
   ChevronsLeft,
   ChevronsRight,
   ChevronsUpDown,
+  ChevronUp,
   Circle,
   Copy,
   CreditCard,
@@ -22,6 +22,7 @@ import {
   DollarSign,
   Download,
   Edit,
+  Equal,
   Eye,
   EyeOff,
   FileTerminal,
@@ -61,7 +62,6 @@ import {
   X,
   type Icon as LucideIcon,
   type LucideProps,
-  Equal,
 } from "lucide-react"
 
 export type Icon = LucideIcon
@@ -128,6 +128,7 @@ export const Icons = {
   shoes: Footprints,
   accessories: HardHat,
   equal: Equal,
+  minus: Minus,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableCompareFilter } from "@/components/data-table/data-table-compare-filter"
+import { DataTableDateFilter } from "@/components/data-table/data-table-date-filter"
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter"
 import { Icons } from "@/components/icons"
 
@@ -56,23 +57,36 @@ export default function DataTableToolbar<TData>({
         {filterableColumns.length > 0 &&
           filterableColumns.map(
             (column) =>
-              table.getColumn(column.id ? String(column.id) : "") &&
-              (column.type === "number" ? (
-                <DataTableCompareFilter
-                  key={String(column.id)}
-                  column={table.getColumn(column.id ? String(column.id) : "")}
-                  title={column.title}
-                />
-              ) : (
-                column.options && (
-                  <DataTableFacetedFilter
-                    key={String(column.id)}
-                    column={table.getColumn(column.id ? String(column.id) : "")}
-                    title={column.title}
-                    options={column.options}
-                  />
-                )
-              ))
+              table.getColumn(column.id ? String(column.id) : "") && (
+                <div key={String(column.id)}>
+                  {column.type === "date-range" && (
+                    <DataTableDateFilter
+                      column={table.getColumn(
+                        column.id ? String(column.id) : ""
+                      )}
+                      title={column.title}
+                    />
+                  )}
+                  {column.type === "number" ? (
+                    <DataTableCompareFilter
+                      column={table.getColumn(
+                        column.id ? String(column.id) : ""
+                      )}
+                      title={column.title}
+                    />
+                  ) : (
+                    column.options && (
+                      <DataTableFacetedFilter
+                        column={table.getColumn(
+                          column.id ? String(column.id) : ""
+                        )}
+                        title={column.title}
+                        options={column.options}
+                      />
+                    )
+                  )}
+                </div>
+              )
           )}
         {isFiltered && (
           <Button

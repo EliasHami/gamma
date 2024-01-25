@@ -38,7 +38,7 @@ const Offer = async () => {
     suppliers = s
     offers = o
   } catch (error) {
-    catchError(error)
+    console.error(error)
   }
 
   if (!offers) {
@@ -47,7 +47,7 @@ const Offer = async () => {
         <ErrorCard
           title="Could not retrieve offers."
           description="Please check your connection and try again later."
-          retryLink="/offers"
+          retryLink="/offer"
           retryLinkText="Retry"
         />
       </Shell>

@@ -11,7 +11,7 @@ import { format } from "date-fns"
 
 import { formatCurrency } from "@/lib/currency"
 import type { ProductSelect, SupplierSelect } from "@/lib/offer"
-import { compareFilterFn } from "@/lib/utils"
+import { compareDateRangeFn, compareFilterFn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -62,6 +62,7 @@ const OfferTable = ({
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Date" />
         ),
+        filterFn: compareDateRangeFn,
         cell: ({ row }) => format(row.original.date, "dd/MM/yyyy"),
       },
       {
@@ -207,6 +208,11 @@ const OfferTable = ({
             label: String(name),
             value: String(id),
           })),
+        },
+        {
+          id: "date",
+          title: "Date",
+          type: "date-range",
         },
         {
           id: "fobPrice",

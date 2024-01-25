@@ -1,6 +1,8 @@
 import type { CompareFilterValue } from "@/types"
 import type { Row } from "@tanstack/react-table"
 import { clsx, type ClassValue } from "clsx"
+import { isWithinInterval } from "date-fns"
+import { type DateRange } from "react-day-picker"
 import { toast } from "react-hot-toast"
 import { twMerge } from "tailwind-merge"
 import { z } from "zod"
@@ -34,4 +36,18 @@ export function compareFilterFn<TData>(
         String(filterValue.value)
     )
   )
+}
+
+export function compareDateRangeFn<TData>(
+  row: Row<TData>,
+  id: string,
+  filterValue: DateRange
+) {
+  if (!filterValue.from || !filterValue.to) return true
+  const date = new Date(String(row.original[id as keyof TData]))
+
+  return isWithinInterval(date, {
+    start: filterValue.from,
+    end: filterValue.to,
+  })
 }
