@@ -14,7 +14,7 @@
   "dependencies": {
     "@clerk/nextjs": "^4.29.4",
     "@heroicons/react": "^2.0.17",
-    "@hookform/resolvers": "^3.1.1",
+    "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^4.11.0",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -41,13 +41,14 @@
     "react": "18.2.0",
     "react-day-picker": "^8.8.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.45.2",
+    "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.49.3",
     "react-hot-toast": "^2.4.1",
     "recharts": "^2.7.2",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
     "uploadthing": "^6.3.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",

@@ -123,7 +123,7 @@ model Offer {
   currency  String
   validation YESNO
   status  OFFER_STATUSES 
-  image Json
+  images Json?
   quantityPerContainer Int
   date DateTime
   ddpPrice Float

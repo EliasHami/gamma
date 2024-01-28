@@ -1,5 +1,6 @@
 import type { HTMLInputTypeAttribute } from "react"
 import type { Prisma } from "@prisma/client"
+import { type FileWithPath } from "react-dropzone"
 
 export type Option = {
   label: string
@@ -44,3 +45,8 @@ export type BarChartData = { name: string; total: number }
 export type LineData = Record<string, number>
 
 export type LineChartData = LineData & { name: string }
+
+export type FileWithPreview = FileWithPath & {
+  preview: string
+  url?: string
+}

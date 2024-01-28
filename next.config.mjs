@@ -9,6 +9,16 @@ const config = {
   reactStrictMode: true,
   images: {
     domains: ["tailwindui.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "uploadthing.com",
+      },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+    ],
   },
 }
 export default config

@@ -1,12 +1,11 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { type Prisma } from "@prisma/client"
 import { z } from "zod"
 
 import { getPrices } from "@/lib/currency"
 
-import offerFormSchema from "../../lib/validations/offer"
+import offerFormSchema, { imagesSchema } from "../../lib/validations/offer"
 import { prisma } from "../../server/db"
 
 export const deleteOffer = async (id: string) => {
@@ -16,9 +15,13 @@ export const deleteOffer = async (id: string) => {
   revalidatePath("/offer")
 }
 
-const offerSchema = offerFormSchema.extend({ userId: z.string() })
-const offerWithIdSchema = offerSchema.extend({
+const offerWithImagesSchema = offerFormSchema.extend({
+  images: imagesSchema,
+})
+const offerSchema = offerWithImagesSchema.extend({ userId: z.string() })
+const offerWithIdSchema = offerWithImagesSchema.extend({
   id: z.string().cuid(),
+  userId: z.string(),
 })
 
 const getOfferWithPrices = async (offer: z.infer<typeof offerSchema>) => {
@@ -55,8 +58,7 @@ export const createOffer = async (offer: z.infer<typeof offerSchema>) => {
   await prisma.offer.create({
     data: {
       ...(await getOfferWithPrices(offer)),
-      image: offer.image as Prisma.JsonObject,
-    }, // https://github.com/prisma/prisma/issues/9247
+    },
   })
   revalidatePath("/offer")
 }
@@ -66,7 +68,6 @@ export const updateOffer = async (offer: z.infer<typeof offerWithIdSchema>) => {
     where: { id: offer.id },
     data: {
       ...(await getOfferWithPrices(offer)),
-      image: offer.image as Prisma.JsonObject,
     },
   })
   revalidatePath("/offer")
