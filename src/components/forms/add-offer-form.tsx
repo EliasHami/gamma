@@ -110,18 +110,19 @@ const OfferForm: React.FC<OfferFormProps> = ({
             const ci = i as FileWithPreview
             if (ci.path) {
               imagesToUpload.push(ci)
-            } else if (ci.url) {
+            } else {
               // already uploaded
               images.push({
                 name: ci.name,
                 size: ci.size,
-                url: ci.url,
+                url: ci.preview,
               })
             }
           })
           const res = await startUpload(imagesToUpload)
           images = res ? [...images, ...res] : images
         }
+        console.log({ data, images })
         offer
           ? await updateOffer({
               ...data,
