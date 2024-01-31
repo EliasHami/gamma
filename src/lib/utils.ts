@@ -1,4 +1,5 @@
 import type { CompareFilterValue } from "@/types"
+import { OFFER_STATUSES } from "@prisma/client"
 import type { Row } from "@tanstack/react-table"
 import { clsx, type ClassValue } from "clsx"
 import { isWithinInterval } from "date-fns"
@@ -70,4 +71,41 @@ export function isArrayOfFile(files: unknown): files is File[] {
   const isArray = Array.isArray(files)
   if (!isArray) return false
   return files.every((file) => file instanceof File)
+}
+
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case OFFER_STATUSES.ACTIVE:
+      return "text-green-700"
+    case OFFER_STATUSES.CLOSED:
+      return "text-red-700"
+    case OFFER_STATUSES.OPEN:
+      return "text-black"
+    default:
+      return ""
+  }
+}
+
+export const getPublicPriceProps = (
+  publicPrice: number,
+  targetPublicPrice: number
+) => {
+  const startRange = targetPublicPrice * 0.9
+  const endRange = targetPublicPrice * 1.1
+  let className = "text-gray-700"
+  let title = ""
+  if (publicPrice < startRange) {
+    className = "text-green-700"
+    title = "Below target price"
+  }
+  if (publicPrice > endRange) {
+    className = "text-red-700"
+    title = "Above target price"
+  }
+  if (publicPrice >= startRange && publicPrice <= endRange) {
+    className = "text-orange-700"
+    title = "Within 10% range of target price"
+  }
+
+  return { className, title }
 }

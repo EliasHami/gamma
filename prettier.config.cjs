@@ -24,6 +24,12 @@ module.exports = {
   ],
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderTypeScriptVersion: "5.0.2",
+  importOrderBuiltinModulesToTop: true,
+  importOrderSortSpecifiers: true,
+  importOrderMergeDuplicateImports: true,
+  importOrderCombineTypeAndValueImports: true,
+  tailwindAttributes: ["tw"],
+  tailwindFunctions: ["cva"],
   plugins: [
     "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
