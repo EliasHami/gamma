@@ -32,7 +32,9 @@ import DataTableToolbar from "@/components/data-table/data-table-toolbar"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
+  CardRender?: React.ComponentType<{ row: Row<TData> }>
   data: TData[]
+  mode?: "table" | "cards"
   filterableColumns?: DataTableFilterableColumn<TData>[]
   searchableColumns?: DataTableSearchableColumn<TData>[]
   newRowLink?: string
@@ -42,7 +44,9 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
   columns,
+  CardRender,
   data,
+  mode = "table",
   filterableColumns = [],
   searchableColumns = [],
   newRowLink,
@@ -78,55 +82,68 @@ export function DataTable<TData, TValue>({
         newRowLink={newRowLink}
       />
       <div className="max-h-96 overflow-auto rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="whitespace-nowrap">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={getRowClassName ? getRowClassName(row) : ""}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+        {mode === "table" && (
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} className="whitespace-nowrap">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    )
+                  })}
                 </TableRow>
-              ))
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={getRowClassName ? getRowClassName(row) : ""}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
+        {mode === "cards" && CardRender && (
+          <div className="grid grid-cols-4 gap-4 p-4">
+            {table.getRowModel().rows?.length ? (
+              table
+                .getRowModel()
+                .rows.map((row) => <CardRender row={row} key={row.id} />)
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
+              <span> No results.</span>
             )}
-          </TableBody>
-        </Table>
+          </div>
+        )}
       </div>
       <DataTablePagination table={table} />
     </div>

@@ -11,8 +11,8 @@ import { generateReactHelpers } from "@uploadthing/react"
 import CurrencyList from "currency-list"
 import { useForm, type SubmitHandler, type UseFormProps } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { type z } from "zod"
 
+import type { Images } from "@/types/index"
 import type { ProductSelect, SupplierSelect } from "@/lib/offer"
 import { catchError, isArrayOfFile } from "@/lib/utils"
 import {
@@ -31,7 +31,7 @@ import LoadingSpinner from "@/components/Spinner"
 import { type OurFileRouter } from "@/app/api/uploadthing/core"
 
 import { createOffer, updateOffer } from "../../app/offer/actions"
-import offerFormSchema, { type imagesSchema } from "../../lib/validations/offer"
+import offerFormSchema from "../../lib/validations/offer"
 
 type OfferFormProps = {
   offer?: Offer
@@ -41,8 +41,6 @@ type OfferFormProps = {
 }
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>()
-
-type Images = z.infer<typeof imagesSchema>
 
 const OfferForm: React.FC<OfferFormProps> = ({
   offer,

@@ -1,6 +1,9 @@
 import type { HTMLInputTypeAttribute } from "react"
 import type { Prisma } from "@prisma/client"
 import { type FileWithPath } from "react-dropzone"
+import type { z } from "zod"
+
+import type { imagesSchema } from "@/lib/validations/offer"
 
 export type Option = {
   label: string
@@ -50,3 +53,5 @@ export type FileWithPreview = FileWithPath & {
   preview: string
   url?: string
 }
+
+export type Images = z.infer<typeof imagesSchema>
