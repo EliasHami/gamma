@@ -144,7 +144,7 @@ export const SideBar = () => (
 
 export const TopBar = () => {
   return (
-    <header className="flex h-16 items-center border-b bg-white px-4 dark:bg-gray-800">
+    <header className="flex h-12 items-center border-b bg-white px-4 dark:bg-gray-800">
       <Link
         className="flex items-center gap-2 text-lg font-semibold md:text-base"
         href="/"

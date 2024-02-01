@@ -71,17 +71,22 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
     },
+    initialState: {
+      pagination: {
+        pageSize: mode === "table" ? 8 : 24,
+      },
+    },
   })
 
   return (
-    <div>
+    <div className="w-full">
       <DataTableToolbar
         table={table}
         filterableColumns={filterableColumns}
         searchableColumns={searchableColumns}
         newRowLink={newRowLink}
       />
-      <div className="max-h-96 overflow-auto rounded-md border">
+      <div className="rounded-md border">
         {mode === "table" && (
           <Table>
             <TableHeader>
@@ -134,7 +139,7 @@ export function DataTable<TData, TValue>({
           </Table>
         )}
         {mode === "cards" && CardRender && (
-          <div className="grid grid-cols-4 gap-4 p-4">
+          <div className="grid h-[560px] grid-cols-4 gap-4 overflow-auto p-4">
             {table.getRowModel().rows?.length ? (
               table
                 .getRowModel()

@@ -195,6 +195,11 @@ const OfferTable = ({
       columnVisibility={{ status: false, validation: false }}
       filterableColumns={[
         {
+          id: "date",
+          title: "Date",
+          type: "date-range",
+        },
+        {
           id: "needId",
           title: "Product",
           options: products.map(({ id, name }) => ({
@@ -209,11 +214,6 @@ const OfferTable = ({
             label: String(name),
             value: String(id),
           })),
-        },
-        {
-          id: "date",
-          title: "Date",
-          type: "date-range",
         },
         {
           id: "fobPrice",
@@ -231,14 +231,6 @@ const OfferTable = ({
           ),
         },
         {
-          id: "validation",
-          title: "Validation",
-          options: Object.entries(VALIDATION_STATE).map(([key, label]) => ({
-            label: String(label),
-            value: String(key),
-          })),
-        },
-        {
           id: "status",
           title: "Status",
           options: Object.entries(OFFER_STATUSES).map(([key, label]) => ({
@@ -249,16 +241,6 @@ const OfferTable = ({
         {
           id: "quantityPerContainer",
           title: "Quantity Per Container",
-          type: "number",
-        },
-        {
-          id: "ddpPrice",
-          title: "DDP Price",
-          type: "number",
-        },
-        {
-          id: "grossPrice",
-          title: "Gross Price",
           type: "number",
         },
         {

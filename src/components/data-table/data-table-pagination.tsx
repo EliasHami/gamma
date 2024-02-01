@@ -1,6 +1,7 @@
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
 import { type Table } from "@tanstack/react-table"
+
+import { Button } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
@@ -10,7 +11,7 @@ export default function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-end space-x-6 overflow-auto py-4">
+    <div className="flex items-center justify-end space-x-6 overflow-auto py-2">
       <div className="flex items-center justify-center text-sm font-medium">
         Page {table.getState().pagination.pageIndex + 1} of{" "}
         {table.getPageCount()}
