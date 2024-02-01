@@ -20,12 +20,12 @@ export const addFreight = async (freight: z.infer<typeof freightSchema>) => {
     data: { ...freight, userId: freight.userId },
   })
   // TODO if I can find a supplier with this country --> call getPrices and update offers
-  revalidatePath("/library/freight")
+  revalidatePath("/freight")
 }
 
 export const deleteFreight = async (id: string) => {
   await prisma.freight.delete({
     where: { id },
   })
-  revalidatePath("/library/freight")
+  revalidatePath("/freight")
 }

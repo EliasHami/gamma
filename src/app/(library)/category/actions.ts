@@ -14,7 +14,7 @@ export async function addFamily(name: string, userId: string) {
   const family = await prisma.productFamily.create({
     data: { name, userId },
   })
-  revalidatePath("/library/family")
+  revalidatePath("/category")
   revalidatePath("/product") // revalidate only fetch, not working
   return family
 }
@@ -23,7 +23,7 @@ export const deleteFamily = async (id: string) => {
   await prisma.productFamily.delete({
     where: { id },
   })
-  revalidatePath("/library/family")
+  revalidatePath("/category")
 }
 
 export async function addSubFamily(
@@ -44,7 +44,7 @@ export async function addSubFamily(
   const subFamily = await prisma.productSubFamily.create({
     data: { name, familyId: family, userId },
   })
-  revalidatePath("/library/family")
+  revalidatePath("/category")
   revalidatePath("/product") // revalidate only fetch
   return subFamily
 }
@@ -53,7 +53,7 @@ export const deleteSubFamily = async (id: string) => {
   await prisma.productSubFamily.delete({
     where: { id },
   })
-  revalidatePath("/library/family")
+  revalidatePath("/category")
 }
 
 export async function addCapacity(
@@ -74,7 +74,7 @@ export async function addCapacity(
   const capacity = await prisma.productCapacity.create({
     data: { name, subFamilyId: subFamily, userId },
   })
-  revalidatePath("/library/family")
+  revalidatePath("/category")
   revalidatePath("product") // revalidate only fetch
   return capacity
 }
@@ -83,5 +83,5 @@ export const deleteCapacity = async (id: string) => {
   await prisma.productCapacity.delete({
     where: { id },
   })
-  revalidatePath("/library/family")
+  revalidatePath("/category")
 }

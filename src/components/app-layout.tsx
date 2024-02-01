@@ -3,12 +3,14 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { SignOutButton, useUser } from "@clerk/nextjs"
+import { ArchiveBoxIcon } from "@heroicons/react/24/outline"
 import { ArchiveIcon } from "@radix-ui/react-icons"
 import {
   BadgeDollarSignIcon,
   FactoryIcon,
   PackageIcon,
   SettingsIcon,
+  TruckIcon,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -97,29 +99,43 @@ const NavLink: React.FC<NavLinkProps> = ({
 
 export const SideBar = () => (
   <aside className="w-64 overflow-y-auto border-r bg-white dark:bg-gray-800">
-    <nav className="mt-4 space-y-1">
+    <nav className="mt-4 space-y-4">
       <NavLink href="/" exact>
-        <HomeIcon className="mr-3 h-5 w-5" />
+        <HomeIcon className="mr-3 size-5" />
         Dashboard
       </NavLink>
-      <NavLink href="/product">
-        <PackageIcon className="mr-3 h-5 w-5" />
-        Product Needs
-      </NavLink>
-      <NavLink href="/offer">
-        <BadgeDollarSignIcon className="mr-3 h-5 w-5" />
-        Offers
-      </NavLink>
-      <NavLink href="/supplier">
-        <FactoryIcon className="mr-3 h-5 w-5" />
-        Suppliers
-      </NavLink>
-      <NavLink href="/library">
-        <ArchiveIcon className="mr-3 h-5 w-5" />
-        Libraries
-      </NavLink>
+      <div>
+        <div className="px-4 py-2 text-xs font-medium text-gray-600 dark:text-gray-400">
+          SOURCING
+        </div>
+        <NavLink href="/product">
+          <PackageIcon className="mr-3 size-5" />
+          Product Needs
+        </NavLink>
+        <NavLink href="/offer">
+          <BadgeDollarSignIcon className="mr-3 size-5" />
+          Offers
+        </NavLink>
+        <NavLink href="/supplier">
+          <FactoryIcon className="mr-3 size-5" />
+          Suppliers
+        </NavLink>
+      </div>
+      <div>
+        <div className="px-4 py-2 text-xs font-medium text-gray-600 dark:text-gray-400">
+          LIBRARY
+        </div>
+        <NavLink href="/category">
+          <ArchiveBoxIcon className="mr-3 size-5" />
+          Categories
+        </NavLink>
+        <NavLink href="/freight">
+          <TruckIcon className="mr-3 size-5" />
+          Freights
+        </NavLink>
+      </div>
       <NavLink href="/company">
-        <SettingsIcon className="mr-3 h-5 w-5" />
+        <SettingsIcon className="mr-3 size-5" />
         Settings
       </NavLink>
     </nav>
