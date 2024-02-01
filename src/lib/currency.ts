@@ -113,7 +113,7 @@ export const getPrices = async (
       additionalCost
   )
 
-  const grossPrice = Math.round((ddpPrice / (1 - margin)) * 1.2)
+  const grossPrice = Math.round((ddpPrice / (1 - margin / 100)) * 1.2)
   const publicPrice = Math.round(grossPrice / (1 - 0.1))
 
   return { ddpPrice, grossPrice, publicPrice }

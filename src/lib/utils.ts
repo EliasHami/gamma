@@ -90,11 +90,10 @@ export const getPublicPriceProps = (
   publicPrice: number,
   targetPublicPrice: number
 ) => {
-  const startRange = targetPublicPrice * 0.9
   const endRange = targetPublicPrice * 1.1
   let className = "text-gray-700"
   let title = ""
-  if (publicPrice < startRange) {
+  if (publicPrice <= targetPublicPrice) {
     className = "text-green-700"
     title = "Below target price"
   }
@@ -102,8 +101,8 @@ export const getPublicPriceProps = (
     className = "text-red-700"
     title = "Above target price"
   }
-  if (publicPrice >= startRange && publicPrice <= endRange) {
-    className = "text-orange-700"
+  if (publicPrice > targetPublicPrice && publicPrice <= endRange) {
+    className = "text-orange-500"
     title = "Within 10% range of target price"
   }
 
