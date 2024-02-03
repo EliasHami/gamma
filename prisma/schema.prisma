@@ -17,6 +17,8 @@ model ProductCharacteristic {
     updatedAt DateTime @updatedAt
     userId    String
     name      String
+    type      CHARACTERISTIC_FIELD_TYPE
+    unit      UNIT_OF_MEASURE?
     subFamily   ProductSubFamily @relation(fields: [subFamilyId], references: [id], onDelete: Cascade)
     subFamilyId String
     productNeeds ProductNeed[]
@@ -158,4 +160,52 @@ model Freight {
   userId    String
   country String
   price   Float
+}
+
+enum CHARACTERISTIC_FIELD_TYPE {
+  TEXT
+  NUMBER
+}
+
+enum UNIT_OF_MEASURE {
+  METER
+  KILOMETER
+  CENTIMETER
+  INCH
+  FOOT
+  MILE
+  GRAM
+  KILOGRAM
+  MILLIGRAM
+  POUND
+  OUNCE
+  LITER
+  MILLILITER
+  CUBIC_METER
+  CUBIC_CENTIMETER
+  GALLON
+  SECOND
+  MINUTE
+  HOUR
+  DAY
+  CELSIUS
+  FAHRENHEIT
+  KELVIN
+  SQUARE_METER
+  SQUARE_KILOMETER
+  SQUARE_FOOT
+  ACRE
+  METERS_PER_SECOND
+  KILOMETERS_PER_HOUR
+  MILES_PER_HOUR
+  JOULE
+  CALORIE
+  KILOCALORIE
+  WATT
+  KILOWATT
+  HORSEPOWER
+  PASCAL
+  ATMOSPHERE
+  BAR
+  MILLIMETER_OF_MERCURY
 }

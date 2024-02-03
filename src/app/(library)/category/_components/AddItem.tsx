@@ -85,7 +85,7 @@ const AddItem: React.FC<AddItemProps> = ({
         <Input
           name="name"
           type="text"
-          placeholder="Name of the item"
+          placeholder="Name"
           error={formState.errors.name}
         />
         <button

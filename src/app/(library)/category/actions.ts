@@ -2,6 +2,9 @@
 
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/server/db"
+import type { z } from "zod"
+
+import type { characteristicFormSchema } from "@/app/(library)/category/_components/schemas"
 
 export async function addFamily(name: string, userId: string) {
   const familyWithSameName = await prisma.productFamily.findFirst({
@@ -57,27 +60,26 @@ export const deleteSubFamily = async (id: string) => {
 }
 
 export async function addCharacteristic(
-  name: string,
+  characteristic: z.infer<typeof characteristicFormSchema>,
   userId: string,
-  { subFamily }: { subFamily?: string }
+  subFamilyId: string
 ) {
-  if (!subFamily) {
+  if (!subFamilyId) {
     throw new Error("Sub Family is required")
   }
   const characteristicWithSameName =
     await prisma.productCharacteristic.findFirst({
-      where: { name: name },
+      where: { name: characteristic.name },
       select: { id: true },
     })
   if (characteristicWithSameName) {
     throw new Error("Characteristic with same name already exists")
   }
-  const characteristic = await prisma.productCharacteristic.create({
-    data: { name, subFamilyId: subFamily, userId },
+  await prisma.productCharacteristic.create({
+    data: { ...characteristic, subFamilyId, userId },
   })
   revalidatePath("/category")
   revalidatePath("product") // revalidate only fetch
-  return characteristic
 }
 
 export const deleteCharacteristic = async (id: string) => {

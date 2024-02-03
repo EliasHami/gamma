@@ -3,12 +3,13 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
+import { UNITS } from "@/lib/utils"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
+import AddCharacteristic from "@/app/(library)/category/_components/AddCharacteristic"
 import AddItem from "@/app/(library)/category/_components/AddItem"
 import Item from "@/app/(library)/category/_components/Item"
 import {
-  addCharacteristic,
   addFamily,
   addSubFamily,
   deleteCharacteristic,
@@ -74,7 +75,7 @@ const Categories = async ({
                 />
               </div>
               <div className="flex flex-1 flex-col gap-5 font-medium">
-                <h1 className="text-2xl font-bold">Sub Families</h1>
+                <h1 className="text-2xl font-bold">Sub-Families</h1>
                 {productSubFamilies
                   ?.filter(({ familyId }) => familyId === family)
                   .map(({ id, name }) => (
@@ -105,18 +106,19 @@ const Categories = async ({
                     ({ subFamily: sF }) =>
                       sF.id === subFamily && sF.familyId === family
                   )
-                  .map(({ id, name }) => (
+                  .map(({ id, name, type, unit }) => (
                     <Item
                       key={id}
                       id={id}
-                      name={name}
+                      name={`${name} (${type}${
+                        unit ? ` - ${UNITS[unit].name}` : ""
+                      })`}
                       deleteAction={deleteCharacteristic}
                     />
                   ))}
                 {subFamily ? (
-                  <AddItem
-                    action={addCharacteristic}
-                    searchParams={searchParams}
+                  <AddCharacteristic
+                    subFamilyId={searchParams.subFamily}
                     userId={userId}
                   />
                 ) : (
