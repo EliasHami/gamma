@@ -4,7 +4,7 @@ import { useTransition } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
-  type ProductCapacity,
+  type ProductCharacteristic,
   type ProductFamily,
   type ProductSubFamily,
 } from "@prisma/client"
@@ -30,7 +30,9 @@ type AddItemProps = {
       family?: string
       subFamily?: string
     }
-  ) => Promise<ProductFamily | ProductSubFamily | ProductCapacity | undefined>
+  ) => Promise<
+    ProductFamily | ProductSubFamily | ProductCharacteristic | undefined
+  >
   searchParams?: {
     family: string
     subFamily: string

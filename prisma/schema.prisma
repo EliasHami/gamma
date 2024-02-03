@@ -11,7 +11,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model ProductCapacity {
+model ProductCharacteristic {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -29,7 +29,7 @@ model ProductSubFamily {
     updatedAt DateTime @updatedAt
     userId    String
     name      String
-    capacities ProductCapacity[]
+    characteristics ProductCharacteristic[]
     family   ProductFamily @relation(fields: [familyId], references: [id], onDelete: Cascade)
     familyId String
     productNeeds ProductNeed[]
@@ -67,8 +67,8 @@ model ProductNeed {
     familyId String?
     subFamily   ProductSubFamily? @relation(fields: [subFamilyId], references: [id], onDelete: SetNull)
     subFamilyId String?
-    capacity   ProductCapacity? @relation(fields: [capacityId], references: [id], onDelete: SetNull)
-    capacityId String?
+    characteristic   ProductCharacteristic? @relation(fields: [characteristicId], references: [id], onDelete: SetNull)
+    characteristicId String?
     country  String
     targetPublicPrice Float
     state    VALIDATION_STATE
@@ -77,7 +77,7 @@ model ProductNeed {
     customsTax Float
     @@index(familyId)
     @@index(subFamilyId)
-    @@index(capacityId)
+    @@index(characteristicId)
 }
 
 enum YESNO {

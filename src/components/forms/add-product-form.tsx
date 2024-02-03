@@ -15,7 +15,7 @@ import {
 import { toast } from "react-hot-toast"
 
 import type {
-  ProductCapacitySelect,
+  ProductCharacteristicSelect,
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
@@ -30,13 +30,13 @@ type ProductFormProps = {
   product?: ProductNeed
   productFamilies: ProductFamilySelect[]
   productSubFamilies: ProductSubFamilySelect[]
-  productCapacities: ProductCapacitySelect[]
+  productCharacteristics: ProductCharacteristicSelect[]
   userId: string
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
   product,
-  productCapacities,
+  productCharacteristics,
   productFamilies,
   productSubFamilies,
   userId,
@@ -52,7 +52,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     formOptions.defaultValues = {
       familyId: "",
       subFamilyId: "",
-      capacityId: "",
+      characteristicId: "",
     }
   }
 
@@ -74,8 +74,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
     })
   }
 
-  const [selectedProductFamily, selectedSubProductFamily, selectedCapacityId] =
-    watch(["familyId", "subFamilyId", "capacityId"])
+  const [
+    selectedProductFamily,
+    selectedSubProductFamily,
+    selectedCharacteristicId,
+  ] = watch(["familyId", "subFamilyId", "characteristicId"])
 
   useEffect(() => {
     if (selectedProductFamily && !selectedSubProductFamily) {
@@ -83,14 +86,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
     } else if (
       selectedProductFamily &&
       selectedSubProductFamily &&
-      !selectedCapacityId
+      !selectedCharacteristicId
     ) {
-      setValue("capacityId", "")
+      setValue("characteristicId", "")
     }
   }, [
     selectedProductFamily,
     selectedSubProductFamily,
-    selectedCapacityId,
+    selectedCharacteristicId,
     setValue,
   ])
 
@@ -147,12 +150,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 ))}
             </Select>
             <Select
-              name="capacityId"
-              label="Product Capacity"
-              error={errors.capacityId}
+              name="characteristicId"
+              label="Product Characteristic"
+              error={errors.characteristicId}
               disabled={!Boolean(selectedSubProductFamily)}
             >
-              {productCapacities
+              {productCharacteristics
                 ?.filter(
                   ({ subFamilyId }) => subFamilyId === selectedSubProductFamily
                 )

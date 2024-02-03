@@ -8,10 +8,10 @@ import { Shell } from "@/components/shell"
 import AddItem from "@/app/(library)/category/_components/AddItem"
 import Item from "@/app/(library)/category/_components/Item"
 import {
-  addCapacity,
+  addCharacteristic,
   addFamily,
   addSubFamily,
-  deleteCapacity,
+  deleteCharacteristic,
   deleteFamily,
   deleteSubFamily,
 } from "@/app/(library)/category/actions"
@@ -36,15 +36,15 @@ const Categories = async ({
   const productSubFamiliesPromise = prisma.productSubFamily.findMany({
     where: { userId },
   })
-  const productCapacitiesPromise = prisma.productCapacity.findMany({
+  const productCharacteristicsPromise = prisma.productCharacteristic.findMany({
     include: { subFamily: true },
     where: { userId },
   })
-  const [productFamilies, productSubFamilies, productCapacities] =
+  const [productFamilies, productSubFamilies, productCharacteristics] =
     await Promise.all([
       productFamiliesPromise,
       productSubFamiliesPromise,
-      productCapacitiesPromise,
+      productCharacteristicsPromise,
     ])
 
   return (
@@ -99,8 +99,8 @@ const Categories = async ({
                 )}
               </div>
               <div className="flex flex-1 flex-col gap-5 font-medium">
-                <h1 className="text-2xl font-bold">Capacities</h1>
-                {productCapacities
+                <h1 className="text-2xl font-bold">Characteristics</h1>
+                {productCharacteristics
                   ?.filter(
                     ({ subFamily: sF }) =>
                       sF.id === subFamily && sF.familyId === family
@@ -110,12 +110,12 @@ const Categories = async ({
                       key={id}
                       id={id}
                       name={name}
-                      deleteAction={deleteCapacity}
+                      deleteAction={deleteCharacteristic}
                     />
                   ))}
                 {subFamily ? (
                   <AddItem
-                    action={addCapacity}
+                    action={addCharacteristic}
                     searchParams={searchParams}
                     userId={userId}
                   />

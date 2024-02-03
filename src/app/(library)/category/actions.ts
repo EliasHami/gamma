@@ -56,7 +56,7 @@ export const deleteSubFamily = async (id: string) => {
   revalidatePath("/category")
 }
 
-export async function addCapacity(
+export async function addCharacteristic(
   name: string,
   userId: string,
   { subFamily }: { subFamily?: string }
@@ -64,23 +64,24 @@ export async function addCapacity(
   if (!subFamily) {
     throw new Error("Sub Family is required")
   }
-  const capacityWithSameName = await prisma.productCapacity.findFirst({
-    where: { name: name },
-    select: { id: true },
-  })
-  if (capacityWithSameName) {
-    throw new Error("Capacity with same name already exists")
+  const characteristicWithSameName =
+    await prisma.productCharacteristic.findFirst({
+      where: { name: name },
+      select: { id: true },
+    })
+  if (characteristicWithSameName) {
+    throw new Error("Characteristic with same name already exists")
   }
-  const capacity = await prisma.productCapacity.create({
+  const characteristic = await prisma.productCharacteristic.create({
     data: { name, subFamilyId: subFamily, userId },
   })
   revalidatePath("/category")
   revalidatePath("product") // revalidate only fetch
-  return capacity
+  return characteristic
 }
 
-export const deleteCapacity = async (id: string) => {
-  await prisma.productCapacity.delete({
+export const deleteCharacteristic = async (id: string) => {
+  await prisma.productCharacteristic.delete({
     where: { id },
   })
   revalidatePath("/category")

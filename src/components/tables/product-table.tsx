@@ -14,7 +14,7 @@ import { getData, getName } from "country-list"
 
 import { formatCurrency } from "@/lib/currency"
 import type {
-  ProductCapacitySelect,
+  ProductCharacteristicSelect,
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
@@ -44,14 +44,14 @@ import LoadingSpinner from "@/components/Spinner"
 import { deleteProduct } from "@/app/(sourcing)/product/actions"
 
 type ProductWithCategories = Prisma.ProductNeedGetPayload<{
-  include: { family: true; subFamily: true; capacity: true }
+  include: { family: true; subFamily: true; characteristic: true }
 }>
 
 type ProductTableProps = {
   products: ProductWithCategories[]
   productFamilies: ProductFamilySelect[]
   productSubFamilies: ProductSubFamilySelect[]
-  productCapacities: ProductCapacitySelect[]
+  productCharacteristics: ProductCharacteristicSelect[]
   company: Company
 }
 
@@ -59,7 +59,7 @@ const ProductTable = ({
   products,
   productFamilies,
   productSubFamilies,
-  productCapacities,
+  productCharacteristics,
   company,
 }: ProductTableProps) => {
   const [isPending, startTransition] = useTransition()
@@ -94,11 +94,11 @@ const ProductTable = ({
         cell: ({ row }) => row.original.subFamily?.name,
       },
       {
-        accessorKey: "capacityId",
+        accessorKey: "characteristicId",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Capacity" />
+          <DataTableColumnHeader column={column} title="Characteristic" />
         ),
-        cell: ({ row }) => row.original.capacity?.name,
+        cell: ({ row }) => row.original.characteristic?.name,
       },
       {
         accessorKey: "country",
@@ -227,9 +227,9 @@ const ProductTable = ({
           })),
         },
         {
-          id: "capacityId",
-          title: "Capacity",
-          options: productCapacities.map(({ id, name }) => ({
+          id: "characteristicId",
+          title: "Characteristic",
+          options: productCharacteristics.map(({ id, name }) => ({
             label: String(name),
             value: String(id),
           })),

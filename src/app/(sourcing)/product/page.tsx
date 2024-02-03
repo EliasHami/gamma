@@ -13,14 +13,14 @@ const Product = async () => {
   if (!userId) redirect("/signin")
   let products = null
   let company = null
-  let productFamilies, productSubFamilies, productCapacities
+  let productFamilies, productSubFamilies, productCharacteristics
   try {
     const productsPromise = prisma.productNeed.findMany({
       where: { userId },
       include: {
         family: true,
         subFamily: true,
-        capacity: true,
+        characteristic: true,
       },
     })
     const companyPromise = prisma.company.findUnique({ where: { userId } })
@@ -33,7 +33,7 @@ const Product = async () => {
     products = p
     productFamilies = pF
     productSubFamilies = pSF
-    productCapacities = pC
+    productCharacteristics = pC
     company = c
   } catch (error) {
     console.error(error)
@@ -72,7 +72,7 @@ const Product = async () => {
         products={products}
         productFamilies={productFamilies || []}
         productSubFamilies={productSubFamilies || []}
-        productCapacities={productCapacities || []}
+        productCharacteristics={productCharacteristics || []}
         company={company}
       />
     </Shell>

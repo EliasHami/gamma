@@ -19,8 +19,10 @@ const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
   if (!userId) redirect("/signin")
   const productPromise = prisma.productNeed.findUnique({ where: { id } })
   const libraryPromises = fetchProductCategoriesSelect(userId)
-  const [product, [productFamilies, productSubFamilies, productCapacities]] =
-    await Promise.all([productPromise, libraryPromises])
+  const [
+    product,
+    [productFamilies, productSubFamilies, productCharacteristics],
+  ] = await Promise.all([productPromise, libraryPromises])
 
   if (!product) return <div>Product not found</div>
 
@@ -30,7 +32,7 @@ const EditProduct = async ({ params: { id } }: { params: { id: string } }) => {
       product={product}
       productFamilies={productFamilies}
       productSubFamilies={productSubFamilies}
-      productCapacities={productCapacities}
+      productCharacteristics={productCharacteristics}
     />
   )
 }

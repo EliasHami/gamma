@@ -17,7 +17,7 @@ const fetchProductCategoriesSelect = (userId: string) => {
       familyId: true,
     },
   })
-  const productCapacitiesPromise = prisma.productCapacity.findMany({
+  const productCharacteristicsPromise = prisma.productCharacteristic.findMany({
     where: { userId },
     select: {
       id: true,
@@ -28,7 +28,7 @@ const fetchProductCategoriesSelect = (userId: string) => {
   return Promise.all([
     productFamiliesPromise,
     productSubFamiliesPromise,
-    productCapacitiesPromise,
+    productCharacteristicsPromise,
   ])
 }
 
@@ -38,8 +38,9 @@ export type ProductFamilySelect = Prisma.ProductFamilyGetPayload<{
 export type ProductSubFamilySelect = Prisma.ProductSubFamilyGetPayload<{
   select: { id: true; name: true; familyId: true }
 }>
-export type ProductCapacitySelect = Prisma.ProductCapacityGetPayload<{
-  select: { id: true; name: true; subFamilyId: true }
-}>
+export type ProductCharacteristicSelect =
+  Prisma.ProductCharacteristicGetPayload<{
+    select: { id: true; name: true; subFamilyId: true }
+  }>
 
 export { fetchProductCategoriesSelect }

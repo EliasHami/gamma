@@ -7,7 +7,7 @@ import ProductForm from "@/components/forms/add-product-form"
 const NewProduct = async () => {
   const { userId } = auth()
   if (!userId) redirect("/signin")
-  const [productFamilies, productSubFamilies, productCapacities] =
+  const [productFamilies, productSubFamilies, productCharacteristics] =
     await fetchProductCategoriesSelect(userId)
 
   return (
@@ -15,7 +15,7 @@ const NewProduct = async () => {
       userId={userId}
       productFamilies={productFamilies}
       productSubFamilies={productSubFamilies}
-      productCapacities={productCapacities}
+      productCharacteristics={productCharacteristics}
     />
   )
 }
