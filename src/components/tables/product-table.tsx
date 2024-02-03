@@ -41,7 +41,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import DataTableColumnHeader from "@/components/data-table/data-table-column-header"
 import { Icons } from "@/components/icons"
 import LoadingSpinner from "@/components/Spinner"
-import { deleteProduct } from "@/app/product/actions"
+import { deleteProduct } from "@/app/(sourcing)/product/actions"
 
 type ProductWithCategories = Prisma.ProductNeedGetPayload<{
   include: { family: true; subFamily: true; capacity: true }

@@ -7,9 +7,8 @@ import { getName } from "country-list"
 
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
-
-import AddFreight from "./_components/AddFreight"
-import Delete from "./_components/Delete"
+import AddFreight from "@/app/(library)/freight/_components/AddFreight"
+import Delete from "@/app/(library)/freight/_components/Delete"
 
 export const metadata: Metadata = {
   title: "Gamma - Freights",

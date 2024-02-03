@@ -20,12 +20,11 @@ import type {
   ProductSubFamilySelect,
 } from "@/lib/product"
 import { catchError } from "@/lib/utils"
+import { productFormSchema } from "@/lib/validations/product"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
-
-import { createProduct, updateProduct } from "../../app/product/actions"
-import { productFormSchema } from "../../lib/validations/product"
+import { createProduct, updateProduct } from "@/app/(sourcing)/product/actions"
 
 type ProductFormProps = {
   product?: ProductNeed

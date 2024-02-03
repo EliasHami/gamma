@@ -17,9 +17,8 @@ import { catchError } from "@/lib/utils"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
-
-import { addFreight } from "../actions"
-import { freightFormSchema } from "../schemas"
+import { addFreight } from "@/app/(library)/freight/actions"
+import { freightFormSchema } from "@/app/(library)/freight/schemas"
 
 type AddFreightProps = {
   className?: string

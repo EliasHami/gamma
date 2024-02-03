@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation"
 import { auth } from "@clerk/nextjs"
 
+import { fetchProductCategoriesSelect } from "@/lib/product"
 import ProductForm from "@/components/forms/add-product-form"
-
-import { fetchProductCategoriesSelect } from "../../../lib/product"
 
 const NewProduct = async () => {
   const { userId } = auth()

@@ -1,10 +1,10 @@
 "use client"
-import Input from "@/components/forms/Input"
+
+import React from "react"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type Freight } from "@prisma/client"
 import clsx from "clsx"
-import React from "react"
 import {
   FormProvider,
   useFieldArray,
@@ -12,8 +12,10 @@ import {
   type UseFormProps,
 } from "react-hook-form"
 import { z } from "zod"
-import { freightFormSchema } from "../schemas"
-import Delete from "./Delete"
+
+import Input from "@/components/forms/Input"
+import Delete from "@/app/(library)/freight/_components/Delete"
+import { freightFormSchema } from "@/app/(library)/freight/schemas"
 
 type FreightFormProps = {
   freights: [Freight]

@@ -19,8 +19,10 @@ import supplierFormSchema from "@/lib/validations/supplier"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
-
-import { createSupplier, updateSupplier } from "../../app/supplier/actions"
+import {
+  createSupplier,
+  updateSupplier,
+} from "@/app/(sourcing)/supplier/actions"
 
 const SupplierForm: React.FC<{ supplier?: Supplier; userId: string }> = ({
   supplier,

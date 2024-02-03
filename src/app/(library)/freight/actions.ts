@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/server/db"
 import { z } from "zod"
 
-import { freightFormSchema } from "./schemas"
+import { freightFormSchema } from "@/app/(library)/freight/schemas"
 
 const freightSchema = freightFormSchema.extend({ userId: z.string() })
 

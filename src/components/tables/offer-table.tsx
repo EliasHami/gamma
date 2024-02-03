@@ -29,7 +29,7 @@ import OfferCard from "@/components/cards/offer-card"
 import { DataTable } from "@/components/data-table/data-table"
 import DataTableColumnHeader from "@/components/data-table/data-table-column-header"
 import { Icons } from "@/components/icons"
-import { deleteOffer } from "@/app/offer/actions"
+import { deleteOffer } from "@/app/(sourcing)/offer/actions"
 
 type OfferTableProps = {
   offers: OfferWithNeedAndSupplier[]

@@ -1,12 +1,11 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { prisma } from "@/server/db"
 import { z } from "zod"
 
 import { getPrices } from "@/lib/currency"
-
-import offerFormSchema, { imagesSchema } from "../../lib/validations/offer"
-import { prisma } from "../../server/db"
+import offerFormSchema, { imagesSchema } from "@/lib/validations/offer"
 
 export const deleteOffer = async (id: string) => {
   await prisma.offer.delete({

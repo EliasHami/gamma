@@ -29,7 +29,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import DataTableColumnHeader from "@/components/data-table/data-table-column-header"
 import { Icons } from "@/components/icons"
 import LoadingSpinner from "@/components/Spinner"
-import { deleteSupplier } from "@/app/supplier/actions"
+import { deleteSupplier } from "@/app/(sourcing)/supplier/actions"
 
 type SupplierTableProps = {
   suppliers: Supplier[]

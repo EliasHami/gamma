@@ -1,12 +1,11 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { prisma } from "@/server/db"
 import { z } from "zod"
 
 import { getPrices } from "@/lib/currency"
-
-import { productFormSchema } from "../../lib/validations/product"
-import { prisma } from "../../server/db"
+import { productFormSchema } from "@/lib/validations/product"
 
 const productSchema = productFormSchema.extend({ userId: z.string() })
 

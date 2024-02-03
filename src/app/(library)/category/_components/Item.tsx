@@ -1,9 +1,10 @@
 "use client"
 
-import clsx from "clsx"
-import { usePathname, useRouter } from "next/navigation"
 import { useTransition } from "react"
-import Delete from "./Delete"
+import { usePathname, useRouter } from "next/navigation"
+import clsx from "clsx"
+
+import Delete from "@/app/(library)/category/_components/Delete"
 
 type ItemProps = {
   id: string

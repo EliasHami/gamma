@@ -2,9 +2,8 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
+import { fetchSelect } from "@/lib/offer"
 import OfferForm from "@/components/forms/add-offer-form"
-
-import { fetchSelect } from "../../../lib/offer"
 
 // https://github.com/vercel/next.js/issues/49408
 // export async function generateStaticParams() {

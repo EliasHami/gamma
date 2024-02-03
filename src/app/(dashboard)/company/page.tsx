@@ -4,8 +4,7 @@ import { auth } from "@clerk/nextjs"
 
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
-
-import Form from "./_components/Form"
+import Form from "@/app/(dashboard)/company/_components/Form"
 
 export default async function CompanyInfo() {
   const { userId } = auth()

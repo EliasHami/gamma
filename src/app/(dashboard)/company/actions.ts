@@ -5,7 +5,7 @@ import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 import { z } from "zod"
 
-import companyFormSchema from "./shemas"
+import companyFormSchema from "@/app/(dashboard)/company/shemas"
 
 const companySchema = companyFormSchema.extend({
   id: z.string().cuid().optional(),

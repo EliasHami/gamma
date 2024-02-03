@@ -18,9 +18,8 @@ import { catchError } from "@/lib/utils"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
-
-import { updateOrCreateCompany } from "../actions"
-import companyFormSchema from "../shemas"
+import { updateOrCreateCompany } from "@/app/(dashboard)/company/actions"
+import companyFormSchema from "@/app/(dashboard)/company/shemas"
 
 type CompanyFormProps = {
   company: Company | null

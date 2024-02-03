@@ -6,8 +6,7 @@ import { auth } from "@clerk/nextjs"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shell"
 import AddItem from "@/app/(library)/category/_components/AddItem"
-
-import Item from "./_components/Item"
+import Item from "@/app/(library)/category/_components/Item"
 import {
   addCapacity,
   addFamily,
@@ -15,7 +14,7 @@ import {
   deleteCapacity,
   deleteFamily,
   deleteSubFamily,
-} from "./actions"
+} from "@/app/(library)/category/actions"
 
 export const metadata: Metadata = {
   title: "Gamma - Categories",

@@ -2,9 +2,8 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
+import { fetchProductCategoriesSelect } from "@/lib/product"
 import ProductForm from "@/components/forms/add-product-form"
-
-import { fetchProductCategoriesSelect } from "../../../lib/product"
 
 // https://github.com/vercel/next.js/issues/49408
 // export async function generateStaticParams() {

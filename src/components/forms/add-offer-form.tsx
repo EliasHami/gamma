@@ -15,6 +15,7 @@ import { toast } from "react-hot-toast"
 import type { Images } from "@/types/index"
 import type { ProductSelect, SupplierSelect } from "@/lib/offer"
 import { catchError, isArrayOfFile } from "@/lib/utils"
+import offerFormSchema from "@/lib/validations/offer"
 import {
   Form,
   FormControl,
@@ -28,10 +29,8 @@ import { FileDialog } from "@/components/file-dialog"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
 import LoadingSpinner from "@/components/Spinner"
+import { createOffer, updateOffer } from "@/app/(sourcing)/offer/actions"
 import { type OurFileRouter } from "@/app/api/uploadthing/core"
-
-import { createOffer, updateOffer } from "../../app/offer/actions"
-import offerFormSchema from "../../lib/validations/offer"
 
 type OfferFormProps = {
   offer?: Offer
