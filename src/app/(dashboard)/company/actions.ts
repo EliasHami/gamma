@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { prisma } from "@/server/db"
+import { auth } from "@clerk/nextjs"
 import { z } from "zod"
 
 import companyFormSchema from "./shemas"
@@ -26,4 +27,54 @@ export const updateOrCreateCompany = async (
   } // TODO call getPrices and update offers
   revalidatePath("/company")
   revalidatePath("/offer")
+}
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export const generateData = async () => {
+  "user server"
+  const { userId } = auth()
+
+  for (const appliance of [
+    "Air conditioners",
+    "dishwashers",
+    "clothes dryers",
+    "drying cabinets",
+    "freezers",
+    "refrigerators",
+    "kitchen stoves",
+    "water heaters",
+    "trash compactors",
+    "microwave ovens",
+  ]) {
+    const dataset = {
+      name: appliance,
+      userId: userId || "0",
+      targetPublicPrice: Math.random() * 1000,
+      additionalCost: Math.random() * 50,
+      customsTax: Math.random() * 100,
+    }
+    const prod = await prisma.productNeed.findFirst({
+      where: { name: appliance },
+    })
+    if (prod) {
+      await prisma.productNeed.update({
+        where: { id: prod.id },
+        data: {
+          ...prod,
+          ...dataset,
+        },
+      })
+    } else {
+      const firstprod = await prisma.productNeed.findFirst()
+      if (firstprod) {
+        const { id, ...fp } = firstprod
+        await prisma.productNeed.create({
+          data: {
+            ...fp,
+            ...dataset,
+          },
+        })
+      }
+    }
+  }
 }

@@ -17,7 +17,7 @@ export function Header({
     <div className={cn("grid gap-1", className)} {...props}>
       <h1
         className={cn(
-          "line-clamp-1 text-3xl font-bold tracking-tight",
+          "text-3xl font-bold tracking-tight",
           size === "default" && "md:text-4xl"
         )}
       >

@@ -4,7 +4,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { SignOutButton, useUser } from "@clerk/nextjs"
 import { ArchiveBoxIcon } from "@heroicons/react/24/outline"
-import { ArchiveIcon } from "@radix-ui/react-icons"
 import {
   BadgeDollarSignIcon,
   FactoryIcon,
