@@ -23,6 +23,8 @@ const fetchProductCategoriesSelect = (userId: string) => {
       id: true,
       name: true,
       subFamilyId: true,
+      type: true,
+      unit: true,
     },
   })
   return Promise.all([
@@ -40,7 +42,7 @@ export type ProductSubFamilySelect = Prisma.ProductSubFamilyGetPayload<{
 }>
 export type ProductCharacteristicSelect =
   Prisma.ProductCharacteristicGetPayload<{
-    select: { id: true; name: true; subFamilyId: true }
+    select: { id: true; name: true; subFamilyId: true; type: true; unit: true }
   }>
 
 export { fetchProductCategoriesSelect }

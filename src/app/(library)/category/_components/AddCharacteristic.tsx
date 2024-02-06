@@ -33,12 +33,13 @@ const AddCharacteristic: React.FC<Props> = ({ subFamilyId, userId }) => {
 
   const methods = useForm<ProductCharacteristic>(formOptions)
   const { handleSubmit, formState, setValue, watch } = methods
-  const [type] = watch(["type"])
+  const [type, name] = watch(["type", "name"])
   const onSubmit: SubmitHandler<ProductCharacteristic> = (data) => {
     if (!data.name) return
 
     startTransition(async () => {
       try {
+        console.log("here")
         await addCharacteristic(data, userId, subFamilyId)
         setValue("name", "")
         setValue("type", CHARACTERISTIC_FIELD_TYPE.TEXT)
@@ -80,6 +81,7 @@ const AddCharacteristic: React.FC<Props> = ({ subFamilyId, userId }) => {
         )}
         <button
           type="submit"
+          disabled={formState.isSubmitting || isPending || !name}
           className="flex h-[50px] w-full items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"
         >
           {(formState.isSubmitting || isPending) && <LoadingSpinner />}

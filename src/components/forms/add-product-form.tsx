@@ -4,15 +4,22 @@ import React, { useEffect, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { DevTool } from "@hookform/devtools"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { DEPARTMENT, VALIDATION_STATE, type ProductNeed } from "@prisma/client"
+import {
+  CHARACTERISTIC_FIELD_TYPE,
+  DEPARTMENT,
+  ProductNeed,
+  VALIDATION_STATE,
+} from "@prisma/client"
 import { getData } from "country-list"
 import {
   FormProvider,
+  useFieldArray,
   useForm,
   type SubmitHandler,
   type UseFormProps,
 } from "react-hook-form"
 import { toast } from "react-hot-toast"
+import type { z } from "zod"
 
 import type {
   ProductCharacteristicSelect,
@@ -34,6 +41,8 @@ type ProductFormProps = {
   userId: string
 }
 
+type ProductNeedForm = z.infer<typeof productFormSchema>
+
 const ProductForm: React.FC<ProductFormProps> = ({
   product,
   productCharacteristics,
@@ -43,7 +52,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 }) => {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const formOptions: UseFormProps<ProductNeed> = {
+  const formOptions: UseFormProps<ProductNeedForm> = {
     resolver: zodResolver(productFormSchema),
   }
   if (product) {
@@ -52,15 +61,17 @@ const ProductForm: React.FC<ProductFormProps> = ({
     formOptions.defaultValues = {
       familyId: "",
       subFamilyId: "",
-      characteristicId: "",
+      characteristics: [],
     }
   }
 
-  const methods = useForm<ProductNeed>(formOptions)
-  const { handleSubmit, formState, watch, setValue } = methods
+  const methods = useForm<ProductNeedForm>(formOptions)
+  const { handleSubmit, formState, watch, setValue, control } = methods
   const { errors } = formState
 
-  const onSubmit: SubmitHandler<ProductNeed> = (data) => {
+  const { fields } = useFieldArray({ control, name: "characteristics" })
+
+  const onSubmit: SubmitHandler<ProductNeedForm> = (data) => {
     startTransition(async () => {
       try {
         product
@@ -77,8 +88,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const [
     selectedProductFamily,
     selectedSubProductFamily,
-    selectedCharacteristicId,
-  ] = watch(["familyId", "subFamilyId", "characteristicId"])
+    selectedCharacteristics,
+  ] = watch(["familyId", "subFamilyId", "characteristics"])
 
   useEffect(() => {
     if (selectedProductFamily && !selectedSubProductFamily) {
@@ -86,16 +97,18 @@ const ProductForm: React.FC<ProductFormProps> = ({
     } else if (
       selectedProductFamily &&
       selectedSubProductFamily &&
-      !selectedCharacteristicId
+      !selectedCharacteristics
     ) {
-      setValue("characteristicId", "")
+      setValue("characteristics", [])
     }
   }, [
     selectedProductFamily,
     selectedSubProductFamily,
-    selectedCharacteristicId,
+    selectedCharacteristics,
     setValue,
   ])
+
+  console.log({ errors })
 
   return (
     <>
@@ -149,22 +162,38 @@ const ProductForm: React.FC<ProductFormProps> = ({
                   </option>
                 ))}
             </Select>
-            <Select
-              name="characteristicId"
-              label="Product Characteristic"
-              error={errors.characteristicId}
-              disabled={!Boolean(selectedSubProductFamily)}
+            <label
+              className="mb-2 block text-sm font-bold text-gray-700"
+              htmlFor="input"
             >
-              {productCharacteristics
-                ?.filter(
-                  ({ subFamilyId }) => subFamilyId === selectedSubProductFamily
-                )
-                .map(({ id, name }) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))}
-            </Select>
+              Product Characteristics
+            </label>
+            {fields.map((field, index) =>
+              field.type === CHARACTERISTIC_FIELD_TYPE.NUMBER ? (
+                <div className="flex gap-3" key={field.id}>
+                  <Input
+                    name={`characteristics[${index}].value`}
+                    className="w-4/5"
+                    label={field.name}
+                    type="number"
+                    error={errors.characteristics?.[index]?.value}
+                    step="0.01"
+                  />
+                  {field.unit && (
+                    <div className="flex w-1/5 items-center">{field.unit}</div>
+                  )}
+                </div>
+              ) : (
+                <Input
+                  key={field.id}
+                  name={`characteristics[${index}].value`}
+                  label={field.name}
+                  type="text"
+                  error={errors.characteristics?.[index]?.value}
+                />
+              )
+            )}
+
             <Select name="country" label="Country" error={errors.country}>
               {getData().map((country) => (
                 <option key={country.code} value={country.code}>
