@@ -39,7 +39,6 @@ const AddCharacteristic: React.FC<Props> = ({ subFamilyId, userId }) => {
 
     startTransition(async () => {
       try {
-        console.log("here")
         await addCharacteristic(data, userId, subFamilyId)
         setValue("name", "")
         setValue("type", CHARACTERISTIC_FIELD_TYPE.TEXT)

@@ -26,7 +26,7 @@ import type {
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
-import { catchError } from "@/lib/utils"
+import { catchError, UNITS } from "@/lib/utils"
 import { productFormSchema } from "@/lib/validations/product"
 import Input from "@/components/forms/Input"
 import Select from "@/components/forms/Select"
@@ -194,7 +194,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                       handleCharacteristicsChange(id, index, event)
                     }
                     className="ml-6"
-                    label={`${name} (${unit})`}
+                    label={`${name} (${unit && UNITS[unit].symbol})`}
                     type="number"
                     error={errors.characteristicValues?.[index]?.value}
                     step="0.01"

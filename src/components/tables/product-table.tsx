@@ -18,7 +18,7 @@ import type {
   ProductFamilySelect,
   ProductSubFamilySelect,
 } from "@/lib/product"
-import { compareFilterFn } from "@/lib/utils"
+import { compareFilterFn, UNITS } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -103,12 +103,18 @@ const ProductTable = ({
             id: string
             value: string | number
           }[]
-          return values?.map(({ id, value }) => {
-            const characteristic = productCharacteristics.find(
-              (c) => c.id === id
-            )
-            return `${characteristic?.name}: ${value}${characteristic?.unit}`
-          })
+          return values
+            ?.map(({ id, value }) => {
+              const characteristic = productCharacteristics.find(
+                (c) => c.id === id
+              )
+              return characteristic?.name
+                ? `${characteristic.name}: ${value} ${
+                    characteristic.unit ? UNITS[characteristic.unit].symbol : ""
+                  }`
+                : ""
+            })
+            .join(" ")
         },
       },
       {
