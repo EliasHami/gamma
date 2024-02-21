@@ -83,6 +83,7 @@ export async function addCharacteristic(
 }
 
 export const deleteCharacteristic = async (id: string) => {
+  // TODO : delete all values of this characteristic in products
   await prisma.productCharacteristic.delete({
     where: { id },
   })
