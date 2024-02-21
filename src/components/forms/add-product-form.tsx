@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import {
   CHARACTERISTIC_FIELD_TYPE,
   DEPARTMENT,
-  ProductNeed,
   VALIDATION_STATE,
+  type ProductNeed,
 } from "@prisma/client"
 import { getData } from "country-list"
 import {
@@ -56,12 +56,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
     resolver: zodResolver(productFormSchema),
   }
   if (product) {
-    formOptions.defaultValues = product
+    formOptions.defaultValues = product as ProductNeedForm // TODO: fix this : prisma Json car be a string, null, number or boolean
   } else {
     formOptions.defaultValues = {
       familyId: "",
       subFamilyId: "",
-      characteristics: [],
+      characteristicValues: [],
     }
   }
 
@@ -69,13 +69,28 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const { handleSubmit, formState, watch, setValue, control } = methods
   const { errors } = formState
 
-  const { fields } = useFieldArray({ control, name: "characteristics" })
+  useFieldArray({ control, name: "characteristicValues" })
+
+  const handleCharacteristicsChange = (
+    id: string,
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setValue(`characteristicValues.${index}`, {
+      value: event.target.value,
+      id,
+    })
+  }
 
   const onSubmit: SubmitHandler<ProductNeedForm> = (data) => {
     startTransition(async () => {
       try {
         product
-          ? await updateProduct({ ...data, id: product.id, userId })
+          ? await updateProduct({
+              ...data,
+              id: product.id,
+              userId,
+            })
           : await createProduct({ ...data, userId })
         toast.success("Product submited successfully")
         router.push("/product")
@@ -87,28 +102,26 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
   const [
     selectedProductFamily,
-    selectedSubProductFamily,
+    selectedProductSubFamily,
     selectedCharacteristics,
-  ] = watch(["familyId", "subFamilyId", "characteristics"])
+  ] = watch(["familyId", "subFamilyId", "characteristicValues"])
 
   useEffect(() => {
-    if (selectedProductFamily && !selectedSubProductFamily) {
+    if (selectedProductFamily && !selectedProductSubFamily) {
       setValue("subFamilyId", "")
     } else if (
       selectedProductFamily &&
-      selectedSubProductFamily &&
+      selectedProductSubFamily &&
       !selectedCharacteristics
     ) {
-      setValue("characteristics", [])
+      setValue("characteristicValues", [])
     }
   }, [
     selectedProductFamily,
-    selectedSubProductFamily,
+    selectedProductSubFamily,
     selectedCharacteristics,
     setValue,
   ])
-
-  console.log({ errors })
 
   return (
     <>
@@ -168,32 +181,38 @@ const ProductForm: React.FC<ProductFormProps> = ({
             >
               Product Characteristics
             </label>
-            {fields.map((field, index) =>
-              field.type === CHARACTERISTIC_FIELD_TYPE.NUMBER ? (
-                <div className="flex gap-3" key={field.id}>
+            {productCharacteristics
+              ?.filter(
+                ({ subFamilyId }) => subFamilyId === selectedProductSubFamily
+              )
+              .map(({ id, type, name, unit }, index) =>
+                type === CHARACTERISTIC_FIELD_TYPE.NUMBER ? (
                   <Input
-                    name={`characteristics[${index}].value`}
-                    className="w-4/5"
-                    label={field.name}
+                    key={id}
+                    value={watch(`characteristicValues.${index}.value`)}
+                    onChange={(event) =>
+                      handleCharacteristicsChange(id, index, event)
+                    }
+                    className="ml-6"
+                    label={`${name} (${unit})`}
                     type="number"
-                    error={errors.characteristics?.[index]?.value}
+                    error={errors.characteristicValues?.[index]?.value}
                     step="0.01"
                   />
-                  {field.unit && (
-                    <div className="flex w-1/5 items-center">{field.unit}</div>
-                  )}
-                </div>
-              ) : (
-                <Input
-                  key={field.id}
-                  name={`characteristics[${index}].value`}
-                  label={field.name}
-                  type="text"
-                  error={errors.characteristics?.[index]?.value}
-                />
-              )
-            )}
-
+                ) : (
+                  <Input
+                    key={id}
+                    value={watch(`characteristicValues.${index}.value`)}
+                    onChange={(event) =>
+                      handleCharacteristicsChange(id, index, event)
+                    }
+                    className="ml-6"
+                    label={name}
+                    type="text"
+                    error={errors.characteristicValues?.[index]?.value}
+                  />
+                )
+              )}
             <Select name="country" label="Country" error={errors.country}>
               {getData().map((country) => (
                 <option key={country.code} value={country.code}>

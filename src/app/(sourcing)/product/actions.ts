@@ -7,7 +7,10 @@ import { z } from "zod"
 import { getPrices } from "@/lib/currency"
 import { productFormSchema } from "@/lib/validations/product"
 
-const productSchema = productFormSchema.extend({ userId: z.string() })
+const productSchema = productFormSchema.extend({
+  userId: z.string(),
+  characteristics: z.object({}).optional(),
+})
 
 export async function deleteProduct(id: string) {
   await prisma.productNeed.delete({

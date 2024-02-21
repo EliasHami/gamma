@@ -20,7 +20,6 @@ const Product = async () => {
       include: {
         family: true,
         subFamily: true,
-        characteristic: true,
       },
     })
     const companyPromise = prisma.company.findUnique({ where: { userId } })

@@ -44,7 +44,7 @@ import LoadingSpinner from "@/components/Spinner"
 import { deleteProduct } from "@/app/(sourcing)/product/actions"
 
 type ProductWithCategories = Prisma.ProductNeedGetPayload<{
-  include: { family: true; subFamily: true; characteristic: true }
+  include: { family: true; subFamily: true }
 }>
 
 type ProductTableProps = {
@@ -94,11 +94,22 @@ const ProductTable = ({
         cell: ({ row }) => row.original.subFamily?.name,
       },
       {
-        accessorKey: "characteristicId",
+        accessorKey: "characteristicValues",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Characteristic" />
         ),
-        cell: ({ row }) => row.original.characteristic?.name,
+        cell: ({ row }) => {
+          const values = row.original.characteristicValues as {
+            id: string
+            value: string | number
+          }[]
+          return values?.map(({ id, value }) => {
+            const characteristic = productCharacteristics.find(
+              (c) => c.id === id
+            )
+            return `${characteristic?.name}: ${value}${characteristic?.unit}`
+          })
+        },
       },
       {
         accessorKey: "country",
@@ -226,14 +237,15 @@ const ProductTable = ({
             value: String(id),
           })),
         },
-        {
-          id: "characteristicId",
-          title: "Characteristic",
-          options: productCharacteristics.map(({ id, name }) => ({
-            label: String(name),
-            value: String(id),
-          })),
-        },
+        // TODO
+        // {
+        //   id: "characteristicId",
+        //   title: "Characteristic",
+        //   options: productCharacteristics.map(({ id, name }) => ({
+        //     label: String(name),
+        //     value: String(id),
+        //   })),
+        // },
         {
           id: "country",
           title: "Country",

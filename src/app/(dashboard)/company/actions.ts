@@ -52,6 +52,7 @@ export const generateData = async () => {
       targetPublicPrice: Math.random() * 1000,
       additionalCost: Math.random() * 50,
       customsTax: Math.random() * 100,
+      characteristicValues: [],
     }
     const prod = await prisma.productNeed.findFirst({
       where: { name: appliance },
