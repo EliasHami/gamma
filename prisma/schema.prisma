@@ -68,7 +68,7 @@ model ProductNeed {
     familyId String?
     subFamily   ProductSubFamily? @relation(fields: [subFamilyId], references: [id], onDelete: SetNull)
     subFamilyId String?
-    characteristicValues Json
+    characteristicValues Json? @default("{}")
     country  String
     targetPublicPrice Float
     state    VALIDATION_STATE

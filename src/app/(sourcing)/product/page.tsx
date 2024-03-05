@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs"
 import { fetchProductCategoriesSelect } from "@/lib/product"
 import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 import ProductTable from "@/components/tables/product-table"
 
 const Product = async () => {

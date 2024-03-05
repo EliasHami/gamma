@@ -3,7 +3,7 @@ import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 import Form from "@/app/(dashboard)/company/_components/Form"
 
 export default async function CompanyInfo() {

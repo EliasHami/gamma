@@ -6,7 +6,7 @@ import clsx from "clsx"
 import { getName } from "country-list"
 
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 import AddFreight from "@/app/(library)/freight/_components/AddFreight"
 import Delete from "@/app/(library)/freight/_components/Delete"
 

@@ -1,4 +1,5 @@
 import { type NextPage } from "next"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
@@ -10,7 +11,7 @@ import DdpPricePerSupplierChart from "@/components/charts/ddp-price-supplier-cha
 import SupplierOfferEvolutionChart from "@/components/charts/supplier-offer-evolution-chart"
 import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 
 const getTotalRevenue = (activeOffers: Offer[], currency: string) => {
   // offre(état active).publicPrice - offre(état active).grossPrice
@@ -59,6 +60,7 @@ const Home: NextPage = async () => {
   return (
     <Shell>
       <Header title="Dashboard" />
+      <Link href="/preview/company">toto</Link>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

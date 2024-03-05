@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs"
 
 import { UNITS } from "@/lib/utils"
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 import AddCharacteristic from "@/app/(library)/category/_components/AddCharacteristic"
 import AddItem from "@/app/(library)/category/_components/AddItem"
 import Item from "@/app/(library)/category/_components/Item"

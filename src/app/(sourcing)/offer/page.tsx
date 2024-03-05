@@ -6,7 +6,7 @@ import { fetchSelect } from "@/lib/offer"
 import { catchError } from "@/lib/utils"
 import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 import OfferTable from "@/components/tables/offer-table"
 
 const Offer = async () => {

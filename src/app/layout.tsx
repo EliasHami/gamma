@@ -1,6 +1,5 @@
 import "@/styles/globals.css"
 
-import { type PropsWithChildren } from "react"
 import { type Metadata } from "next"
 import { env } from "@/env.mjs"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
@@ -17,7 +16,11 @@ export const metadata: Metadata = {
   icons: "/gamma-ray.png",
 }
 
-export default function RootLayout({ children }: PropsWithChildren) {
+type RootLayoutProps = React.PropsWithChildren<{
+  modal: React.ReactNode
+}>
+
+export default function RootLayout({ children, modal }: RootLayoutProps) {
   return (
     <ClerkProvider>
       <html lang="en">
@@ -47,6 +50,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <SignedOut>
             <main>{children}</main>
           </SignedOut>
+          {modal}
         </body>
       </html>
     </ClerkProvider>

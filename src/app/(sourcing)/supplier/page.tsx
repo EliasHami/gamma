@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs"
 
 import { ErrorCard } from "@/components/error-card"
 import { Header } from "@/components/header"
-import { Shell } from "@/components/shell"
+import { Shell } from "@/components/shells/shell"
 import SupplierTable from "@/components/tables/supplier-table"
 
 const Supplier = async () => {
