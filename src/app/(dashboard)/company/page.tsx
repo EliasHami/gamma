@@ -2,9 +2,9 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 
+import Form from "@/components/forms/add-company-form"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shells/shell"
-import Form from "@/app/(dashboard)/company/_components/Form"
 
 export default async function CompanyInfo() {
   const { userId } = auth()

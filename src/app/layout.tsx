@@ -1,8 +1,10 @@
 import "@/styles/globals.css"
 
 import { type Metadata } from "next"
+import { redirect } from "next/navigation"
 import { env } from "@/env.mjs"
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
+import { prisma } from "@/server/db"
+import { auth, ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { FerrisWheel } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 
@@ -20,7 +22,12 @@ type RootLayoutProps = React.PropsWithChildren<{
   modal: React.ReactNode
 }>
 
-export default function RootLayout({ children, modal }: RootLayoutProps) {
+export default async function RootLayout({ children, modal }: RootLayoutProps) {
+  const { userId } = auth()
+  if (!userId) redirect("/signin")
+
+  const company = await prisma.company.findUnique({ where: { userId } }) // TODO mettre dans un context server
+
   return (
     <ClerkProvider>
       <html lang="en">
@@ -50,7 +57,7 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
           <SignedOut>
             <main>{children}</main>
           </SignedOut>
-          {modal}
+          {company?.id ? null : modal}
         </body>
       </html>
     </ClerkProvider>

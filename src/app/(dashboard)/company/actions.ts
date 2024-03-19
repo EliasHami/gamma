@@ -25,6 +25,7 @@ export const updateOrCreateCompany = async (
       data: { ...company },
     })
   } // TODO call getPrices and update offers
+  revalidatePath("/")
   revalidatePath("/company")
   revalidatePath("/offer")
 }
