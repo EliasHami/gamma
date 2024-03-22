@@ -38,7 +38,7 @@
     "currency-list": "^1.0.8",
     "date-fns": "^2.30.0",
     "lucide-react": "^0.259.0",
-    "next": "14.1.0",
+    "next": "^14.1.4",
     "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-day-picker": "^8.8.0",

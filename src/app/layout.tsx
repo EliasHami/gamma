@@ -24,9 +24,10 @@ type RootLayoutProps = React.PropsWithChildren<{
 
 export default async function RootLayout({ children, modal }: RootLayoutProps) {
   const { userId } = auth()
-  if (!userId) redirect("/signin")
-
-  const company = await prisma.company.findUnique({ where: { userId } }) // TODO mettre dans un context server
+  let company = null
+  if (userId) {
+    company = await prisma.company.findUnique({ where: { userId } }) // TODO mettre dans un context server
+  }
 
   return (
     <ClerkProvider>
@@ -53,11 +54,11 @@ export default async function RootLayout({ children, modal }: RootLayoutProps) {
                 )}
               </footer>
             </div>
+            {company?.id ? null : modal}
           </SignedIn>
           <SignedOut>
             <main>{children}</main>
           </SignedOut>
-          {company?.id ? null : modal}
         </body>
       </html>
     </ClerkProvider>

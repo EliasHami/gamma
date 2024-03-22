@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import DdpPricePerSupplierChart from "@/components/charts/ddp-price-supplier-chart"
 import SupplierOfferEvolutionChart from "@/components/charts/supplier-offer-evolution-chart"
 import { Header } from "@/components/header"
-import SettedUp from "@/components/setted-up"
 import { Shell } from "@/components/shells/shell"
 
 const getTotalRevenue = (
@@ -50,7 +49,6 @@ const Home: NextPage = async () => {
 
   return (
     <>
-      {/* <SettedUp company={company} /> */}
       <Shell>
         <Header title="Dashboard" />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
